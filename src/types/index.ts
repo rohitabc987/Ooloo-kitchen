@@ -11,7 +11,7 @@ export interface ServiceItem {
   title: string;
   subtitle: string;
   desc: string;
-  icon: string;
+  icon: string; // emoji or icon name
   duration: string;
   idealFor: string;
   popular: boolean;

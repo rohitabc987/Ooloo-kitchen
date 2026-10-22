@@ -14,7 +14,7 @@ export default function TrustSection() {
   ];
 
   return (
-    <section style={{ padding: '50px 0 70px 0', backgroundColor: 'var(--bg-main)' }}>
+    <section style={{ padding: '36px 0 60px 0', backgroundColor: 'transparent' }}>
       <div className="container">
         
         {/* Header & Visual Showcase */}
@@ -27,18 +27,12 @@ export default function TrustSection() {
         }} className="trust-grid">
           
           <div>
-            <div style={{
-              fontSize: '0.8rem',
-              fontWeight: 800,
-              letterSpacing: '0.08em',
-              color: 'var(--text-muted)',
-              textTransform: 'uppercase',
-              marginBottom: '10px'
-            }}>
-              MEET YOUR OOLOO TEAM
+            <div className="page-badge">
+              <span className="page-badge-dot" />
+              <span>MEET YOUR OOLOO TEAM</span>
             </div>
 
-            <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', fontWeight: 800, color: '#121417', lineHeight: 1.1, marginBottom: '20px' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 3.2rem)', fontWeight: 800, color: '#121417', lineHeight: 1.15, marginBottom: '20px' }}>
               Trained. Trusted. <span className="italic-serif">Tied-in-apron.</span>
             </h2>
 

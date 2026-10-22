@@ -1,45 +1,83 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import Ticker from '../components/Ticker';
-import Services from '../components/Services';
-import HowItWorks from '../components/HowItWorks';
-import PricingSection from '../components/PricingSection';
-import LucknowCoverage from '../components/LucknowCoverage';
-import TrustSection from '../components/TrustSection';
-import Subscriptions from '../components/Subscriptions';
-import Testimonials from '../components/Testimonials';
-import FaqSection from '../components/FaqSection';
+import AppHeader from '../components/AppHeader';
+import BottomNav from '../components/BottomNav';
+import HomePage from '../components/HomePage';
+import BookingsPage from '../components/BookingsPage';
+import BookingSheet from '../components/BookingSheet';
+import { ServiceItem } from '../types';
+
+// Footer component
 import Footer from '../components/Footer';
-import BookingModal from '../components/BookingModal';
+
+function HomeInner() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState<'home' | 'bookings'>('home');
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [serviceMode, setServiceMode] = useState<'instant' | 'schedule' | 'autorepeat'>('instant');
+
+  useEffect(() => {
+    if (tabParam === 'bookings') setActiveTab('bookings');
+    else setActiveTab('home');
+  }, [tabParam]);
+
+  const handleOpenBooking = (service?: ServiceItem, mode?: string) => {
+    if (service) setSelectedService(service);
+    if (mode) setServiceMode(mode as 'instant' | 'schedule' | 'autorepeat');
+    setBookingOpen(true);
+  };
+
+  return (
+    <div className="app-shell">
+      {/* Top Navbar with active tab tracking and direct individual page links */}
+      <Navbar />
+
+      {/* Mobile Header (hidden on desktop) */}
+      {activeTab === 'home' && (
+        <AppHeader />
+      )}
+
+      {/* Main Home Content */}
+      <div className="main-scroll">
+        {activeTab === 'home' && (
+          <HomePage
+            onBook={handleOpenBooking}
+            serviceMode={serviceMode}
+            setServiceMode={setServiceMode}
+          />
+        )}
+        {activeTab === 'bookings' && <BookingsPage />}
+      </div>
+
+      {/* Footer */}
+      {activeTab === 'home' && (
+        <Footer />
+      )}
+
+      {/* Mobile Bottom Nav (hidden on desktop) */}
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Mobile Booking Sheet */}
+      {bookingOpen && (
+        <BookingSheet
+          service={selectedService}
+          mode={serviceMode}
+          onClose={() => setBookingOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Sticky Header */}
-      <Navbar />
-
-      {/* Main Content Sections */}
-      <main style={{ flex: 1 }}>
-        <Hero />
-        <Ticker />
-        <Services />
-        <HowItWorks />
-        <PricingSection />
-        <LucknowCoverage />
-        <TrustSection />
-        <Subscriptions />
-        <Testimonials />
-        <FaqSection />
-      </main>
-
-      {/* Footer */}
-      <Footer />
-
-      {/* Centralized Interactive Booking Modal */}
-      <BookingModal />
-    </div>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--bg-light)' }} />}>
+      <HomeInner />
+    </Suspense>
   );
 }

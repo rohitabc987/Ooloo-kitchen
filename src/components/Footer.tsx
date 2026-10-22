@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { MapPin, Phone, Heart, Clock, Instagram, Facebook, Twitter } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { LUCKNOW_AREAS } from '../data/lucknowData';
@@ -69,11 +70,11 @@ export default function Footer() {
               Quick Navigation
             </h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem' }}>
-              <li><a href="#services" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Services & Prep</a></li>
-              <li><a href="#pricing" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Hourly Rates</a></li>
-              <li><a href="#subscriptions" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Monthly Pass</a></li>
-              <li><a href="#how-it-works" style={{ color: '#A0A5AB', textDecoration: 'none' }}>How It Works</a></li>
-              <li><a href="#faqs" style={{ color: '#A0A5AB', textDecoration: 'none' }}>FAQs</a></li>
+              <li><Link href="/" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Home</Link></li>
+              <li><Link href="/services" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Services & Rates</Link></li>
+              <li><Link href="/pricing" style={{ color: '#A0A5AB', textDecoration: 'none' }}>Pricing & Estimator</Link></li>
+              <li><Link href="/how-it-works" style={{ color: '#A0A5AB', textDecoration: 'none' }}>How It Works</Link></li>
+              <li><Link href="/faqs" style={{ color: '#A0A5AB', textDecoration: 'none' }}>FAQs & Menu</Link></li>
             </ul>
           </div>
 

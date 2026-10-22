@@ -1,184 +1,283 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapPin, Menu, X, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { MapPin, Menu, X, ChevronDown, Phone } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { LUCKNOW_AREAS } from '../data/lucknowData';
 import { LucknowArea } from '../types';
 
 export default function Navbar() {
-  const { selectedArea, setSelectedArea } = useApp();
+  const pathname = usePathname();
+  const { selectedArea, setSelectedArea, handleOpenBooking } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [areaDropdownOpen, setAreaDropdownOpen] = useState(false);
 
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'How It Works', href: '/how-it-works' },
+    { label: 'FAQs', href: '/faqs' },
+  ];
+
+  const isCurrentActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
+
   return (
-    <header style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      backgroundColor: 'rgba(250, 247, 242, 0.95)',
-      backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid var(--border-light)',
-      transition: 'all 0.3s ease',
-      width: '100%'
-    }}>
-      {/* Top Banner Alert */}
-      <div className="top-banner-alert" style={{
+    <header style={{ position: 'sticky', top: 0, zIndex: 300, width: '100%' }}>
+      {/* Top Banner Alert (Shown on all screen sizes) */}
+      <div className="desktop-navbar-alert" style={{
         background: 'linear-gradient(90deg, #121417 0%, #2D1810 100%)',
         color: '#FFFFFF',
-        padding: '6px 16px',
-        fontSize: '0.8rem',
+        padding: '7px 20px',
+        fontSize: '0.82rem',
         fontWeight: 600,
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '6px',
+        gap: '8px',
         flexWrap: 'wrap'
       }}>
-        <span>⚡ Cooks in <strong>30 mins</strong> across Lucknow.</span>
-        <a href="tel:+917318086600" style={{ color: '#FF9E7D', textDecoration: 'underline', marginLeft: '4px', whiteSpace: 'nowrap' }}>
+        <span>⚡ Cooks at your door in <strong>30 mins</strong> across Lucknow.</span>
+        <a href="tel:+917318086600" style={{ color: '#FF9E7D', textDecoration: 'underline', marginLeft: 4 }}>
           Call +91 73180 86600
         </a>
       </div>
 
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px' }}>
+      {/* ===================== DESKTOP NAVBAR ===================== */}
+      <nav className="desktop-navbar" style={{
+        background: 'rgba(250, 247, 242, 0.96)',
+        backdropFilter: 'blur(14px)',
+        borderBottom: '1px solid var(--border-light)',
+        boxShadow: '0 2px 20px rgba(0,0,0,0.04)'
+      }}>
+        <div className="desktop-navbar-inner">
+          {/* Logo */}
+          <Link href="/" className="desktop-navbar-logo">
+            ooloo<span>.</span>
+          </Link>
 
-        {/* Brand Logo Only */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
-          <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px', flexShrink: 0 }}>
-            <span style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 800,
-              fontSize: '1.8rem',
-              color: '#121417',
-              letterSpacing: '-0.04em'
-            }}>
-              ooloo<span style={{ color: 'var(--primary)', fontSize: '2.2rem', lineHeight: 0 }}>.</span>
-            </span>
-          </a>
-        </div>
-
-        {/* Navigation Links Desktop */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }} className="desktop-only">
-          <a href="#services" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>Services</a>
-          <a href="#pricing" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>Pricing</a>
-          <a href="#subscriptions" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>Subscriptions</a>
-          <a href="#how-it-works" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>How It Works</a>
-          <a href="#faqs" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>FAQs</a>
-        </nav>
-
-        {/* Right Header Area: Location Option Selector Button (Moved to Right Side) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          
-          <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => setAreaDropdownOpen(!areaDropdownOpen)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 16px',
-                borderRadius: '99px',
-                background: '#FFFFFF',
-                border: '1.5px solid var(--border-light)',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow-sm)',
-                whiteSpace: 'nowrap'
-              }}>
-              <MapPin size={15} color="var(--primary)" style={{ flexShrink: 0 }} />
-              <span className="area-pill-text">{selectedArea.name}</span>
-              <ChevronDown size={14} color="var(--text-muted)" style={{ flexShrink: 0 }} />
-            </button>
-
-            {areaDropdownOpen && (
-              <div style={{
-                position: 'absolute',
-                top: '110%',
-                right: 0,
-                width: '260px',
-                background: '#FFFFFF',
-                borderRadius: 'var(--radius-sm)',
-                boxShadow: 'var(--shadow-lg)',
-                border: '1px solid var(--border-light)',
-                padding: '8px',
-                zIndex: 200
-              }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', padding: '6px 8px', textTransform: 'uppercase' }}>
-                  Select Lucknow Neighborhood
-                </div>
-                <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
-                  {LUCKNOW_AREAS.map((area: LucknowArea) => (
-                    <button
-                      key={area.name}
-                      onClick={() => {
-                        setSelectedArea(area);
-                        setAreaDropdownOpen(false);
-                      }}
-                      style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '8px 10px',
-                        borderRadius: '6px',
-                        border: 'none',
-                        background: selectedArea.name === area.name ? 'var(--primary-light)' : 'transparent',
-                        color: selectedArea.name === area.name ? 'var(--primary)' : 'var(--text-primary)',
-                        fontWeight: selectedArea.name === area.name ? 700 : 500,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        fontSize: '0.85rem'
-                      }}>
-                      <span>{area.name}</span>
-                      <span style={{ fontSize: '0.7rem', color: 'var(--green)', background: 'var(--green-light)', padding: '2px 5px', borderRadius: '4px' }}>
-                        ~{area.avgEta}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Nav links */}
+          <div className="desktop-navbar-nav">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={isCurrentActive(link.href) ? 'desktop-navbar-nav-item-active' : ''}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Right actions */}
+          <div className="desktop-navbar-actions">
+            {/* Area Selector Pill */}
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setAreaDropdownOpen(!areaDropdownOpen)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '7px 14px',
+                  borderRadius: '99px',
+                  background: '#FFFFFF',
+                  border: '1.5px solid var(--border)',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                <MapPin size={14} color="var(--primary)" />
+                <span>{selectedArea.name}</span>
+                <ChevronDown size={13} color="var(--text-muted)" />
+              </button>
+
+              {areaDropdownOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '115%',
+                  right: 0,
+                  width: '260px',
+                  background: '#FFFFFF',
+                  borderRadius: 'var(--radius-sm)',
+                  boxShadow: 'var(--shadow-lg)',
+                  border: '1px solid var(--border-light)',
+                  padding: '8px',
+                  zIndex: 400
+                }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', padding: '6px 8px', textTransform: 'uppercase' }}>
+                    Select Lucknow Neighborhood
+                  </div>
+                  <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
+                    {LUCKNOW_AREAS.map((area: LucknowArea) => (
+                      <button
+                        key={area.name}
+                        onClick={() => {
+                          setSelectedArea(area);
+                          setAreaDropdownOpen(false);
+                        }}
+                        style={{
+                          width: '100%',
+                          textAlign: 'left',
+                          padding: '8px 10px',
+                          borderRadius: '6px',
+                          border: 'none',
+                          background: selectedArea.name === area.name ? 'var(--primary-light)' : 'transparent',
+                          color: selectedArea.name === area.name ? 'var(--primary)' : 'var(--text-primary)',
+                          fontWeight: selectedArea.name === area.name ? 700 : 500,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          fontSize: '0.83rem'
+                        }}
+                      >
+                        <span>{area.name}</span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--green)', background: 'var(--green-light)', padding: '2px 5px', borderRadius: '4px' }}>
+                          ~{area.avgEta}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <Link href="/?tab=bookings" className="desktop-navbar-tab-btn">
+              My Bookings
+            </Link>
+            <button
+              className="desktop-navbar-book-btn"
+              onClick={() => handleOpenBooking()}
+            >
+              Book a Cook →
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ===================== MOBILE TOP BAR (hidden on desktop) ===================== */}
+      <div className="mobile-header-bar" style={{
+        background: 'rgba(250, 247, 242, 0.98)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid var(--border-light)',
+        padding: '12px 18px',
+        display: 'none', // Will be controlled via media queries
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+          <span style={{
+            fontFamily: 'var(--font-heading)',
+            fontWeight: 800,
+            fontSize: '1.6rem',
+            color: '#121417',
+            letterSpacing: '-0.04em'
+          }}>
+            ooloo<span style={{ color: 'var(--primary)' }}>.</span>
+          </span>
+        </Link>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button
+            onClick={() => handleOpenBooking()}
+            style={{
+              background: 'var(--primary)',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '99px',
+              padding: '6px 14px',
+              fontSize: '0.78rem',
+              fontWeight: 800,
+              cursor: 'pointer'
+            }}
+          >
+            Book Cook
+          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{
               background: 'none',
               border: 'none',
+              color: '#121417',
               cursor: 'pointer',
-              color: 'var(--text-primary)',
               padding: '4px',
-              display: 'none'
+              display: 'flex',
+              alignItems: 'center'
             }}
-            className="mobile-toggle">
+            aria-label="Toggle menu"
+          >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div style={{
-          backgroundColor: '#FFFFFF',
+          background: '#FFFFFF',
           borderBottom: '1px solid var(--border-light)',
           padding: '16px 20px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '14px'
+          gap: '12px',
+          boxShadow: 'var(--shadow-md)'
         }}>
-          <a href="#services" onClick={() => setMobileMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600 }}>Services</a>
-          <a href="#pricing" onClick={() => setMobileMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600 }}>Pricing</a>
-          <a href="#subscriptions" onClick={() => setMobileMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600 }}>Subscriptions</a>
-          <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600 }}>How It Works</a>
-          <a href="#faqs" onClick={() => setMobileMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600 }}>FAQs</a>
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                textDecoration: 'none',
+                color: isCurrentActive(link.href) ? 'var(--primary)' : 'var(--text-primary)',
+                fontWeight: isCurrentActive(link.href) ? 800 : 600,
+                fontSize: '1rem',
+                padding: '6px 0',
+                borderBottom: '1px solid var(--border-light)'
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+            <Link
+              href="/?tab=bookings"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                padding: '10px',
+                borderRadius: '8px',
+                background: 'var(--bg-light)',
+                textDecoration: 'none',
+                color: 'var(--text-primary)',
+                fontWeight: 700,
+                fontSize: '0.85rem'
+              }}
+            >
+              My Bookings
+            </Link>
+          </div>
         </div>
       )}
+
+      <style jsx>{`
+        @media (max-width: 767px) {
+          .mobile-header-bar {
+            display: flex !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }

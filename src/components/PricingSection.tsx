@@ -27,8 +27,8 @@ export default function PricingSection() {
   };
 
   return (
-    <section id="pricing" style={{ padding: '50px 0 70px 0', backgroundColor: '#FFFFFF', width: '100%' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
+    <section id="pricing" style={{ padding: '36px 0 60px 0', backgroundColor: 'transparent', width: '100%' }}>
+      <div className="container">
 
         {/* Unified Full-Width Dark Pricing & Estimator Card */}
         <div style={{
@@ -62,14 +62,14 @@ export default function PricingSection() {
             borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             paddingBottom: '32px'
           }}>
-            <div style={{ maxWidth: '620px' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.08em', color: '#A0A5AB', textTransform: 'uppercase', marginBottom: '10px' }}>
+            <div style={{ maxWidth: '680px' }}>
+              <div style={{ fontSize: 'clamp(0.82rem, 1vw, 0.95rem)', fontWeight: 800, letterSpacing: '0.08em', color: '#A0A5AB', textTransform: 'uppercase', marginBottom: '12px' }}>
                 FLEXIBLE HOURLY BOOKING & ESTIMATOR
               </div>
-              <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', color: 'white', fontWeight: 800, lineHeight: 1.1, marginBottom: '14px' }}>
+              <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3.8rem)', color: 'white', fontWeight: 850, lineHeight: 1.12, marginBottom: '16px' }}>
                 Pay only for <span className="italic-serif" style={{ color: '#FF7B54' }}>what you cook.</span>
-              </h2>
-              <p style={{ color: '#A0A5AB', fontSize: '1.02rem', lineHeight: 1.6 }}>
+              </h1>
+              <p style={{ color: '#D0D4D8', fontSize: 'clamp(1rem, 1.4vw, 1.25rem)', lineHeight: 1.65 }}>
                 Transparent pricing with no hidden charges. Select a quick plan or customize your meal for an instant quote in {selectedArea.name}.
               </p>
             </div>
@@ -333,6 +333,132 @@ export default function PricingSection() {
 
           </div>
 
+        </div>
+
+        {/* ===================== PASS & SUBSCRIPTION SAVINGS CARDS ===================== */}
+        <div style={{ marginTop: '50px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 32px auto' }}>
+            <div className="page-badge" style={{ justifyContent: 'center' }}>
+              <span className="page-badge-dot" />
+              <span>SUBSCRIPTIONS & PASSES</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
+              Save more with <span className="italic-serif" style={{ color: 'var(--primary)' }}>flexible meal passes.</span>
+            </h2>
+          </div>
+
+          <div className="grid-2">
+            {/* ooloo PASS Card */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: '24px',
+              padding: '36px',
+              border: '2px solid var(--primary)',
+              boxShadow: '0 8px 30px rgba(230,74,25,0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-14px',
+                right: '28px',
+                background: 'var(--primary)',
+                color: '#FFF',
+                fontSize: '0.75rem',
+                fontWeight: 900,
+                padding: '4px 14px',
+                borderRadius: '99px',
+                letterSpacing: '0.05em'
+              }}>
+                MOST POPULAR PASS
+              </div>
+
+              <div>
+                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎟️</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  OOLOO KITCHEN PASS
+                </div>
+                <h3 style={{ fontSize: '1.6rem', fontWeight: 850, color: '#121417', margin: '6px 0 10px 0' }}>
+                  Daily Meal Service Pass
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '14px' }}>
+                  <span style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--primary)' }}>₹297</span>
+                  <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>₹750</span>
+                  <span style={{ background: 'var(--green-light)', color: 'var(--green)', fontSize: '0.78rem', fontWeight: 800, padding: '3px 8px', borderRadius: '99px' }}>
+                    SAVE 60%
+                  </span>
+                </div>
+                <p style={{ fontSize: '1rem', color: '#4A4F55', lineHeight: 1.6, marginBottom: '20px' }}>
+                  Get 3 cook visits with 30 days validity. Valid for Gomti Nagar, Hazratganj, and all active Lucknow areas.
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleOpenBooking()}
+                style={{
+                  width: '100%',
+                  padding: '14px 24px',
+                  borderRadius: '14px',
+                  background: 'var(--primary)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  fontSize: '1.05rem',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                Book Pass Now →
+              </button>
+            </div>
+
+            {/* Monthly Subscription Card */}
+            <div style={{
+              background: '#FFFFFF',
+              borderRadius: '24px',
+              padding: '36px',
+              border: '1.5px solid var(--border-light)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
+            }}>
+              <div>
+                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📅</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0284C7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  MONTHLY DEDICATED CHEF
+                </div>
+                <h3 style={{ fontSize: '1.6rem', fontWeight: 850, color: '#121417', margin: '6px 0 10px 0' }}>
+                  Dedicated Daily Cook Plan
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '14px' }}>
+                  <span style={{ fontSize: '2.4rem', fontWeight: 900, color: '#121417' }}>₹2,799</span>
+                  <span style={{ fontSize: '1.05rem', color: 'var(--text-muted)' }}>/ month</span>
+                </div>
+                <p style={{ fontSize: '1rem', color: '#4A4F55', lineHeight: 1.6, marginBottom: '20px' }}>
+                  Dedicated verified cook visits your home daily for lunch or dinner. Free replacement cook guarantee if your cook is ever sick.
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleOpenBooking()}
+                style={{
+                  width: '100%',
+                  padding: '14px 24px',
+                  borderRadius: '14px',
+                  background: 'transparent',
+                  color: '#121417',
+                  border: '2px solid var(--border)',
+                  fontSize: '1.05rem',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                Request Monthly Cook Plan →
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>

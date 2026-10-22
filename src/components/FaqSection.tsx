@@ -1,124 +1,52 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown, Utensils } from 'lucide-react';
+import { ChevronDown, Phone, ArrowRight, HelpCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { FAQS, POPULAR_DISHES } from '../data/lucknowData';
-import { FaqItem, DishCategory } from '../types';
+import { FAQS } from '../data/lucknowData';
+import { FaqItem } from '../types';
 
 export default function FaqSection() {
   const { handleOpenBooking } = useApp();
   const [openIdx, setOpenIdx] = useState<number | null>(0);
-  const [activeCategory, setActiveCategory] = useState<string>(POPULAR_DISHES[0].category);
 
   return (
-    <section id="faqs" style={{ padding: '50px 0 70px 0', backgroundColor: '#FFFFFF' }}>
+    <section id="faqs" style={{ padding: '40px 0 70px 0', backgroundColor: 'transparent' }}>
       <div className="container">
 
-        {/* Popular Dishes Showcase */}
-        <div style={{
-          background: 'var(--bg-main)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '40px 36px',
-          border: '1px solid var(--border-light)',
-          marginBottom: '50px'
-        }}>
-          <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 24px auto' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.08em', color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '8px' }}>
-              POPULAR MENU DISHES
-            </div>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#121417' }}>
-              What our cooks <span className="italic-serif">love to make.</span>
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '6px' }}>
-              Authentic North Indian, Awadhi specialties & healthy daily meals prepared in your kitchen.
-            </p>
-          </div>
-
-          {/* Category Tabs */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', marginBottom: '32px' }}>
-            {POPULAR_DISHES.map((cat: DishCategory) => (
-              <button
-                key={cat.category}
-                onClick={() => setActiveCategory(cat.category)}
-                style={{
-                  padding: '10px 20px',
-                  borderRadius: '99px',
-                  border: activeCategory === cat.category ? '2px solid var(--primary)' : '1px solid var(--border-light)',
-                  background: activeCategory === cat.category ? 'var(--primary)' : '#FFFFFF',
-                  color: activeCategory === cat.category ? '#FFFFFF' : 'var(--text-primary)',
-                  fontWeight: 700,
-                  fontSize: '0.88rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}>
-                {cat.category}
-              </button>
-            ))}
-          </div>
-
-          {/* Dishes Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: '16px'
-          }}>
-            {POPULAR_DISHES.find((c: DishCategory) => c.category === activeCategory)?.items.map((dish: string, idx: number) => (
-              <div 
-                key={idx}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '16px 20px',
-                  border: '1px solid var(--border-light)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  boxShadow: 'var(--shadow-sm)'
-                }}>
-                <Utensils size={18} color="var(--primary)" />
-                <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-primary)' }}>{dish}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* FAQs Header */}
-        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 28px auto' }}>
-          <div style={{
-            fontSize: '0.8rem',
-            fontWeight: 800,
-            letterSpacing: '0.08em',
-            color: 'var(--text-muted)',
-            textTransform: 'uppercase',
-            marginBottom: '10px'
-          }}>
-            FREQUENTLY ASKED QUESTIONS
+        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 48px auto' }}>
+          <div className="page-badge" style={{ justifyContent: 'center' }}>
+            <span className="page-badge-dot" />
+            <span>FREQUENTLY ASKED QUESTIONS</span>
           </div>
-          <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 800, color: '#121417' }}>
-            Got questions? <span className="italic-serif">We have answers.</span>
-          </h2>
+          <h1 className="page-title" style={{ textAlign: 'center' }}>
+            Got questions? <span className="italic-serif" style={{ color: 'var(--primary)' }}>We have answers.</span>
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center' }}>
+            Everything you need to know about grocery ingredients, cook timing, background checks, and hygiene standards.
+          </p>
         </div>
 
-        {/* Accordion list */}
-        <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        {/* Accordion List — Completely Borderless & No Background Box */}
+        <div style={{ maxWidth: '920px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
           {FAQS.map((faq: FaqItem, idx: number) => {
             const isOpen = openIdx === idx;
             return (
               <div 
                 key={idx}
                 style={{
-                  border: '1px solid var(--border-light)',
-                  borderRadius: 'var(--radius-md)',
-                  background: isOpen ? 'var(--primary-light)' : '#FFFFFF',
-                  overflow: 'hidden',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid var(--border)',
+                  padding: '10px 0',
                   transition: 'all 0.2s ease'
                 }}>
                 <button
                   onClick={() => setOpenIdx(isOpen ? null : idx)}
                   style={{
                     width: '100%',
-                    padding: '24px 28px',
+                    padding: '20px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -126,31 +54,42 @@ export default function FaqSection() {
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    fontSize: '1.1rem',
-                    fontWeight: 700,
-                    color: '#121417'
+                    fontSize: 'clamp(1.2rem, 1.5vw, 1.45rem)',
+                    fontWeight: 800,
+                    color: isOpen ? 'var(--primary)' : '#121417',
+                    gap: '20px',
+                    transition: 'color 0.2s ease'
                   }}>
                   <span>{faq.q}</span>
-                  <ChevronDown 
-                    size={20} 
-                    color="var(--primary)"
-                    style={{ 
-                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.25s ease',
-                      flexShrink: 0
-                    }} 
-                  />
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: isOpen ? 'var(--primary-light)' : 'rgba(0,0,0,0.04)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <ChevronDown 
+                      size={22} 
+                      color={isOpen ? 'var(--primary)' : '#121417'}
+                      style={{ 
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.25s ease'
+                      }} 
+                    />
+                  </div>
                 </button>
 
                 {isOpen && (
                   <div style={{
-                    padding: '0 28px 24px 28px',
-                    fontSize: '0.98rem',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.6,
-                    borderTop: '1px solid rgba(230, 74, 25, 0.1)'
+                    padding: '0 0 24px 0',
+                    fontSize: 'clamp(1.05rem, 1.2vw, 1.18rem)',
+                    color: '#4A4F55',
+                    lineHeight: 1.7
                   }}>
-                    <div style={{ paddingTop: '16px' }}>{faq.a}</div>
+                    {faq.a}
                   </div>
                 )}
               </div>
@@ -158,26 +97,60 @@ export default function FaqSection() {
           })}
         </div>
 
-        {/* Support CTA */}
+        {/* Support Help Desk */}
         <div style={{
-          marginTop: '60px',
+          marginTop: '64px',
           textAlign: 'center',
-          background: 'var(--bg-main)',
-          padding: '36px',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-light)'
+          background: 'linear-gradient(135deg, #121417 0%, #2D1810 100%)',
+          padding: '48px 36px',
+          borderRadius: '24px',
+          color: '#FFFFFF',
+          maxWidth: '920px',
+          margin: '64px auto 0 auto'
         }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#121417', marginBottom: '8px' }}>
-            Have a custom dish or event request?
-          </h3>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '20px' }}>
-            Our Lucknow support desk is live 7 AM to 10 PM daily.
+          <h2 style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)', fontWeight: 850, color: '#FFFFFF', marginBottom: '12px' }}>
+            Still have a question?
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: '1.08rem', marginBottom: '26px', maxWidth: '640px', margin: '0 auto 26px auto' }}>
+            Our Lucknow kitchen helpline is open daily from 7:00 AM to 10:00 PM. Call us directly or book in seconds.
           </p>
-          <button 
-            onClick={() => handleOpenBooking()}
-            className="btn btn-whatsapp">
-            <span>Talk to Lucknow Support Desk</span>
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <a 
+              href="tel:+917318086600"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '14px 30px',
+                borderRadius: '99px',
+                background: 'var(--primary)',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                fontWeight: 800,
+                fontSize: '1.02rem',
+                boxShadow: '0 4px 16px rgba(230,74,25,0.4)'
+              }}>
+              <Phone size={18} />
+              <span>Call +91 73180 86600</span>
+            </a>
+            <button 
+              onClick={() => handleOpenBooking()}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '14px 30px',
+                borderRadius: '99px',
+                background: 'rgba(255,255,255,0.15)',
+                color: '#FFFFFF',
+                border: '1.5px solid rgba(255,255,255,0.25)',
+                fontWeight: 800,
+                fontSize: '1.02rem',
+                cursor: 'pointer'
+              }}>
+              <span>Book Online →</span>
+            </button>
+          </div>
         </div>
 
       </div>
