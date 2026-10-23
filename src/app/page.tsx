@@ -7,7 +7,7 @@ import AppHeader from '../components/AppHeader';
 import BottomNav from '../components/BottomNav';
 import HomePage from '../components/HomePage';
 import BookingsPage from '../components/BookingsPage';
-import BookingSheet from '../components/BookingSheet';
+import { useApp } from '../context/AppContext';
 import { ServiceItem } from '../types';
 
 // Footer component
@@ -17,19 +17,18 @@ function HomeInner() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState<'home' | 'bookings'>('home');
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [serviceMode, setServiceMode] = useState<'instant' | 'schedule' | 'autorepeat'>('instant');
+  const { handleOpenBooking } = useApp();
 
   useEffect(() => {
     if (tabParam === 'bookings') setActiveTab('bookings');
     else setActiveTab('home');
   }, [tabParam]);
 
-  const handleOpenBooking = (service?: ServiceItem, mode?: string) => {
-    if (service) setSelectedService(service);
+  const onOpenBooking = (service?: ServiceItem, mode?: string) => {
+    const finalMode = mode || serviceMode;
     if (mode) setServiceMode(mode as 'instant' | 'schedule' | 'autorepeat');
-    setBookingOpen(true);
+    handleOpenBooking(service, finalMode);
   };
 
   return (
@@ -46,7 +45,7 @@ function HomeInner() {
       <div className="main-scroll">
         {activeTab === 'home' && (
           <HomePage
-            onBook={handleOpenBooking}
+            onBook={onOpenBooking}
             serviceMode={serviceMode}
             setServiceMode={setServiceMode}
           />
@@ -61,15 +60,6 @@ function HomeInner() {
 
       {/* Mobile Bottom Nav (hidden on desktop) */}
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      {/* Mobile Booking Sheet */}
-      {bookingOpen && (
-        <BookingSheet
-          service={selectedService}
-          mode={serviceMode}
-          onClose={() => setBookingOpen(false)}
-        />
-      )}
     </div>
   );
 }

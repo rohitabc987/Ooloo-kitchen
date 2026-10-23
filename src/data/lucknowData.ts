@@ -55,6 +55,26 @@ export const SERVICES: ServiceItem[] = [
     duration: '3 Hours Min',
     idealFor: 'House parties, Kitty parties & Festive get-togethers',
     popular: false
+  },
+  {
+    id: 'hourly',
+    title: 'Hourly Service',
+    subtitle: 'Pay per hour, flexible and on-demand.',
+    desc: 'Book a cook for any duration starting 1 hour. Perfect for partial meal prep or helping out when needed.',
+    icon: 'Clock',
+    duration: 'Flexible',
+    idealFor: 'Any cooking need',
+    popular: false
+  },
+  {
+    id: 'subscription',
+    title: 'Daily Cook Subscription',
+    subtitle: 'Save big with monthly subscription plan.',
+    desc: 'Dedicated cook visits daily. Best value for working professionals and families who need daily meal support.',
+    icon: 'Calendar',
+    duration: 'Daily visits',
+    idealFor: 'Working professionals & families',
+    popular: false
   }
 ];
 

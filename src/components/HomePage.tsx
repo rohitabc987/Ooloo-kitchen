@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { ServiceItem } from '../types';
 import { FAQS } from '../data/lucknowData';
+import HowItWorks from './HowItWorks';
 
 // All kitchen services as Pronto-style card data
 export const KITCHEN_SERVICES = [
@@ -33,25 +34,102 @@ interface HomePageProps {
 }
 
 export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePageProps) {
-  const [cart, setCart] = useState<string[]>([]);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  const toggleCart = (id: string) => {
-    setCart(prev =>
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
-    );
-  };
+  const [showAllReviews, setShowAllReviews] = useState(false);
 
   const handleCardClick = (svcId: string) => {
     const found = SERVICE_ITEMS.find(s => s.id === svcId);
     onBook(found || SERVICE_ITEMS[0], serviceMode);
   };
 
-  const TESTIMONIALS = [
-    { quote: "Cook arrived in 22 mins in Gomti Nagar! Made delicious Kadhai Paneer. Pure magic!", author: "Anjali T.", location: "Gomti Nagar", rating: 5, tag: "Full Meal" },
-    { quote: "The express cook service saved our dinner party. 2 cooks, 18 guests, all loved the food!", author: "Sandeep K.", location: "Sushant Golf City", rating: 5, tag: "Party Cook" },
-    { quote: "Best subscription in Lucknow. Fresh meals every day, fixed cook, zero worries!", author: "Ritika G.", location: "Hazratganj", rating: 5, tag: "Daily Subscription" },
-    { quote: "Kitchen prep service is a lifesaver! Onions, garlic, masala — all ready before I return home.", author: "Meena S.", location: "Indira Nagar", rating: 5, tag: "Kitchen Prep" },
+  const REVIEWS_ROW_1 = [
+    {
+      author: "Neha",
+      location: "Gomti Nagar",
+      tag: "Full Meal",
+      quote: "The service was simple and effective. It met my expectations without any hassle. Cook arrived in 22 mins, food was hot and delicious. Good overall experience.",
+      rating: 5,
+    },
+    {
+      author: "Pradnyesh",
+      location: "Sushant Golf City",
+      tag: "Kitchen Prep",
+      quote: "Great work, our kitchen was left spotless and fresh. The Dal Tadka & Kadhai Paneer were top notch. I appreciated the attention to detail. Will recommend it! 👍",
+      rating: 5,
+    },
+    {
+      author: "Ridhi Saluja",
+      location: "Hazratganj",
+      tag: "Daily Pass",
+      quote: "The services have definitely improved home life from the first time. Preferences are kept as top priority. Thank you for making our lives easier with ooloo!",
+      rating: 5,
+    },
+    {
+      author: "Kirti",
+      location: "Aliganj",
+      tag: "Express Cook",
+      quote: "I'd say it was great value for money. The sudden urgency was handled well, without compromising quality. Really satisfied with the experience.",
+      rating: 5,
+    },
+    {
+      author: "Alok Verma",
+      location: "Indira Nagar",
+      tag: "Full Meal",
+      quote: "Seamless experience from booking to completion. The cook was courteous, punctual, and did a fantastic job with our daily dinner.",
+      rating: 5,
+    },
+    {
+      author: "Sameer",
+      location: "Mahanagar",
+      tag: "Dinner Cook",
+      quote: "Really liked your service, it was smooth, efficient, and just what I needed. Authentic taste and spotless kitchen counter! ⭐",
+      rating: 5,
+    },
+  ];
+
+  const REVIEWS_ROW_2 = [
+    {
+      author: "Ritika",
+      location: "Gomti Nagar Ext.",
+      tag: "Family Dinner",
+      quote: "Seamless experience from booking to completion. The staff was courteous, punctual, and did a fantastic job with our family dinner.",
+      rating: 5,
+    },
+    {
+      author: "Karishma",
+      location: "Ashiyana",
+      tag: "Full Meal",
+      quote: "Absolutely excellent service! The team was prompt and professional throughout. Loved the fresh Phulkas and Paneer Butter Masala. Would love to use it again.",
+      rating: 5,
+    },
+    {
+      author: "Rabia",
+      location: "Vrindavan Yojna",
+      tag: "Hygiene Kit",
+      quote: "Really impressive compared to other platforms. The service was reliable and fast — very pleased with our cook's hygiene and apron kit!",
+      rating: 5,
+    },
+    {
+      author: "Amit Trivedi",
+      location: "Gomti Nagar",
+      tag: "Party Cook",
+      quote: "Booked in 30 mins for emergency guests. He prepared Awadhi Dum Biryani in under an hour! Lifesaver service in Lucknow.",
+      rating: 5,
+    },
+    {
+      author: "Pooja Mishra",
+      location: "Jankipuram",
+      tag: "Verified Cook",
+      quote: "Zero cancellation hassle. Cook came in proper apron & chef cap with full verification. Very clean cooking practices.",
+      rating: 5,
+    },
+    {
+      author: "Rajesh & Vandana",
+      location: "Hazratganj",
+      tag: "Daily Pass",
+      quote: "Our family loves the daily pass. Great value, taste customized to our exact low-oil and mild spice preference.",
+      rating: 5,
+    },
   ];
 
   return (
@@ -164,16 +242,17 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
               className="service-card-image"
             />
 
-            {/* Add to Cart Button */}
+            {/* Add / Book Button */}
             <button
-              className={`service-card-add-btn ${cart.includes(svc.id) ? 'added' : ''}`}
+              className="service-card-add-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                toggleCart(svc.id);
+                handleCardClick(svc.id);
               }}
-              aria-label={cart.includes(svc.id) ? 'Remove from cart' : 'Add to cart'}
+              aria-label={`Book ${svc.name}`}
+              title={`Book ${svc.name}`}
             >
-              {cart.includes(svc.id) ? '✓' : '+'}
+              +
             </button>
 
             <div className="service-card-info">
@@ -258,104 +337,124 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
 
       <div className="divider" />
 
-      {/* ===== TESTIMONIALS ===== */}
-      <div className="section-header">
+      {/* ===== CUSTOMER REVIEWS (2 AUTO-SCROLLING HORIZONTAL ROWS) ===== */}
+      <div className="section-header" style={{ padding: '24px 18px 10px' }}>
         <div>
           <div className="section-title">What our customers say</div>
+          <div className="section-subtitle">Real experiences from verified Lucknow households</div>
         </div>
       </div>
 
-      <div className="testimonials-scroll">
-        {TESTIMONIALS.map((t, idx) => (
-          <div key={idx} className="testimonial-card">
-            <div className="testimonial-stars">{'★'.repeat(t.rating)}</div>
-            <div className="testimonial-quote">"{t.quote}"</div>
-            <div className="testimonial-author">{t.author}</div>
-            <div className="testimonial-location">📍 {t.location} • {t.tag}</div>
-          </div>
-        ))}
+      <div className="reviews-marquee-wrapper">
+        {/* Row 1 Track (Seamless infinite loop) */}
+        <div className="reviews-marquee-track track-forward">
+          {[...REVIEWS_ROW_1, ...REVIEWS_ROW_1].map((t, idx) => (
+            <div key={`r1-${idx}`} className="marquee-review-card">
+              <div>
+                <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
+                <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
+              </div>
+              <div className="marquee-review-footer">
+                <span className="marquee-review-author">{t.author}</span>
+                <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Row 2 Track (Seamless infinite loop) */}
+        <div className="reviews-marquee-track track-reverse">
+          {[...REVIEWS_ROW_2, ...REVIEWS_ROW_2].map((t, idx) => (
+            <div key={`r2-${idx}`} className="marquee-review-card">
+              <div>
+                <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
+                <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
+              </div>
+              <div className="marquee-review-footer">
+                <span className="marquee-review-author">{t.author}</span>
+                <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* ===== MAIN FAQS (Centered, Borderless, No Background Box) ===== */}
-      <div style={{ textAlign: 'center', maxWidth: '850px', margin: '44px auto 20px auto' }}>
+      <div className="divider" style={{ margin: '0' }} />
 
-        <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15, margin: '8px 0' }}>
-          Frequently Asked Questions
-        </h2>
-        <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center' }}>
-          Quick answers about grocery supplies, timing, background checks, and cook hygiene.
-        </p>
-      </div>
+      {/* ===== HOW IT WORKS: THE OOLOO EXPERIENCE (BEFORE FAQ) ===== */}
+      <HowItWorks onBook={() => onBook(SERVICE_ITEMS[0], serviceMode)} />
 
-      <div style={{ maxWidth: '850px', margin: '0 auto 40px auto', display: 'flex', flexDirection: 'column' }}>
-        {FAQS.map((faq, idx) => {
-          const isOpen = openFaq === idx;
-          return (
-            <div
-              key={idx}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                borderBottom: '1px solid var(--border-light)',
-                padding: '4px 0',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              <button
-                onClick={() => setOpenFaq(isOpen ? null : idx)}
+      <div className="divider" style={{ margin: '0 0 16px' }} />
+
+      {/* ===== MAIN FAQS (Centered, Borderless, Well-Padded for Mobile) ===== */}
+      <div style={{ maxWidth: '850px', margin: '0 auto', padding: '28px 18px 50px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', fontWeight: 850, color: '#121417', lineHeight: 1.2, margin: '6px 0 8px 0' }}>
+            Frequently Asked Questions
+          </h2>
+          <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center', maxWidth: '520px', fontSize: '0.92rem' }}>
+            Quick answers about grocery supplies, timing, background checks, and cook hygiene.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {FAQS.map((faq, idx) => {
+            const isOpen = openFaq === idx;
+            return (
+              <div
+                key={idx}
                 style={{
-                  width: '100%',
-                  padding: '18px 0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  textAlign: 'left',
-                  background: 'none',
+                  background: 'transparent',
                   border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 'clamp(1.05rem, 1.3vw, 1.25rem)',
-                  fontWeight: 800,
-                  color: isOpen ? 'var(--primary)' : '#121417',
-                  gap: '16px'
+                  borderBottom: '1px solid var(--border-light)',
+                  padding: '4px 0',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <span>{faq.q}</span>
-                <ChevronDown
-                  size={20}
-                  color={isOpen ? 'var(--primary)' : 'var(--text-muted)'}
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : idx)}
                   style={{
-                    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.25s ease',
-                    flexShrink: 0
+                    width: '100%',
+                    padding: '16px 0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    textAlign: 'left',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
+                    fontWeight: 800,
+                    color: isOpen ? 'var(--primary)' : '#121417',
+                    gap: '14px'
                   }}
-                />
-              </button>
+                >
+                  <span>{faq.q}</span>
+                  <ChevronDown
+                    size={20}
+                    color={isOpen ? 'var(--primary)' : 'var(--text-muted)'}
+                    style={{
+                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.25s ease',
+                      flexShrink: 0
+                    }}
+                  />
+                </button>
 
-              {isOpen && (
-                <div style={{
-                  padding: '0 0 18px 0',
-                  fontSize: 'clamp(0.98rem, 1.1vw, 1.1rem)',
-                  color: '#4A4F55',
-                  lineHeight: 1.65
-                }}>
-                  {faq.a}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ===== DISCLAIMER ===== */}
-      <div style={{
-        margin: '0 0 24px',
-        padding: '16px 0',
-        borderTop: '1px solid var(--border-light)',
-        fontSize: '0.88rem',
-        color: '#62676D',
-        lineHeight: 1.6,
-      }}>
-        ⚠️ <strong style={{ color: '#1A1A1A' }}>Service Scope:</strong> Our cooks do <strong style={{ color: '#E53935' }}>not</strong> provide kitchen cleaning, utensil washing, or table serving. They focus 100% on chopping, cooking, and leaving your kitchen counter clean.
+                {isOpen && (
+                  <div style={{
+                    padding: '0 0 16px 0',
+                    fontSize: '0.94rem',
+                    color: '#4A4F55',
+                    lineHeight: 1.65
+                  }}>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

@@ -27,11 +27,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [bookingData, setBookingData] = useState<BookingFormData>(initialBookingData);
 
-  const handleOpenBooking = (service: ServiceItem | null = null) => {
-    if (service) {
-      setSelectedService(service);
-      setBookingData(prev => ({ ...prev, service, step: 1 }));
-    }
+  const handleOpenBooking = (service: ServiceItem | null = null, mode: string = 'instant') => {
+    const targetService = service || SERVICES[1]; // default to Full Meal Cooking
+    setSelectedService(targetService);
+    setBookingData(prev => ({
+      ...prev,
+      service: targetService,
+      timeSlot: mode === 'instant' ? '⚡ Express (Within 30 Mins)' : prev.timeSlot || '🍱 Lunch (12:00 PM - 2:00 PM)',
+      step: 1,
+      isSubmitted: false
+    }));
     setIsBookingModalOpen(true);
   };
 

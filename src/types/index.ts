@@ -94,7 +94,7 @@ export interface AppContextType {
   setIsBookingModalOpen: (open: boolean) => void;
   selectedService: ServiceItem | null;
   setSelectedService: (service: ServiceItem | null) => void;
-  handleOpenBooking: (service?: ServiceItem | null) => void;
+  handleOpenBooking: (service?: ServiceItem | null, mode?: string) => void;
   handleCloseBooking: () => void;
   bookingData: BookingFormData;
   updateBookingData: (data: Partial<BookingFormData>) => void;

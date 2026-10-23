@@ -29,26 +29,6 @@ export default function Navbar() {
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 300, width: '100%' }}>
-      {/* Top Banner Alert (Shown on all screen sizes) */}
-      <div className="desktop-navbar-alert" style={{
-        background: 'linear-gradient(90deg, #121417 0%, #2D1810 100%)',
-        color: '#FFFFFF',
-        padding: '7px 20px',
-        fontSize: '0.82rem',
-        fontWeight: 600,
-        textAlign: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '8px',
-        flexWrap: 'wrap'
-      }}>
-        <span>⚡ Cooks at your door in <strong>30 mins</strong> across Lucknow.</span>
-        <a href="tel:+917318086600" style={{ color: '#FF9E7D', textDecoration: 'underline', marginLeft: 4 }}>
-          Call +91 73180 86600
-        </a>
-      </div>
-
       {/* ===================== DESKTOP NAVBAR ===================== */}
       <nav className="desktop-navbar" style={{
         background: 'rgba(250, 247, 242, 0.96)',

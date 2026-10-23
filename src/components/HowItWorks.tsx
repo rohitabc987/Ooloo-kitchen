@@ -128,7 +128,7 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
         <div style={{
           background: 'linear-gradient(135deg, #121417 0%, #2D1810 100%)',
           borderRadius: '24px',
-          padding: '36px 40px',
+          padding: 'clamp(24px, 4vw, 36px) clamp(16px, 4vw, 40px)',
           color: '#FFFFFF',
           marginBottom: '40px'
         }}>

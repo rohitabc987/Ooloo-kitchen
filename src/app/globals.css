@@ -186,7 +186,7 @@ body {
 .page-header-wrapper {
   padding: 48px 0 36px 0;
   display: flex;
-  justifyContent: space-between;
+  justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 24px;
@@ -935,20 +935,25 @@ body {
 
 .pass-cta-btn {
   width: 100%;
-  background: #FFFFFF;
-  color: var(--pronto-green-dark);
+  background: var(--primary);
+  color: #FFFFFF;
   border: none;
-  border-radius: var(--radius-md);
-  padding: 14px;
+  border-radius: 99px;
+  padding: 14px 20px;
   font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
   margin-top: 14px;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   font-family: var(--font);
+  box-shadow: 0 4px 14px rgba(230, 74, 25, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 .pass-cta-btn:hover {
-  background: var(--pronto-green-light);
+  background: #D84315;
   transform: translateY(-1px);
 }
 
@@ -962,6 +967,8 @@ body {
 }
 .pass-mobile-only {
   display: block;
+  padding: 16px 18px 24px;
+  margin: 10px 0 16px;
 }
 
 /* Desktop: Pronto-style layout */
@@ -1391,9 +1398,9 @@ body {
 /* ============ TESTIMONIALS ============ */
 .testimonials-scroll {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   overflow-x: auto;
-  padding: 0 14px 12px;
+  padding: 0 18px 12px;
   scrollbar-width: none;
 }
 .testimonials-scroll::-webkit-scrollbar { display: none; }
@@ -1401,7 +1408,7 @@ body {
 .testimonial-card {
   background: #FFFFFF;
   border-radius: var(--radius-lg);
-  padding: 24px 26px;
+  padding: 22px 24px;
   min-width: 280px;
   flex-shrink: 0;
   border: 1.5px solid var(--border-light);
@@ -1409,28 +1416,55 @@ body {
 }
 .testimonial-stars {
   color: #FFA114;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .testimonial-quote {
-  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  font-size: 0.98rem;
   color: #2D3136;
   line-height: 1.6;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   font-style: italic;
   font-weight: 550;
+  white-space: normal !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .testimonial-author {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: #121417;
 }
 .testimonial-location {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   font-weight: 600;
   margin-top: 3px;
+}
+
+@media (max-width: 767px) {
+  .testimonials-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 18px 16px;
+    overflow-x: visible;
+  }
+  .testimonial-card {
+    min-width: 100%;
+    width: 100%;
+    padding: 18px 20px;
+    box-sizing: border-box;
+    border-radius: 16px;
+  }
+  .testimonial-quote {
+    font-size: 0.94rem;
+    line-height: 1.55;
+    white-space: normal !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 }
 
 /* ============ BOOKINGS PAGE ============ */
@@ -1639,21 +1673,26 @@ body {
 .booking-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(18, 20, 23, 0.72);
+  backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  padding: 0;
 }
 
 .booking-sheet {
   background: #FFFFFF;
   border-radius: 24px 24px 0 0;
   width: 100%;
-  max-width: 480px;
+  max-width: 100%;
   max-height: 92vh;
   overflow-y: auto;
-  padding-bottom: 24px;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.28);
+  position: relative;
+  display: flex;
+  flex-direction: column;
   animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
@@ -2249,12 +2288,14 @@ body {
   /* Booking sheet: center modal on desktop, not bottom sheet */
   .booking-overlay {
     align-items: center;
+    padding: 24px;
   }
   .booking-sheet {
-    border-radius: var(--radius-xl);
+    border-radius: 24px;
     max-width: 540px;
     max-height: 88vh;
     margin: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
     animation: fadeScaleIn 0.25s ease;
   }
   @keyframes fadeScaleIn {
@@ -2336,4 +2377,251 @@ body {
     background: var(--bg-light);
   }
 }
+
+/* Pricing Calculator Estimator Grid Responsive */
+@media (max-width: 860px) {
+  .estimator-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+}
+
+/* ============ MARQUEE CUSTOMER REVIEWS (2 AUTO-SCROLLING ROWS) ============ */
+.reviews-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0 24px;
+  position: relative;
+}
+
+.reviews-marquee-wrapper::before,
+.reviews-marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 3;
+  pointer-events: none;
+}
+.reviews-marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(250, 247, 242, 0.95), rgba(250, 247, 242, 0));
+}
+.reviews-marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(250, 247, 242, 0.95), rgba(250, 247, 242, 0));
+}
+
+.reviews-marquee-wrapper {
+  overflow: hidden;
+  position: relative;
+  padding: 10px 0 20px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.reviews-marquee-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  user-select: none;
+}
+
+.reviews-marquee-track.track-forward {
+  animation: marqueeScrollLeft 38s linear infinite;
+}
+
+.reviews-marquee-track.track-reverse {
+  animation: marqueeScrollRight 44s linear infinite;
+}
+
+.reviews-marquee-wrapper:hover .reviews-marquee-track,
+.reviews-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeScrollRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.marquee-review-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 16px 18px;
+  width: 290px;
+  min-height: 172px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border-light);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .marquee-review-card {
+    width: 330px;
+    padding: 18px 22px;
+  }
+}
+
+.marquee-review-stars {
+  color: #FFA114;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.marquee-review-quote {
+  font-size: 0.88rem;
+  color: #2D3136;
+  line-height: 1.55;
+  margin-bottom: 12px;
+  font-style: italic;
+  font-weight: 550;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.marquee-review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 8px;
+  margin-top: auto;
+}
+
+.marquee-review-author {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #121417;
+}
+
+.marquee-review-tag {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Pricing Calculator Box & Estimate Card (Compact on mobile) */
+.pricing-calculator-box {
+  background: var(--bg-dark);
+  border-radius: var(--radius-lg);
+  padding: 14px 12px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 480px) {
+  .pricing-calculator-box {
+    padding: 18px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pricing-calculator-box {
+    padding: 36px 32px;
+    border-radius: var(--radius-xl);
+  }
+}
+
+.pricing-estimate-card {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+@media (min-width: 480px) {
+  .pricing-estimate-card {
+    padding: 18px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pricing-estimate-card {
+    padding: 30px 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-calc-area-footer {
+    display: none !important;
+  }
+}
+
+/* Responsive Form and Modal Helper Classes */
+.booking-form-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 520px) {
+  .booking-form-two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pricing-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 640px) {
+  .pricing-presets-grid {
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 440px) {
+  .pricing-preset-card {
+    padding: 12px 6px !important;
+  }
+  .pricing-preset-title {
+    font-size: 0.65rem !important;
+  }
+  .pricing-preset-price {
+    font-size: 1.45rem !important;
+  }
+  .pricing-preset-sub {
+    font-size: 0.68rem !important;
+  }
+}
+
+
 
