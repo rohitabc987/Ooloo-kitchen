@@ -135,256 +135,305 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
   return (
     <>
       {/* ===== HERO BANNER ===== */}
-      <div className="hero-banner">
-        {/* Left: text + buttons */}
-        <div className="hero-content">
-          {/* Trust badge */}
-          <div className="hero-badge">
-            <span className="hero-badge-dot" />
-            <span>Lucknow&apos;s #1 On-Demand Cook Service</span>
-          </div>
+      <section className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 pb-6">
+        <div className="relative overflow-hidden w-full rounded-2xl md:rounded-3xl bg-gradient-to-br from-neutral-950 via-stone-900 to-stone-950 border border-white/10 shadow-2xl shadow-orange-950/20 grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          {/* Subtle Ambient Decorative Glows */}
+          <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-orange-600/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
-          <div className="hero-title">Need help in the<br />kitchen today? 🍳</div>
-          <div className="hero-subtitle">Verified cooks at your door in <strong style={{ color: '#FF9E7D' }}>30 mins</strong> across Lucknow</div>
-
-          {/* Stats row — desktop only */}
-          <div className="hero-stats">
-            <div className="hero-stat">
-              <div className="hero-stat-value">30 min</div>
-              <div className="hero-stat-label">Avg. Dispatch</div>
+          {/* Left: text + buttons */}
+          <div className="relative z-10 flex flex-col justify-center p-6 sm:p-8 md:p-10 lg:p-12 lg:col-span-7">
+            {/* Trust badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold tracking-wide w-fit mb-4 sm:mb-5 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <span>Lucknow&apos;s #1 On-Demand Cook Service</span>
             </div>
-            <div className="hero-stat-divider" />
-            <div className="hero-stat">
-              <div className="hero-stat-value">4.9★</div>
-              <div className="hero-stat-label">Avg. Rating</div>
-            </div>
-            <div className="hero-stat-divider" />
-            <div className="hero-stat">
-              <div className="hero-stat-value">500+</div>
-              <div className="hero-stat-label">Happy Families</div>
-            </div>
-          </div>
 
-          {/* Service Mode Buttons */}
-          <div className="mode-buttons">
-            <button
-              className={`mode-btn ${serviceMode === 'instant' ? 'active' : ''}`}
-              onClick={() => setServiceMode('instant')}
-            >
-              <span className="mode-btn-icon">⚡</span>
-              <span className="mode-btn-label">Get Instant Service</span>
-            </button>
-            <button
-              className={`mode-btn ${serviceMode === 'schedule' ? 'active' : ''}`}
-              onClick={() => setServiceMode('schedule')}
-            >
-              <span className="mode-btn-icon">📅</span>
-              <span className="mode-btn-label">Schedule for Later</span>
-            </button>
-            <button
-              className={`mode-btn ${serviceMode === 'autorepeat' ? 'active' : ''}`}
-              onClick={() => setServiceMode('autorepeat')}
-            >
-              <span className="mode-btn-icon">🔁</span>
-              <span className="mode-btn-label">Service on Auto-repeat</span>
-            </button>
-          </div>
-        </div>
+            {/* Header: restored to its original clean size */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-3">
+              Need help in the<br />kitchen today? 🍳
+            </h1>
 
-        {/* Right: Hero Image — desktop only */}
-        <div className="hero-image-wrap">
-          <img
-            src="/images/hero_cook.png"
-            alt="Verified cook cooking in a kitchen"
-            className="hero-image"
-          />
-          {/* Floating card */}
-          <div className="hero-float-card">
-            <span style={{ fontSize: '1.2rem' }}>👩‍🍳</span>
-            <div>
-              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#fff' }}>Cook Dispatched!</div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)' }}>Arriving in ~28 mins</div>
-            </div>
-            <div className="hero-float-pulse" />
-          </div>
-        </div>
-      </div>
+            {/* Subtitle */}
+            <p className="text-stone-300 text-sm sm:text-base font-normal leading-relaxed mb-6 max-w-xl">
+              Verified cooks at your door in{' '}
+              <strong className="text-orange-400 font-bold">30 mins</strong> across Lucknow
+            </p>
 
-      {/* ===== ALL KITCHEN SERVICES ===== */}
-      <div className="section-header">
-        <div>
-          <div className="section-title">All kitchen services</div>
-          <div className="section-subtitle">Schedule & book for later</div>
-        </div>
-      </div>
-
-
-      <div className="services-grid">
-        {KITCHEN_SERVICES.map((svc) => (
-          <div
-            key={svc.id}
-            className="service-card"
-            onClick={() => handleCardClick(svc.id)}
-          >
-            {/* Rating or NEW badge */}
-            {svc.isNew ? (
-              <div className="service-card-badge">NEW</div>
-            ) : (
-              <div className="service-card-rating">
-                <span className="rating-star">★</span>
-                {svc.rating} ({svc.reviewCount})
+            {/* Stats row — desktop/tablet */}
+            <div className="hidden sm:flex items-center gap-0 w-fit mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15 shadow-lg">
+              <div className="text-center px-4 sm:px-5 first:pl-2">
+                <div className="text-lg sm:text-xl font-extrabold text-white leading-none mb-1">30 min</div>
+                <div className="text-xs text-stone-300 font-medium tracking-wide uppercase">Avg. Dispatch</div>
               </div>
-            )}
+              <div className="w-px h-7 bg-white/20 shrink-0" />
+              <div className="text-center px-4 sm:px-5">
+                <div className="text-lg sm:text-xl font-extrabold text-amber-400 leading-none mb-1 flex items-center justify-center gap-1">
+                  4.9<span className="text-sm">★</span>
+                </div>
+                <div className="text-xs text-stone-300 font-medium tracking-wide uppercase">Avg. Rating</div>
+              </div>
+              <div className="w-px h-7 bg-white/20 shrink-0" />
+              <div className="text-center px-4 sm:px-5 last:pr-2">
+                <div className="text-lg sm:text-xl font-extrabold text-white leading-none mb-1">500+</div>
+                <div className="text-xs text-stone-300 font-medium tracking-wide uppercase">Happy Families</div>
+              </div>
+            </div>
+
+            {/* Service Mode Buttons */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-lg w-full">
+              <button
+                type="button"
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
+                  serviceMode === 'instant'
+                    ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
+                    : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
+                }`}
+                onClick={() => setServiceMode('instant')}
+              >
+                <span className="text-lg mb-1 transition-transform group-hover:scale-110">⚡</span>
+                <span className="text-xs font-bold text-white leading-tight">Get Instant Service</span>
+              </button>
+              <button
+                type="button"
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
+                  serviceMode === 'schedule'
+                    ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
+                    : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
+                }`}
+                onClick={() => setServiceMode('schedule')}
+              >
+                <span className="text-lg mb-1 transition-transform group-hover:scale-110">📅</span>
+                <span className="text-xs font-bold text-white leading-tight">Schedule for Later</span>
+              </button>
+              <button
+                type="button"
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
+                  serviceMode === 'autorepeat'
+                    ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
+                    : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
+                }`}
+                onClick={() => setServiceMode('autorepeat')}
+              >
+                <span className="text-lg mb-1 transition-transform group-hover:scale-110">🔁</span>
+                <span className="text-xs font-bold text-white leading-tight">Service on Auto-repeat</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right: Hero Image with seamless blend & live floating badge */}
+          <div className="relative hidden lg:block overflow-hidden w-full h-full min-h-80 lg:col-span-5">
+            {/* Edge gradient fade so the image melts seamlessly into the dark background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/30 to-transparent z-10 pointer-events-none w-1/3" />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/60 via-transparent to-transparent z-10 pointer-events-none" />
 
             <img
-              src={svc.image}
-              alt={svc.name}
-              className="service-card-image"
+              src="/images/hero_cook.png"
+              alt="Verified cook cooking in a kitchen"
+              className="w-full h-full object-cover object-top select-none"
             />
 
-            {/* Add / Book Button */}
-            <button
-              className="service-card-add-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCardClick(svc.id);
-              }}
-              aria-label={`Book ${svc.name}`}
-              title={`Book ${svc.name}`}
-            >
-              +
-            </button>
-
-            <div className="service-card-info">
-              <div className="service-card-name">{svc.name}</div>
-              <div className="service-card-price">
-                <span className="service-card-price-current">₹{svc.price}</span>
-                <span className="service-card-price-original">₹{svc.originalPrice}</span>
+            {/* Floating Live Dispatch Card */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3 px-4 py-3 rounded-2xl bg-stone-950/90 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black whitespace-nowrap">
+              <span className="text-2xl">👩‍🍳</span>
+              <div>
+                <div className="text-xs font-bold text-white">Cook Dispatched!</div>
+                <div className="text-xs text-stone-300">Arriving in ~28 mins</div>
+              </div>
+              <div className="relative flex h-3 w-3 shrink-0 ml-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
               </div>
             </div>
           </div>
-        ))}
+        </div>
+      </section>
+
+      {/* ===== ALL KITCHEN SERVICES (NATURAL 100% FULL SCREEN WIDTH WITH BIGGER IMAGES) ===== */}
+      <div style={{ width: '100%', padding: '8px 0 32px 0' }}>
+        <div className="section-header" style={{ padding: '28px clamp(20px, 4vw, 56px) 14px' }}>
+          <div>
+            <div className="section-title">All kitchen services</div>
+            <div className="section-subtitle">Schedule & book for later</div>
+          </div>
+        </div>
+
+        <div className="services-grid">
+          {KITCHEN_SERVICES.map((svc) => (
+            <div
+              key={svc.id}
+              className="service-card"
+              onClick={() => handleCardClick(svc.id)}
+            >
+              {/* Rating or NEW badge */}
+              {svc.isNew ? (
+                <div className="service-card-badge">NEW</div>
+              ) : (
+                <div className="service-card-rating">
+                  <span className="rating-star">★</span>
+                  {svc.rating} ({svc.reviewCount})
+                </div>
+              )}
+
+              <img
+                src={svc.image}
+                alt={svc.name}
+                className="service-card-image"
+              />
+
+              {/* Add / Book Button */}
+              <button
+                className="service-card-add-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCardClick(svc.id);
+                }}
+                aria-label={`Book ${svc.name}`}
+                title={`Book ${svc.name}`}
+              >
+                +
+              </button>
+
+              <div className="service-card-info">
+                <div className="service-card-name">{svc.name}</div>
+                <div className="service-card-price">
+                  <span className="service-card-price-current">₹{svc.price}</span>
+                  <span className="service-card-price-original">₹{svc.originalPrice}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* ---- DESKTOP: Monthly Pass + Subscription Cards ---- */}
-      <div className="pass-plans-row">
-        {/* ooloo Monthly PASS card */}
-        <div className="pass-plan-card pass-plan-featured" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
-          <div className="pass-plan-badge">MOST POPULAR</div>
-          <div className="pass-plan-icon">🎟️</div>
-          <div className="pass-plan-eyebrow">ooloo kitchen</div>
-          <div className="pass-plan-name">ooloo <strong>PASS</strong></div>
-          <div className="pass-plan-subtitle">Daily Meal Service Pass</div>
-          <div className="pass-plan-price">
-            <span className="pass-plan-price-main">₹297</span>
-            <span className="pass-plan-price-original">₹750</span>
+      {/* ---- DESKTOP & MOBILE PASSES (ALIGNED WITH HEADER VIA CONTAINER) ---- */}
+      <div className="container">
+        {/* Desktop: Monthly Pass + Subscription Cards */}
+        <div className="pass-plans-row">
+          {/* ooloo Monthly PASS card */}
+          <div className="pass-plan-card pass-plan-featured" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
+            <div className="pass-plan-badge">MOST POPULAR</div>
+            <div className="pass-plan-icon">🎟️</div>
+            <div className="pass-plan-eyebrow">ooloo kitchen</div>
+            <div className="pass-plan-name">ooloo <strong>PASS</strong></div>
+            <div className="pass-plan-subtitle">Daily Meal Service Pass</div>
+            <div className="pass-plan-price">
+              <span className="pass-plan-price-main">₹297</span>
+              <span className="pass-plan-price-original">₹750</span>
+            </div>
+            <div className="pass-plan-detail">3 Visits · 30 days validity</div>
+            <button
+              className="pass-plan-cta"
+              onClick={(e) => { e.stopPropagation(); onBook(SERVICE_ITEMS[1], 'schedule'); }}
+            >
+              Book Pass Now
+            </button>
           </div>
-          <div className="pass-plan-detail">3 Visits · 30 days validity</div>
+
+          {/* Subscription Coming Soon card */}
+          <div className="pass-plan-card pass-plan-soon">
+            <div className="pass-plan-soon-badge">COMING SOON</div>
+            <div className="pass-plan-icon">📅</div>
+            <div className="pass-plan-eyebrow">ooloo kitchen</div>
+            <div className="pass-plan-name">Monthly <strong>Subscription</strong></div>
+            <div className="pass-plan-subtitle">Dedicated Daily Cook Plan</div>
+            <div className="pass-plan-price">
+              <span className="pass-plan-price-main" style={{ fontSize: '1.5rem', color: 'var(--text-muted)' }}>₹ TBA</span>
+            </div>
+            <div className="pass-plan-detail">Daily cook visits · Monthly billing</div>
+            <div className="pass-plan-soon-text">
+              Monthly cook plans with dedicated chefs — launching soon in Lucknow.
+            </div>
+            <button className="pass-plan-cta pass-plan-cta-outline" disabled>
+              Notify Me When Live
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile: original card layout */}
+        <div className="pass-mobile-only">
+          <div className="pass-card" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
+            <img src="/images/ooloo_pass.png" alt="ooloo PASS" className="pass-card-image" />
+            <div className="pass-card-content">
+              <div className="pass-card-badge-text">ooloo kitchen</div>
+              <div className="pass-card-title">
+                ooloo <strong>PASS</strong>
+                <br /><span>Daily Meal Service Pass</span>
+              </div>
+              <div className="pass-card-savings">
+                3 Visits for <s>₹750</s> <strong>₹297</strong>
+              </div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', marginTop: 4 }}>30 days validity</div>
+            </div>
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.6)" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
           <button
-            className="pass-plan-cta"
-            onClick={(e) => { e.stopPropagation(); onBook(SERVICE_ITEMS[1], 'schedule'); }}
+            className="pass-cta-btn"
+            onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}
           >
             Book Pass Now
           </button>
         </div>
 
-        {/* Subscription Coming Soon card */}
-        <div className="pass-plan-card pass-plan-soon">
-          <div className="pass-plan-soon-badge">COMING SOON</div>
-          <div className="pass-plan-icon">📅</div>
-          <div className="pass-plan-eyebrow">ooloo kitchen</div>
-          <div className="pass-plan-name">Monthly <strong>Subscription</strong></div>
-          <div className="pass-plan-subtitle">Dedicated Daily Cook Plan</div>
-          <div className="pass-plan-price">
-            <span className="pass-plan-price-main" style={{ fontSize: '1.5rem', color: 'var(--text-muted)' }}>₹ TBA</span>
+        <div className="divider" style={{ margin: '16px 0 0' }} />
+      </div>
+
+      {/* ===== CUSTOMER REVIEWS (FULL SCREEN WIDTH WITH BIGGER CARDS) ===== */}
+      <div style={{ width: '100%', padding: '16px 0 24px 0' }}>
+        <div className="section-header" style={{ padding: '28px clamp(20px, 4vw, 56px) 14px' }}>
+          <div>
+            <div className="section-title">What our customers say</div>
+            <div className="section-subtitle">Real experiences from verified Lucknow households</div>
           </div>
-          <div className="pass-plan-detail">Daily cook visits · Monthly billing</div>
-          <div className="pass-plan-soon-text">
-            Monthly cook plans with dedicated chefs — launching soon in Lucknow.
+        </div>
+
+        <div className="reviews-marquee-wrapper">
+          {/* Row 1 Track (Seamless infinite loop) */}
+          <div className="reviews-marquee-track track-forward">
+            {[...REVIEWS_ROW_1, ...REVIEWS_ROW_1].map((t, idx) => (
+              <div key={`r1-${idx}`} className="marquee-review-card">
+                <div>
+                  <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
+                  <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
+                </div>
+                <div className="marquee-review-footer">
+                  <span className="marquee-review-author">{t.author}</span>
+                  <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
+                </div>
+              </div>
+            ))}
           </div>
-          <button className="pass-plan-cta pass-plan-cta-outline" disabled>
-            Notify Me When Live
-          </button>
-        </div>
-      </div>
 
-      {/* ---- MOBILE: original card layout ---- */}
-      <div className="pass-mobile-only">
-        <div className="pass-card" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
-          <img src="/images/ooloo_pass.png" alt="ooloo PASS" className="pass-card-image" />
-          <div className="pass-card-content">
-            <div className="pass-card-badge-text">ooloo kitchen</div>
-            <div className="pass-card-title">
-              ooloo <strong>PASS</strong>
-              <br /><span>Daily Meal Service Pass</span>
-            </div>
-            <div className="pass-card-savings">
-              3 Visits for <s>₹750</s> <strong>₹297</strong>
-            </div>
-            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', marginTop: 4 }}>30 days validity</div>
+          {/* Row 2 Track (Seamless infinite loop) */}
+          <div className="reviews-marquee-track track-reverse">
+            {[...REVIEWS_ROW_2, ...REVIEWS_ROW_2].map((t, idx) => (
+              <div key={`r2-${idx}`} className="marquee-review-card">
+                <div>
+                  <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
+                  <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
+                </div>
+                <div className="marquee-review-footer">
+                  <span className="marquee-review-author">{t.author}</span>
+                  <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
+                </div>
+              </div>
+            ))}
           </div>
-          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.6)" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-        <button
-          className="pass-cta-btn"
-          onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}
-        >
-          Book Pass Now
-        </button>
-      </div>
-
-      <div className="divider" />
-
-      {/* ===== CUSTOMER REVIEWS (2 AUTO-SCROLLING HORIZONTAL ROWS) ===== */}
-      <div className="section-header" style={{ padding: '24px 18px 10px' }}>
-        <div>
-          <div className="section-title">What our customers say</div>
-          <div className="section-subtitle">Real experiences from verified Lucknow households</div>
         </div>
       </div>
 
-      <div className="reviews-marquee-wrapper">
-        {/* Row 1 Track (Seamless infinite loop) */}
-        <div className="reviews-marquee-track track-forward">
-          {[...REVIEWS_ROW_1, ...REVIEWS_ROW_1].map((t, idx) => (
-            <div key={`r1-${idx}`} className="marquee-review-card">
-              <div>
-                <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
-                <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
-              </div>
-              <div className="marquee-review-footer">
-                <span className="marquee-review-author">{t.author}</span>
-                <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Row 2 Track (Seamless infinite loop) */}
-        <div className="reviews-marquee-track track-reverse">
-          {[...REVIEWS_ROW_2, ...REVIEWS_ROW_2].map((t, idx) => (
-            <div key={`r2-${idx}`} className="marquee-review-card">
-              <div>
-                <div className="marquee-review-stars">{'★'.repeat(t.rating)}</div>
-                <div className="marquee-review-quote">&ldquo;{t.quote}&rdquo;</div>
-              </div>
-              <div className="marquee-review-footer">
-                <span className="marquee-review-author">{t.author}</span>
-                <span className="marquee-review-tag">📍 {t.location} • {t.tag}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="container">
+        <div className="divider" style={{ margin: '0' }} />
       </div>
-
-      <div className="divider" style={{ margin: '0' }} />
 
       {/* ===== HOW IT WORKS: THE OOLOO EXPERIENCE (BEFORE FAQ) ===== */}
       <HowItWorks onBook={() => onBook(SERVICE_ITEMS[0], serviceMode)} />
 
-      <div className="divider" style={{ margin: '0 0 16px' }} />
+      <div className="container">
+        <div className="divider" style={{ margin: '0 0 16px' }} />
+      </div>
 
       {/* ===== MAIN FAQS (Centered, Borderless, Well-Padded for Mobile) ===== */}
       <div style={{ maxWidth: '850px', margin: '0 auto', padding: '28px 18px 50px' }}>
