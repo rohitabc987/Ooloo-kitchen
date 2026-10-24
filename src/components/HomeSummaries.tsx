@@ -236,17 +236,17 @@ export default function HomeSummaries() {
             <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '16px', padding: '18px', border: '1px solid rgba(255,255,255,0.12)' }}>
               <div style={{ fontSize: '0.74rem', color: '#05B865', fontWeight: 800, textTransform: 'uppercase' }}>2 HOURS MEAL</div>
               <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#FFF', margin: '4px 0' }}>₹399</div>
-              <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>Up to 6 people</div>
+              <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>Up to 5 people</div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '16px', padding: '18px', border: '1px solid rgba(255,255,255,0.12)', gridColumn: 'span 2' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <div style={{ fontSize: '0.74rem', color: '#FF9E7D', fontWeight: 800, textTransform: 'uppercase' }}>ooloo PASS</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFF' }}>3 Cook Visits for ₹297</div>
+                  <div style={{ fontSize: '0.74rem', color: '#FF9E7D', fontWeight: 800, textTransform: 'uppercase' }}>SMART SUBSCRIPTIONS</div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFF' }}>Dedicated Daily Cooks from ₹5,999/mo</div>
                 </div>
                 <span style={{ background: '#05B865', color: '#FFF', fontSize: '0.75rem', fontWeight: 800, padding: '4px 10px', borderRadius: '99px' }}>
-                  SAVE 60%
+                  SAVE UP TO 30%
                 </span>
               </div>
             </div>

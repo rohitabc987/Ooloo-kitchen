@@ -1,18 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, Clock, ArrowRight, Users, UtensilsCrossed, Sparkles } from 'lucide-react';
+import { Check, Clock, ArrowRight, Users, UtensilsCrossed, Sparkles, MessageSquare, ShieldCheck } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { SUBSCRIPTION_PLANS, PARTY_PLANS, PARTY_ADDONS, OTHER_SERVICES, TERMS_AND_CONDITIONS } from '../data/lucknowData';
 
 export default function PricingSection() {
   const { selectedArea, handleOpenBooking } = useApp();
   const [peopleCount, setPeopleCount] = useState(4);
   const [dishesCount, setDishesCount] = useState(3);
   const [isPartyMode, setIsPartyMode] = useState(false);
+  const [partyPeopleCount, setPartyPeopleCount] = useState(15);
 
-  // Price Calculation Logic
-  const calcHours = isPartyMode ? 3 : (peopleCount <= 3 && dishesCount <= 2 ? 1 : 2);
-  const calcPrice = isPartyMode ? 999 * 3 : (calcHours === 1 ? 299 : 399);
+  // Party calculation matching Brochure 1
+  const getPartyTier = (guests: number) => {
+    if (guests <= 10) return { people: '1 to 10 People', hours: 3, price: 1999 };
+    if (guests <= 20) return { people: '11 to 20 People', hours: 4, price: 2999 };
+    if (guests <= 30) return { people: '21 to 30 People', hours: 4, price: 3999 };
+    if (guests <= 40) return { people: '31 to 40 People', hours: 5, price: 4999 };
+    return { people: '41 to 50 People', hours: 5, price: 5999 };
+  };
+
+  const partyTier = getPartyTier(partyPeopleCount);
+  const calcHours = isPartyMode ? partyTier.hours : (peopleCount <= 3 && dishesCount <= 2 ? 1 : 2);
+  const calcPrice = isPartyMode ? partyTier.price : (calcHours === 1 ? 299 : 399);
 
   // Preset Handlers
   const handleSelectPreset = (hours: number) => {
@@ -243,10 +254,10 @@ export default function PricingSection() {
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: '0.86rem', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <Sparkles size={14} color="#FF7B54" />
-                      <span>Hosting a party or gathering?</span>
+                      <span>Hosting a party or family gathering?</span>
                     </div>
                     <div style={{ fontSize: '0.72rem', color: '#A0A5AB', marginTop: '2px' }}>
-                      Up to 20 guests with 2 dedicated cooks
+                      10 to 50 guests with dedicated party cooks (Brochure Plan)
                     </div>
                   </div>
                   <button
@@ -268,7 +279,34 @@ export default function PricingSection() {
                   </button>
                 </div>
 
-                {!isPartyMode && (
+                {isPartyMode ? (
+                  /* Party Guests Slider */
+                  <div style={{ marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.84rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Users size={14} color="var(--primary)" />
+                        Number of Party Guests:
+                      </span>
+                      <span style={{ fontWeight: 800, color: '#FF7B54', fontSize: '0.96rem' }}>{partyPeopleCount} Guests ({partyTier.people})</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="5"
+                      max="50"
+                      step="5"
+                      value={partyPeopleCount}
+                      onChange={(e) => setPartyPeopleCount(parseInt(e.target.value))}
+                      style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer', height: '5px' }}
+                    />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#A0A5AB', marginTop: '3px' }}>
+                      <span>1-10 (₹1,999)</span>
+                      <span>11-20 (₹2,999)</span>
+                      <span>21-30 (₹3,999)</span>
+                      <span>31-40 (₹4,999)</span>
+                      <span>41-50 (₹5,999)</span>
+                    </div>
+                  </div>
+                ) : (
                   <>
                     {/* People Slider */}
                     <div style={{ marginBottom: '14px' }}>
@@ -321,7 +359,7 @@ export default function PricingSection() {
                 )}
               </div>
 
-              {/* Location indicator footer (Desktop only, mobile has it in header) */}
+              {/* Location indicator footer */}
               <div
                 className="pricing-calc-area-footer"
                 style={{
@@ -360,23 +398,23 @@ export default function PricingSection() {
                     padding: '2px 8px',
                     borderRadius: '99px'
                   }}>
-                    Instant Booking
+                    {isPartyMode ? 'Party Plan' : 'Instant Booking'}
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '4px 0 6px 0' }}>
                   <span style={{ fontSize: 'clamp(2rem, 3.8vw, 3rem)', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
-                    ₹{calcPrice}
+                    ₹{calcPrice.toLocaleString('en-IN')}
                   </span>
                   <span style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                    for {calcHours} Hour{calcHours > 1 ? 's' : ''}
+                    for {calcHours} Hour{calcHours > 1 ? 's' : ''} ({isPartyMode ? partyTier.people : `up to ${peopleCount} people`})
                   </span>
                 </div>
 
                 <ul style={{ listStyle: 'none', padding: 0, margin: '10px 0 12px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.82rem', color: '#1E293B', lineHeight: 1.35 }}>
                     <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    <span><strong>{isPartyMode ? '2 Dedicated Uniformed Party Cooks' : '1 Verified Background-Checked Cook'}</strong></span>
+                    <span><strong>{isPartyMode ? `Dedicated Cooks for ${partyTier.people} (${partyTier.hours} hrs)` : `${calcHours} Hour Cook Service for up to ${peopleCount} People`}</strong></span>
                   </li>
                   <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.82rem', color: '#1E293B', lineHeight: 1.35 }}>
                     <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
@@ -386,6 +424,11 @@ export default function PricingSection() {
                     <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
                     <span>Customized spice, oil & salt to your exact taste</span>
                   </li>
+                  {isPartyMode && (
+                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.78rem', color: '#78716C', lineHeight: 1.35 }}>
+                      <span>• Server & Cleaner add-ons available at ₹1,000 each</span>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -403,129 +446,292 @@ export default function PricingSection() {
 
         </div>
 
-        {/* ===================== PASS & SUBSCRIPTION SAVINGS CARDS ===================== */}
+        {/* ===================== FAMILY GATHERING & PARTY PLANS (BROCHURE 1) ===================== */}
         <div style={{ marginTop: '50px' }}>
-          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 32px auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 28px auto' }}>
             <div className="page-badge" style={{ justifyContent: 'center' }}>
               <span className="page-badge-dot" />
-              <span>SUBSCRIPTIONS & PASSES</span>
+              <span>SPECIAL OCCASIONS</span>
             </div>
             <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
-              Save more with <span className="italic-serif" style={{ color: 'var(--primary)' }}>flexible meal passes.</span>
+              Family Gathering & <span className="italic-serif" style={{ color: 'var(--primary)' }}>Party Plans.</span>
             </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
+              Good Food. Happy Moments. Make your special occasions stress-free with our trusted kitchen support services.
+            </p>
           </div>
 
-          <div className="grid-2">
-            {/* ooloo PASS Card */}
-            <div style={{
-              background: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '36px',
-              border: '2px solid var(--primary)',
-              boxShadow: '0 8px 30px rgba(230,74,25,0.08)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              position: 'relative'
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: '-14px',
-                right: '28px',
-                background: 'var(--primary)',
-                color: '#FFF',
-                fontSize: '0.75rem',
-                fontWeight: 900,
-                padding: '4px 14px',
-                borderRadius: '99px',
-                letterSpacing: '0.05em'
-              }}>
-                MOST POPULAR PASS
-              </div>
-
-              <div>
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎟️</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  OOLOO KITCHEN PASS
+          {/* Party Tiers Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '14px',
+            marginBottom: '24px'
+          }}>
+            {PARTY_PLANS.map((plan, idx) => (
+              <div
+                key={idx}
+                style={{
+                  background: '#FFFFFF',
+                  borderRadius: '18px',
+                  padding: '20px 16px',
+                  border: '1.5px solid var(--border)',
+                  textAlign: 'center',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase' }}>
+                  <Users size={14} />
+                  <span>{plan.people} People</span>
                 </div>
-                <h3 style={{ fontSize: '1.6rem', fontWeight: 850, color: '#121417', margin: '6px 0 10px 0' }}>
-                  Daily Meal Service Pass
-                </h3>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '14px' }}>
-                  <span style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--primary)' }}>₹297</span>
-                  <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>₹750</span>
-                  <span style={{ background: 'var(--green-light)', color: 'var(--green)', fontSize: '0.78rem', fontWeight: 800, padding: '3px 8px', borderRadius: '99px' }}>
-                    SAVE 60%
-                  </span>
+                <div style={{ fontSize: '2.1rem', fontWeight: 900, color: '#121417', margin: '6px 0 4px 0', fontFamily: 'var(--font-heading)' }}>
+                  {plan.amountFormatted}
                 </div>
-                <p style={{ fontSize: '1rem', color: '#4A4F55', lineHeight: 1.6, marginBottom: '20px' }}>
-                  Get 3 cook visits with 30 days validity. Valid for Gomti Nagar, Hazratganj, and all active Lucknow areas.
-                </p>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                  <Clock size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
+                  {plan.hours} dedicated
+                </div>
               </div>
+            ))}
+          </div>
 
+          {/* Party Add-on Services & Terms */}
+          <div style={{
+            background: '#FDFBF7',
+            borderRadius: '20px',
+            padding: '22px 24px',
+            border: '1.5px solid #F0ECE4',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px',
+            alignItems: 'center'
+          }}>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+                Other Party Services
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.88rem', color: '#1C1917' }}>
+                {PARTY_ADDONS.map(addon => (
+                  <div key={addon.id} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{addon.icon} {addon.title} ({addon.unit}):</span>
+                    <strong style={{ color: 'var(--primary)' }}>{addon.rate}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+                Terms & Conditions
+              </div>
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                {TERMS_AND_CONDITIONS.party.map((term, tIdx) => (
+                  <li key={tIdx}>{term}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
               <button
                 onClick={() => handleOpenBooking()}
                 style={{
                   width: '100%',
-                  padding: '14px 24px',
-                  borderRadius: '14px',
+                  padding: '13px 20px',
+                  borderRadius: '12px',
                   background: 'var(--primary)',
-                  color: '#FFFFFF',
+                  color: '#FFF',
                   border: 'none',
-                  fontSize: '1.05rem',
+                  fontSize: '0.95rem',
                   fontWeight: 800,
                   cursor: 'pointer'
                 }}
               >
-                Book Pass Now →
+                Book Party Cook →
               </button>
             </div>
+          </div>
+        </div>
 
-            {/* Monthly Subscription Card */}
-            <div style={{
-              background: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '36px',
-              border: '1.5px solid var(--border-light)',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
-            }}>
-              <div>
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📅</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0284C7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  MONTHLY DEDICATED CHEF
-                </div>
-                <h3 style={{ fontSize: '1.6rem', fontWeight: 850, color: '#121417', margin: '6px 0 10px 0' }}>
-                  Dedicated Daily Cook Plan
-                </h3>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '14px' }}>
-                  <span style={{ fontSize: '2.4rem', fontWeight: 900, color: '#121417' }}>₹2,799</span>
-                  <span style={{ fontSize: '1.05rem', color: 'var(--text-muted)' }}>/ month</span>
-                </div>
-                <p style={{ fontSize: '1rem', color: '#4A4F55', lineHeight: 1.6, marginBottom: '20px' }}>
-                  Dedicated verified cook visits your home daily for lunch or dinner. Free replacement cook guarantee if your cook is ever sick.
-                </p>
-              </div>
+        {/* ===================== OTHER SERVICES (₹199/HR) ===================== */}
+        <div style={{ marginTop: '50px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 28px auto' }}>
+            <div className="page-badge" style={{ justifyContent: 'center' }}>
+              <span className="page-badge-dot" />
+              <span>HOURLY ADD-ONS</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
+              On-Demand Support at <span className="italic-serif" style={{ color: 'var(--primary)' }}>₹199/Hour.</span>
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
+              Add specialized kitchen help for prep, dishwashing, counter cleaning, or table serving.
+            </p>
+          </div>
 
-              <button
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+            gap: '16px'
+          }}>
+            {OTHER_SERVICES.map(item => (
+              <div
+                key={item.id}
                 onClick={() => handleOpenBooking()}
                 style={{
-                  width: '100%',
-                  padding: '14px 24px',
-                  borderRadius: '14px',
-                  background: 'transparent',
-                  color: '#121417',
-                  border: '2px solid var(--border)',
-                  fontSize: '1.05rem',
-                  fontWeight: 800,
-                  cursor: 'pointer'
+                  background: '#FFFFFF',
+                  borderRadius: '18px',
+                  padding: '20px',
+                  border: '1.5px solid var(--border)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
                 }}
               >
-                Request Monthly Cook Plan →
-              </button>
+                <div style={{ fontSize: '1.8rem', marginBottom: '6px' }}>{item.icon}</div>
+                <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#121417' }}>{item.title}</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '4px 0 12px 0' }}>{item.desc}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                  <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--primary)', fontFamily: 'var(--font-heading)' }}>
+                    {item.rate}
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{item.unit}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ===================== SMART SUBSCRIPTIONS (BROCHURE 2) ===================== */}
+        <div style={{ marginTop: '50px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 32px auto' }}>
+            <div className="page-badge" style={{ justifyContent: 'center' }}>
+              <span className="page-badge-dot" />
+              <span>SAVE UP TO 30%</span>
             </div>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
+              Smart Kitchen <span className="italic-serif" style={{ color: 'var(--primary)' }}>Subscriptions.</span>
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
+              Same trained cook, priority booking, festive off, and up to 6 service hold days. Transparent monthly plans for Lucknow homes.
+            </p>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+            gap: '16px',
+            alignItems: 'stretch'
+          }}>
+            {SUBSCRIPTION_PLANS.map((sub) => (
+              <div
+                key={sub.id}
+                style={{
+                  background: '#FFFFFF',
+                  borderRadius: '22px',
+                  padding: '26px 20px',
+                  border: sub.popular ? '2px solid var(--primary)' : '1.5px solid var(--border)',
+                  boxShadow: sub.popular ? '0 12px 30px rgba(230,74,25,0.12)' : '0 2px 10px rgba(0,0,0,0.04)',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between'
+                }}
+              >
+                {sub.popular && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-11px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'var(--primary)',
+                    color: '#FFFFFF',
+                    fontSize: '0.66rem',
+                    fontWeight: 900,
+                    padding: '3px 12px',
+                    borderRadius: '99px',
+                    letterSpacing: '0.04em',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    POPULAR CHOICE
+                  </div>
+                )}
+
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 800, color: sub.color || 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                    {sub.badge}
+                  </div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 850, color: '#121417', margin: '0 0 10px 0' }}>
+                    {sub.title}
+                  </h3>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '14px' }}>
+                    <span style={{ fontSize: '2rem', fontWeight: 900, color: '#121417', fontFamily: 'var(--font-heading)' }}>
+                      {sub.price}
+                    </span>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>{sub.period}</span>
+                  </div>
+
+                  <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '14px', marginBottom: '18px' }}>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {sub.features.map((feat, fIdx) => (
+                        <li key={fIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.84rem', color: '#1E293B' }}>
+                          <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <a
+                  href={`https://wa.me/917318086600?text=Hi%20Ooloo!%20I%20would%20like%20to%20subscribe%20to%20the%20${encodeURIComponent(sub.title)}%20(${sub.price}%2Fmonth).`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    width: '100%',
+                    padding: '11px 14px',
+                    borderRadius: '12px',
+                    background: sub.popular ? 'var(--primary)' : '#F5F5F4',
+                    color: sub.popular ? '#FFFFFF' : '#121417',
+                    border: sub.popular ? 'none' : '1px solid var(--border)',
+                    fontSize: '0.86rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <MessageSquare size={15} />
+                  <span>Inquire on WhatsApp</span>
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* Subscription Benefits Strip */}
+          <div style={{
+            marginTop: '22px',
+            background: '#FFFFFF',
+            borderRadius: '18px',
+            padding: '16px 20px',
+            border: '1px solid var(--border-light)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            gap: '14px',
+            fontSize: '0.82rem',
+            color: '#1E293B',
+            fontWeight: 700
+          }}>
+            <span>💰 Save up to 30%</span>
+            <span>👨‍🍳 Same Trained Cook</span>
+            <span>⭐ Priority Booking</span>
+            <span>📅 Festive Off</span>
+            <span>🔒 Background Checked</span>
+            <span>✨ No Hidden Charges</span>
           </div>
         </div>
 

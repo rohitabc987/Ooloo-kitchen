@@ -82,8 +82,25 @@ export default function BookingSheet({ service, mode, onClose }: BookingSheetPro
   };
 
   const getPrice = () => {
+    if (state.service.id === 'party') {
+      if (state.people <= 10) return 1999;
+      if (state.people <= 20) return 2999;
+      if (state.people <= 30) return 3999;
+      if (state.people <= 40) return 4999;
+      return 5999;
+    }
+    if (state.service.id === 'cooking' && state.people > 3) {
+      return 399;
+    }
     const priceMap: Record<string, number> = {
-      prep: 149, cooking: 299, ondemand: 199, party: 999, hourly: 60, subscription: 2799
+      prep: 199,
+      cooking: 299,
+      ondemand: 299,
+      party: 1999,
+      kitchen_cleaning: 199,
+      utensils: 199,
+      serving: 199,
+      subscription: 5999,
     };
     return priceMap[state.service.id] || 299;
   };

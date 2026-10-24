@@ -2,29 +2,33 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronDown, ArrowRight, Check, Users, Clock, Sparkles, MessageSquare, ShieldCheck } from 'lucide-react';
 import { ServiceItem } from '../types';
-import { FAQS } from '../data/lucknowData';
+import { FAQS, PARTY_PLANS, PARTY_ADDONS, OTHER_SERVICES, SUBSCRIPTION_PLANS, TERMS_AND_CONDITIONS } from '../data/lucknowData';
 import HowItWorks from './HowItWorks';
 
-// All kitchen services as Pronto-style card data
+// All kitchen services as card data
 export const KITCHEN_SERVICES = [
-  { id: 'prep', name: 'Kitchen Prep', price: 149, originalPrice: 299, rating: 4.9, reviewCount: '25.4k', image: '/images/kitchen_prep.png', isNew: false, popular: false },
-  { id: 'cooking', name: 'Full Meal Cooking', price: 299, originalPrice: 599, rating: 4.9, reviewCount: '30.7k', image: '/images/full_meal.png', isNew: false, popular: true },
-  { id: 'ondemand', name: 'Express Cook (30 Min)', price: 199, originalPrice: 399, rating: 4.8, reviewCount: '18.5k', image: '/images/express_cook.png', isNew: true, popular: false },
-  { id: 'party', name: 'Party & Gathering Cook', price: 999, originalPrice: 1999, rating: 4.9, reviewCount: '12.1k', image: '/images/party_cook.png', isNew: false, popular: false },
-  { id: 'hourly', name: 'Hourly Service', price: 60, originalPrice: 125, rating: 4.9, reviewCount: '239.4k', image: '/images/kitchen_prep.png', isNew: false, popular: false },
-  { id: 'biweekly', name: 'Daily Cook Subscription', price: 2799, originalPrice: 5970, rating: 4.9, reviewCount: '23.4k', image: '/images/full_meal.png', isNew: true, popular: false },
+  { id: 'prep', name: 'Vegetable Preparation', price: 199, originalPrice: 299, unit: '/hr', rating: 4.9, reviewCount: '25.4k', image: '/images/kitchen_prep.png', isNew: false, popular: false, desc: 'Chopping, cutting, peeling & pre-preparation' },
+  { id: 'cooking', name: 'Cooking Assistant', price: 299, originalPrice: 499, unit: 'from', rating: 4.9, reviewCount: '30.7k', image: '/images/full_meal.png', isNew: false, popular: true, desc: '1 Hr (₹299 for up to 3) / 2 Hrs (₹399 for up to 5)' },
+  { id: 'ondemand', name: 'On-Demand Cook (30 Min)', price: 299, originalPrice: 449, unit: '', rating: 4.8, reviewCount: '18.5k', image: '/images/express_cook.png', isNew: true, popular: false, desc: 'Express cook at your doorstep in 30 minutes' },
+  { id: 'party', name: 'Party & Family Gathering', price: 1999, originalPrice: 2999, unit: 'from', rating: 4.9, reviewCount: '12.1k', image: '/images/party_cook.png', isNew: false, popular: true, desc: 'Full event cooking for 10 to 50 guests' },
+  { id: 'kitchen_cleaning', name: 'Kitchen Organising', price: 199, originalPrice: 299, unit: '/hr', rating: 4.9, reviewCount: '14.2k', image: '/images/kitchen_prep.png', isNew: false, popular: false, desc: 'Platform, stovetop & counter deep cleaning' },
+  { id: 'utensils', name: 'Utensils Cleaning', price: 199, originalPrice: 299, unit: '/hr', rating: 4.9, reviewCount: '16.8k', image: '/images/full_meal.png', isNew: false, popular: false, desc: 'Hygienic dishwashing and utensils cleaning' },
+  { id: 'serving', name: 'Food & Table Serving', price: 199, originalPrice: 299, unit: '/hr', rating: 4.9, reviewCount: '9.3k', image: '/images/hero_cook_lucknow.png', isNew: false, popular: false, desc: 'Courteous table serving for meals & parties' },
+  { id: 'subscription', name: 'Smart Subscriptions', price: 5999, originalPrice: 8500, unit: '/mo', rating: 4.9, reviewCount: '23.4k', image: '/images/hero_cook_ooloo.png', isNew: true, popular: false, desc: 'Save up to 30% with monthly cook partners' },
 ];
 
-// Legacy ServiceItem for BookingSheet compatibility
+// ServiceItem for BookingSheet and Modal compatibility
 export const SERVICE_ITEMS: ServiceItem[] = [
-  { id: 'prep', title: 'Kitchen Prep', subtitle: 'Chopping, cutting, peeling & pre-preparation.', desc: 'Get your onions, garlic, veggies chopped, ginger-garlic pastes freshly prepared, and marinades ready.', icon: '🔪', duration: '1 Hour', idealFor: 'Busy home chefs & meal prep', popular: false },
-  { id: 'cooking', title: 'Full Meal Cooking', subtitle: 'North Indian, Awadhi, South Indian & multi-cuisine.', desc: 'From fresh phulkas/rotis to rich gravies, dal, rice & snacks made to your exact spice and salt preference.', icon: '🍳', duration: '1 to 2 Hours', idealFor: 'Daily lunches, family dinners & healthy meals', popular: true },
-  { id: 'ondemand', title: 'Express Cook (30 Min)', subtitle: 'Express cook at your doorstep in 30 minutes.', desc: 'Unexpected guests? Our nearest verified cook reaches your home within 30 minutes flat across Lucknow.', icon: '⚡', duration: '30 min arrival', idealFor: 'Instant emergency hunger & last-minute plans', popular: true },
-  { id: 'party', title: 'Party & Gathering', subtitle: 'Up to 20 people with 2 trained cooks.', desc: 'Hosting a dinner party, birthday, or puja? 2 dedicated cooks handle end-to-end cooking so you enjoy.', icon: '🎉', duration: '3 Hours Min', idealFor: 'House parties, Kitty parties & Festive gatherings', popular: false },
-  { id: 'hourly', title: 'Hourly Service', subtitle: 'Pay per hour, flexible and on-demand.', desc: 'Book a cook for any duration starting 1 hour. Perfect for partial meal prep or helping out when needed.', icon: '⏰', duration: 'Flexible', idealFor: 'Any cooking need', popular: false },
-  { id: 'subscription', title: 'Daily Cook Subscription', subtitle: 'Save big with monthly subscription plan.', desc: 'Dedicated cook visits daily. Best value for working professionals and families who need daily meal support.', icon: '📅', duration: 'Daily visits', idealFor: 'Working professionals & families', popular: false },
+  { id: 'prep', title: 'Vegetable Preparation', subtitle: 'Chopping, cutting, peeling & pre-preparation.', desc: 'Fresh vegetable chopping, peeling, ginger-garlic pastes, and marinades ready before cooking at ₹199/hr.', icon: '🥕', duration: '1 Hour', idealFor: 'Busy home chefs & meal prep', popular: false },
+  { id: 'cooking', title: 'Cooking Assistant', subtitle: 'North Indian, Awadhi, Multi-cuisine home cooking.', desc: '1 Hour (₹299 for up to 3 people) or 2 Hours (₹399 for up to 5 people). Fresh rotis, curries, and dal.', icon: '🍳', duration: '1 to 2 Hours', idealFor: 'Daily lunches, family dinners & healthy meals', popular: true },
+  { id: 'ondemand', title: 'On-Demand Cook (30 Min)', subtitle: 'Verified cook at your door in 30 minutes across Lucknow.', desc: 'Emergency dinner or sudden guests? Verified cook dispatched immediately.', icon: '⚡', duration: '30 min arrival', idealFor: 'Instant urgent hunger & unexpected guests', popular: true },
+  { id: 'party', title: 'Party & Family Gatherings', subtitle: 'Plans for 10 to 50 guests starting ₹1,999.', desc: 'Dedicated cooks handle end-to-end multi-course meal preparation. Servers & cleaners available at ₹1,000.', icon: '🎉', duration: '3 to 5 Hours', idealFor: 'House parties, Birthdays & Family gatherings', popular: true },
+  { id: 'kitchen_cleaning', title: 'Kitchen Organising', subtitle: 'Clean surfaces, tidy shelves & kitchen organizing.', desc: 'Platform, stovetop & counter hygienic turnover at ₹199/hr.', icon: '🧽', duration: 'Hourly flexible', idealFor: 'Pantry reset & deep kitchen hygiene', popular: false },
+  { id: 'utensils', title: 'Utensils Cleaning', subtitle: 'Hygiene washing & arranging of cookware & plates.', desc: 'Thorough dishwashing and scrub cleaning of all utensils at ₹199/hr.', icon: '🍽️', duration: 'Hourly flexible', idealFor: 'Post-cooking cleanup & large meal days', popular: false },
+  { id: 'serving', title: 'Food Serving', subtitle: 'Table and dining serving by courteous helpers.', desc: 'Dining table hosting & hot roti serving assistance at ₹199/hr (or ₹1,000 per party event).', icon: '🛎️', duration: 'Hourly flexible', idealFor: 'Guest gatherings & special family dinners', popular: false },
+  { id: 'subscription', title: 'Smart Subscriptions', subtitle: 'Save up to 30% with monthly subscription plans.', desc: 'Dedicated same trained cook, hold days, priority booking & festive off from ₹5,999/month.', icon: '📅', duration: 'Daily visits', idealFor: 'Working professionals & busy households', popular: false },
 ];
 
 interface HomePageProps {
@@ -144,24 +148,24 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
           {/* Left: text + buttons */}
           <div className="relative z-10 flex flex-col justify-center p-6 sm:p-8 md:p-10 lg:p-12 lg:col-span-7">
             {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold tracking-wide w-fit mb-4 sm:mb-5 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold tracking-wide w-fit mb-5 sm:mb-6 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               <span>Lucknow&apos;s #1 On-Demand Cook Service</span>
             </div>
 
-            {/* Header: restored to its original clean size */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-3">
+            {/* Header: reduced vertically with balanced line spacing */}
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.65rem] font-extrabold text-white leading-[1.22] tracking-tight mb-5 sm:mb-6">
               Need help in the<br />kitchen today? 🍳
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-stone-300 text-sm sm:text-base font-normal leading-relaxed mb-6 max-w-xl">
+            {/* Subtitle with more vertical space */}
+            <p className="text-stone-300 text-sm sm:text-base font-normal leading-relaxed mb-6 sm:mb-7 max-w-xl">
               Verified cooks at your door in{' '}
               <strong className="text-orange-400 font-bold">30 mins</strong> across Lucknow
             </p>
 
-            {/* Stats row — desktop/tablet */}
-            <div className="hidden sm:flex items-center gap-0 w-fit mb-6 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15 shadow-lg">
+            {/* Stats row — desktop/tablet with increased vertical space */}
+            <div className="hidden sm:flex items-center gap-0 w-fit mb-6 sm:mb-7 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15 shadow-lg">
               <div className="text-center px-4 sm:px-5 first:pl-2">
                 <div className="text-lg sm:text-xl font-extrabold text-white leading-none mb-1">30 min</div>
                 <div className="text-xs text-stone-300 font-medium tracking-wide uppercase">Avg. Dispatch</div>
@@ -184,11 +188,10 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
             <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-lg w-full">
               <button
                 type="button"
-                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
-                  serviceMode === 'instant'
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${serviceMode === 'instant'
                     ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
                     : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
-                }`}
+                  }`}
                 onClick={() => setServiceMode('instant')}
               >
                 <span className="text-lg mb-1 transition-transform group-hover:scale-110">⚡</span>
@@ -196,11 +199,10 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
               </button>
               <button
                 type="button"
-                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
-                  serviceMode === 'schedule'
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${serviceMode === 'schedule'
                     ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
                     : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
-                }`}
+                  }`}
                 onClick={() => setServiceMode('schedule')}
               >
                 <span className="text-lg mb-1 transition-transform group-hover:scale-110">📅</span>
@@ -208,11 +210,10 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
               </button>
               <button
                 type="button"
-                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${
-                  serviceMode === 'autorepeat'
+                className={`group relative flex flex-col items-center justify-center text-center p-3 rounded-xl transition-all duration-200 backdrop-blur-md border cursor-pointer ${serviceMode === 'autorepeat'
                     ? 'bg-white/25 border-white/60 shadow-lg scale-105 ring-2 ring-white/20'
                     : 'bg-white/10 border-white/15 hover:bg-white/20 hover:border-white/30 text-white/90'
-                }`}
+                  }`}
                 onClick={() => setServiceMode('autorepeat')}
               >
                 <span className="text-lg mb-1 transition-transform group-hover:scale-110">🔁</span>
@@ -297,8 +298,8 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
               <div className="service-card-info">
                 <div className="service-card-name">{svc.name}</div>
                 <div className="service-card-price">
-                  <span className="service-card-price-current">₹{svc.price}</span>
-                  <span className="service-card-price-original">₹{svc.originalPrice}</span>
+                  <span className="service-card-price-current">₹{svc.price.toLocaleString('en-IN')}{svc.unit ? ` ${svc.unit}` : ''}</span>
+                  <span className="service-card-price-original">₹{svc.originalPrice.toLocaleString('en-IN')}</span>
                 </div>
               </div>
             </div>
@@ -306,78 +307,379 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
         </div>
       </div>
 
-      {/* ---- DESKTOP & MOBILE PASSES (ALIGNED WITH HEADER VIA CONTAINER) ---- */}
-      <div className="container">
-        {/* Desktop: Monthly Pass + Subscription Cards */}
-        <div className="pass-plans-row">
-          {/* ooloo Monthly PASS card */}
-          <div className="pass-plan-card pass-plan-featured" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
-            <div className="pass-plan-badge">MOST POPULAR</div>
-            <div className="pass-plan-icon">🎟️</div>
-            <div className="pass-plan-eyebrow">ooloo kitchen</div>
-            <div className="pass-plan-name">ooloo <strong>PASS</strong></div>
-            <div className="pass-plan-subtitle">Daily Meal Service Pass</div>
-            <div className="pass-plan-price">
-              <span className="pass-plan-price-main">₹297</span>
-              <span className="pass-plan-price-original">₹750</span>
+      {/* ---- FAMILY GATHERING & PARTY PLANS (BROCHURE 1) ---- */}
+      <div className="container" style={{ margin: '20px auto 44px' }}>
+        <div style={{
+          background: 'linear-gradient(135deg, #1C1917 0%, #29150B 100%)',
+          borderRadius: '28px',
+          padding: 'clamp(24px, 4vw, 44px)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          color: '#FFFFFF',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          {/* Subtle glow */}
+          <div className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 rounded-full bg-orange-600/20 blur-3xl" />
+
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FB923C', fontSize: '0.82rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
+              <Sparkles size={16} />
+              <span>Good Food. Happy Moments.</span>
             </div>
-            <div className="pass-plan-detail">3 Visits · 30 days validity</div>
-            <button
-              className="pass-plan-cta"
-              onClick={(e) => { e.stopPropagation(); onBook(SERVICE_ITEMS[1], 'schedule'); }}
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#FFFFFF', lineHeight: 1.15, margin: '0 0 10px 0' }}>
+              Family Gathering & Party Plans
+            </h2>
+            <p style={{ color: '#D6D3D1', fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)', maxWidth: '650px', margin: '0 0 28px 0', lineHeight: 1.5 }}>
+              Make your special occasions stress-free with our trusted kitchen support services. Professional cooks manage your kitchen so you enjoy your guests.
+            </p>
+
+            {/* Plans Table / Cards */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: '12px',
+              marginBottom: '28px'
+            }}>
+              {PARTY_PLANS.map((plan, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => onBook(SERVICE_ITEMS[3], 'schedule')}
+                  style={{
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.14)',
+                    borderRadius: '18px',
+                    padding: '18px 16px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                    e.currentTarget.style.transform = 'translateY(-3px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#FB923C', fontWeight: 800, marginBottom: '6px' }}>
+                    <Users size={14} />
+                    <span>{plan.people} People</span>
+                  </div>
+                  <div style={{ fontSize: '1.9rem', fontWeight: 900, color: '#FFFFFF', margin: '2px 0 4px', fontFamily: 'var(--font-heading)' }}>
+                    {plan.amountFormatted}
+                  </div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', color: '#A8A29E', fontWeight: 600 }}>
+                    <Clock size={12} />
+                    <span>{plan.hours} dedicated</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Party Add-ons & Terms Bar */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '18px',
+              background: 'rgba(0,0,0,0.3)',
+              borderRadius: '20px',
+              padding: '20px 22px',
+              border: '1px solid rgba(255,255,255,0.08)'
+            }}>
+              {/* Other Services */}
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#FB923C', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+                  Party Add-on Services
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {PARTY_ADDONS.map((addon) => (
+                    <div key={addon.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem', color: '#E7E5E4' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span>{addon.icon}</span>
+                        <span style={{ fontWeight: 600 }}>{addon.title} ({addon.unit}):</span>
+                      </div>
+                      <span style={{ fontWeight: 800, color: '#FB923C' }}>{addon.rate}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Terms & Conditions */}
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#A8A29E', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+                  Party Terms & Conditions
+                </div>
+                <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: '#D6D3D1', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  {TERMS_AND_CONDITIONS.party.map((term, tIdx) => (
+                    <li key={tIdx}>{term}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Action */}
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'stretch' }}>
+                <button
+                  onClick={() => onBook(SERVICE_ITEMS[3], 'schedule')}
+                  style={{
+                    padding: '14px 20px',
+                    borderRadius: '14px',
+                    background: '#EA580C',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    fontSize: '0.98rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 8px 20px rgba(234,88,12,0.35)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <span>Book Party Cook Now</span>
+                  <ArrowRight size={16} />
+                </button>
+                <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#A8A29E', marginTop: '8px' }}>
+                  Or call / WhatsApp: <strong style={{ color: '#FFF' }}>+91 73180 86600</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ---- SMART SUBSCRIPTIONS (BROCHURE 2) ---- */}
+      <div className="container" style={{ margin: '0 auto 48px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 30px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 800, color: '#EA580C', background: 'rgba(234,88,12,0.1)', padding: '4px 14px', borderRadius: '99px', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+            SAVE UP TO 30% ON SUBSCRIPTION PLANS
+          </div>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15, margin: '0 0 10px 0' }}>
+            Smart Kitchen Subscriptions
+          </h2>
+          <p style={{ color: '#57534E', fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)', margin: 0 }}>
+            Same trained cook, priority booking, festive off, and up to 6 service hold days. Transparent monthly plans for Lucknow homes.
+          </p>
+        </div>
+
+        {/* 5 Subscription Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+          gap: '16px',
+          alignItems: 'stretch'
+        }}>
+          {SUBSCRIPTION_PLANS.map((sub) => (
+            <div
+              key={sub.id}
+              style={{
+                background: '#FFFFFF',
+                borderRadius: '22px',
+                padding: '24px 20px',
+                border: sub.popular ? '2px solid #EA580C' : '1.5px solid #E7E5E4',
+                boxShadow: sub.popular ? '0 12px 30px rgba(234,88,12,0.12)' : '0 2px 10px rgba(0,0,0,0.04)',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 14px 30px rgba(0,0,0,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = sub.popular ? '0 12px 30px rgba(234,88,12,0.12)' : '0 2px 10px rgba(0,0,0,0.04)';
+              }}
             >
-              Book Pass Now
-            </button>
+              {sub.popular && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-11px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: '#EA580C',
+                  color: '#FFFFFF',
+                  fontSize: '0.66rem',
+                  fontWeight: 900,
+                  padding: '3px 12px',
+                  borderRadius: '99px',
+                  letterSpacing: '0.04em',
+                  whiteSpace: 'nowrap'
+                }}>
+                  POPULAR CHOICE
+                </div>
+              )}
+
+              <div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 800, color: sub.color || '#EA580C', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                  {sub.badge}
+                </div>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 850, color: '#1C1917', margin: '0 0 10px 0' }}>
+                  {sub.title}
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '14px' }}>
+                  <span style={{ fontSize: '2rem', fontWeight: 900, color: '#1C1917', fontFamily: 'var(--font-heading)' }}>
+                    {sub.price}
+                  </span>
+                  <span style={{ fontSize: '0.85rem', color: '#78716C', fontWeight: 600 }}>{sub.period}</span>
+                </div>
+
+                <div style={{ borderTop: '1px solid #F5F5F4', paddingTop: '14px', marginBottom: '18px' }}>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {sub.features.map((feat, fIdx) => (
+                      <li key={fIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.84rem', color: '#44403C' }}>
+                        <Check size={15} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <a
+                href={`https://wa.me/917318086600?text=Hi%20Ooloo!%20I%20would%20like%20to%20subscribe%20to%20the%20${encodeURIComponent(sub.title)}%20(${sub.price}%2Fmonth).`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  width: '100%',
+                  padding: '11px 14px',
+                  borderRadius: '12px',
+                  background: sub.popular ? '#EA580C' : '#F5F5F4',
+                  color: sub.popular ? '#FFFFFF' : '#1C1917',
+                  border: sub.popular ? 'none' : '1px solid #E7E5E4',
+                  fontSize: '0.86rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <MessageSquare size={15} />
+                <span>Inquire on WhatsApp</span>
+              </a>
+            </div>
+          ))}
+        </div>
+
+        {/* Subscription Benefits Strip */}
+        <div style={{
+          marginTop: '22px',
+          background: '#FAFAF9',
+          borderRadius: '18px',
+          padding: '16px 20px',
+          border: '1px solid #E7E5E4',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          gap: '14px',
+          fontSize: '0.82rem',
+          color: '#44403C',
+          fontWeight: 700
+        }}>
+          <span>💰 Save up to 30%</span>
+          <span>👨‍🍳 Same Trained Cook</span>
+          <span>⭐ Priority Booking</span>
+          <span>📅 Festive Off</span>
+          <span>🔒 Background Checked</span>
+          <span>✨ No Hidden Charges</span>
+        </div>
+      </div>
+
+      {/* ---- OTHER SERVICES & HOURLY FLEXIBILITY (BROCHURE 4) ---- */}
+      <div className="container" style={{ margin: '0 auto 40px' }}>
+        <div style={{
+          background: '#FFFFFF',
+          borderRadius: '24px',
+          padding: 'clamp(20px, 3.5vw, 32px)',
+          border: '1.5px solid #E7E5E4',
+          boxShadow: '0 4px 18px rgba(0,0,0,0.03)'
+        }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '20px' }}>
+            <div>
+              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#EA580C', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>
+                ON-DEMAND HOURLY & SPECIALIZED KITCHEN SERVICES
+              </div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 850, color: '#1C1917', margin: 0 }}>
+                Transparent ₹199/Hr Add-On Support
+              </h3>
+            </div>
+            <div style={{ fontSize: '0.82rem', color: '#78716C', background: '#F5F5F4', padding: '6px 14px', borderRadius: '99px', fontWeight: 600 }}>
+              ⚡ Available in 30 Minutes across Lucknow
+            </div>
           </div>
 
-          {/* Subscription Coming Soon card */}
-          <div className="pass-plan-card pass-plan-soon">
-            <div className="pass-plan-soon-badge">COMING SOON</div>
-            <div className="pass-plan-icon">📅</div>
-            <div className="pass-plan-eyebrow">ooloo kitchen</div>
-            <div className="pass-plan-name">Monthly <strong>Subscription</strong></div>
-            <div className="pass-plan-subtitle">Dedicated Daily Cook Plan</div>
-            <div className="pass-plan-price">
-              <span className="pass-plan-price-main" style={{ fontSize: '1.5rem', color: 'var(--text-muted)' }}>₹ TBA</span>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '14px',
+            marginBottom: '20px'
+          }}>
+            {OTHER_SERVICES.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => onBook(SERVICE_ITEMS[0], 'instant')}
+                style={{
+                  background: '#FAFAF9',
+                  border: '1px solid #E7E5E4',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#EA580C';
+                  e.currentTarget.style.background = '#FFFFFF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#E7E5E4';
+                  e.currentTarget.style.background = '#FAFAF9';
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '1.3rem', marginBottom: '4px' }}>{item.icon}</div>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#1C1917' }}>{item.title}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#78716C', marginTop: '2px' }}>{item.desc}</div>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#EA580C', fontFamily: 'var(--font-heading)' }}>
+                    {item.rate}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: '#78716C', fontWeight: 600 }}>{item.unit}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Terms note */}
+          <div style={{ borderTop: '1px solid #F5F5F4', paddingTop: '14px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '10px', fontSize: '0.78rem', color: '#78716C' }}>
+            <span>*Cancellation charges ₹100 applicable if cancelled upon cook arrival. Subject to availability.</span>
+            <div style={{ display: 'flex', gap: '14px', fontWeight: 600, color: '#44403C' }}>
+              <span>Serving Gomti Nagar</span>
+              <span>•</span>
+              <span>Indira Nagar</span>
+              <span>•</span>
+              <span>Alambagh</span>
+              <span>•</span>
+              <span>All Lucknow</span>
             </div>
-            <div className="pass-plan-detail">Daily cook visits · Monthly billing</div>
-            <div className="pass-plan-soon-text">
-              Monthly cook plans with dedicated chefs — launching soon in Lucknow.
-            </div>
-            <button className="pass-plan-cta pass-plan-cta-outline" disabled>
-              Notify Me When Live
-            </button>
           </div>
         </div>
 
-        {/* Mobile: original card layout */}
-        <div className="pass-mobile-only">
-          <div className="pass-card" onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}>
-            <img src="/images/ooloo_pass.png" alt="ooloo PASS" className="pass-card-image" />
-            <div className="pass-card-content">
-              <div className="pass-card-badge-text">ooloo kitchen</div>
-              <div className="pass-card-title">
-                ooloo <strong>PASS</strong>
-                <br /><span>Daily Meal Service Pass</span>
-              </div>
-              <div className="pass-card-savings">
-                3 Visits for <s>₹750</s> <strong>₹297</strong>
-              </div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', marginTop: 4 }}>30 days validity</div>
-            </div>
-            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.6)" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-          <button
-            className="pass-cta-btn"
-            onClick={() => onBook(SERVICE_ITEMS[1], 'schedule')}
-          >
-            Book Pass Now
-          </button>
-        </div>
-
-        <div className="divider" style={{ margin: '16px 0 0' }} />
+        <div className="divider" style={{ margin: '30px 0 0' }} />
       </div>
 
       {/* ===== CUSTOMER REVIEWS (FULL SCREEN WIDTH WITH BIGGER CARDS) ===== */}
@@ -441,7 +743,7 @@ export default function HomePage({ onBook, serviceMode, setServiceMode }: HomePa
           <h2 style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', fontWeight: 850, color: '#121417', lineHeight: 1.2, margin: '6px 0 8px 0' }}>
             Frequently Asked Questions
           </h2>
-          <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center', maxWidth: '520px', fontSize: '0.92rem' }}>
+          <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center', maxWidth: '720px', fontSize: '0.92rem' }}>
             Quick answers about grocery supplies, timing, background checks, and cook hygiene.
           </p>
         </div>

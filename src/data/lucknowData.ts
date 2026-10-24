@@ -1,12 +1,13 @@
-import { LucknowArea, ServiceItem, PricingTier, DishCategory, SubscriptionPlan, TestimonialItem, FaqItem, HeroSlide } from '../types';
+import { LucknowArea, ServiceItem, PricingTier, DishCategory, SubscriptionPlan, TestimonialItem, FaqItem, HeroSlide, PartyPlan, OtherServiceItem } from '../types';
 
 export const LUCKNOW_AREAS: LucknowArea[] = [
   { name: 'Gomti Nagar', code: '226010', status: 'Active', avgEta: '20 mins', cooksAvailable: 18 },
   { name: 'Gomti Nagar Extension', code: '226010', status: 'Active', avgEta: '22 mins', cooksAvailable: 14 },
   { name: 'Hazratganj', code: '226001', status: 'Active', avgEta: '25 mins', cooksAvailable: 12 },
+  { name: 'Indira Nagar', code: '226016', status: 'Active', avgEta: '23 mins', cooksAvailable: 11 },
+  { name: 'Alambagh', code: '226005', status: 'Active', avgEta: '24 mins', cooksAvailable: 12 },
   { name: 'Sushant Golf City', code: '226030', status: 'Active', avgEta: '18 mins', cooksAvailable: 16 },
   { name: 'Aliganj', code: '226024', status: 'Active', avgEta: '24 mins', cooksAvailable: 15 },
-  { name: 'Indira Nagar', code: '226016', status: 'Active', avgEta: '23 mins', cooksAvailable: 11 },
   { name: 'Mahanagar', code: '226006', status: 'Active', avgEta: '26 mins', cooksAvailable: 9 },
   { name: 'Vrindavan Yojna', code: '226029', status: 'Active', avgEta: '21 mins', cooksAvailable: 10 },
   { name: 'Rajajipuram', code: '226017', status: 'Active', avgEta: '28 mins', cooksAvailable: 8 },
@@ -18,19 +19,19 @@ export const LUCKNOW_AREAS: LucknowArea[] = [
 export const SERVICES: ServiceItem[] = [
   {
     id: 'prep',
-    title: 'Kitchen Prep',
+    title: 'Vegetable Preparation',
     subtitle: 'Chopping, cutting, peeling & pre-preparation.',
-    desc: 'Get your onions, garlic, veggies chopped, ginger-garlic pastes freshly prepared, and marinades ready before you start cooking.',
-    icon: 'UtensilsCrossed',
+    desc: 'Get your onions, veggies, pastes & marinades freshly chopped and prepped at ₹199/hr.',
+    icon: 'Carrot',
     duration: '1 Hour',
-    idealFor: 'Busy home chefs & meal prep',
+    idealFor: 'Busy home chefs & daily meal prep',
     popular: false
   },
   {
     id: 'cooking',
-    title: 'Full Meal Cooking',
-    subtitle: 'North Indian, Awadhi, South Indian & multi-cuisine.',
-    desc: 'From fresh phulkas/rotis to rich gravies, dal, rice & snacks made to your exact spice and salt preference.',
+    title: 'Cooking Assistant',
+    subtitle: 'North Indian, Awadhi, Multi-cuisine & daily meals.',
+    desc: 'Fresh phulkas, curries, dal, and rice cooked to your exact taste. 1 Hour (₹299 for up to 3) or 2 Hours (₹399 for up to 5).',
     icon: 'ChefHat',
     duration: '1 to 2 Hours',
     idealFor: 'Daily lunches, family dinners & healthy meals',
@@ -38,42 +39,62 @@ export const SERVICES: ServiceItem[] = [
   },
   {
     id: 'ondemand',
-    title: 'On-Demand Cook (30 Min)',
-    subtitle: 'Express cook at your doorstep in 30 minutes.',
-    desc: 'Unexpected guests or emergency dinner? Our nearest verified cook reaches your home within 30 minutes flat across Lucknow.',
+    title: 'On-Demand Cook (30 Mins)',
+    subtitle: 'Available in 30 minutes* across Lucknow.',
+    desc: 'Need kitchen help today? Professional verified cook dispatched to your doorstep within 30 minutes.',
     icon: 'Zap',
     duration: '30 min arrival',
-    idealFor: 'Instant emergency hunger & last-minute plans',
+    idealFor: 'Instant urgent hunger & unexpected guests',
     popular: true
   },
   {
     id: 'party',
-    title: 'Family Gathering & Party',
-    subtitle: 'Up to 20 people with 2 trained cooks.',
-    desc: 'Hosting a dinner party, birthday, or puja? 2 dedicated cooks handle end-to-end cooking so you can enjoy your guests.',
+    title: 'Party & Family Gatherings',
+    subtitle: 'Complete party plans for 10 to 50 guests.',
+    desc: 'Make your special occasions stress-free with our trusted kitchen support services starting at ₹1,999.',
     icon: 'PartyPopper',
-    duration: '3 Hours Min',
-    idealFor: 'House parties, Kitty parties & Festive get-togethers',
+    duration: '3 to 5 Hours',
+    idealFor: 'House parties, birthdays & family get-togethers',
+    popular: true
+  },
+  {
+    id: 'kitchen_cleaning',
+    title: 'Kitchen Organising',
+    subtitle: 'Clean surfaces, tidy shelves & kitchen organizing.',
+    desc: 'Dedicated helper for arranging spice jars, kitchen cabinets, deep stovetop and platform turnover at ₹199/hr.',
+    icon: 'Sparkles',
+    duration: 'Hourly flexible',
+    idealFor: 'Pantry reset & deep kitchen hygiene',
     popular: false
   },
   {
-    id: 'hourly',
-    title: 'Hourly Service',
-    subtitle: 'Pay per hour, flexible and on-demand.',
-    desc: 'Book a cook for any duration starting 1 hour. Perfect for partial meal prep or helping out when needed.',
+    id: 'utensils',
+    title: 'Utensils Cleaning',
+    subtitle: 'Hygiene washing & arranging of cookware & plates.',
+    desc: 'Add-on service: Thorough dishwashing and scrub clean of all utensils at ₹199/hr.',
+    icon: 'UtensilsCrossed',
+    duration: 'Hourly flexible',
+    idealFor: 'Post-cooking cleanup & large meal days',
+    popular: false
+  },
+  {
+    id: 'serving',
+    title: 'Food Serving',
+    subtitle: 'Table and dining serving by courteous helpers.',
+    desc: 'Add-on service: Hot roti serving & dining table hosting assistance at ₹199/hr (or ₹1,000 per party event).',
     icon: 'Clock',
-    duration: 'Flexible',
-    idealFor: 'Any cooking need',
+    duration: 'Hourly flexible',
+    idealFor: 'Guest gatherings & special family dinners',
     popular: false
   },
   {
     id: 'subscription',
-    title: 'Daily Cook Subscription',
-    subtitle: 'Save big with monthly subscription plan.',
-    desc: 'Dedicated cook visits daily. Best value for working professionals and families who need daily meal support.',
+    title: 'Smart Subscriptions',
+    subtitle: 'Save up to 30% with monthly kitchen partner plans.',
+    desc: 'Same trained cook daily, hold days, priority booking & zero hidden charges from ₹5,999/month.',
     icon: 'Calendar',
     duration: 'Daily visits',
-    idealFor: 'Working professionals & families',
+    idealFor: 'Working professionals & busy households',
     popular: false
   }
 ];
@@ -82,24 +103,24 @@ export const PRICING_TIERS: PricingTier[] = [
   {
     name: '1 Hour Booking',
     price: '₹299',
-    unit: 'per session',
+    unit: 'up to 3 people',
     ideal: 'Up to 3 people',
-    includes: ['2 Mains (e.g. Paneer & Dal)', 'Phulkas / Rotis & Rice', 'Basic Salad / Raita prep'],
+    includes: ['1 Hour dedicated cooking', '2 Mains (e.g. Paneer & Dal)', 'Phulkas / Rotis & Rice', 'Customized spice & salt level'],
     popular: false,
     cta: 'Book 1-Hour Cook'
   },
   {
     name: '2 Hours Booking',
     price: '₹399',
-    unit: 'per session',
-    ideal: 'Up to 6 people',
-    includes: ['3-4 Main Dishes + Starter', 'Phulkas / Parathas & Biryani/Rice', 'Vegetable prep & chopping included', 'Customized spice level'],
+    unit: 'up to 5 people',
+    ideal: 'Up to 5 people',
+    includes: ['2 Hours dedicated cooking', '3-4 Main Dishes + Starter', 'Phulkas / Parathas & Biryani', 'Vegetable prep & chopping included', 'Customized to your taste'],
     popular: true,
     tag: 'MOST POPULAR',
     cta: 'Book 2-Hour Cook'
   },
   {
-    name: 'Extra 30 Mins',
+    name: 'Extra 30 Minutes',
     price: '₹99',
     unit: 'add-on',
     ideal: 'Flexibility guaranteed',
@@ -108,54 +129,149 @@ export const PRICING_TIERS: PricingTier[] = [
     cta: 'Add Extra Time'
   },
   {
-    name: 'Party / Event Rate',
-    price: '₹999',
-    unit: 'per hour (Min 3 hrs)',
-    ideal: 'Up to 20 guests',
-    includes: ['2 Trained & Uniformed Cooks', 'Multi-course Party Menu', 'Starters, Main Course & Dessert', 'End-to-End Kitchen Management'],
+    name: 'Family Gathering & Party',
+    price: '₹1,999',
+    unit: 'starting (1-10 people)',
+    ideal: '10 to 50 guests',
+    includes: ['3 to 5 Hours of dedicated cooking', 'End-to-end multi-course meal preparation', 'Servers & Cleaners available at ₹1,000/event', 'Stress-free celebration hosting'],
     popular: false,
-    cta: 'Book Party Cooks'
+    cta: 'Book Party Plan'
   }
 ];
 
-export const POPULAR_DISHES: DishCategory[] = [
-  { category: 'North Indian Gravies', items: ['Paneer Butter Masala', 'Kadhai Paneer', 'Dal Tadka / Dal Makhani', 'Chole Masala', 'Mix Veg Gravy', 'Malai Kofta'] },
-  { category: 'Lucknowi Specialities', items: ['Awadhi Dum Biryani (Veg/Non-Veg)', 'Galouti Prep & Paratha', 'Kathal Masala', 'Tehri Lucknowi'] },
-  { category: 'Breads & Rice', items: ['Butter Phulka / Plain Roti', 'Lachha Paratha', 'Stuffed Aloo/Gobi Paratha', 'Jeera Rice', 'Pulao'] },
-  { category: 'Breakfast & Snacks', items: ['Poha / Upma', 'Crispy Pakodas', 'Samosa Filling & Chaat Prep', 'Chana Masala'] },
-  { category: 'Healthy & Fitness', items: ['Sautéed High-Protein Veggies', 'Boiled Eggs & Salad Prep', 'Oatmeal & Soups', 'Less-Oil Home Meals'] }
+export const PARTY_PLANS: PartyPlan[] = [
+  { people: '1 to 10', minPeople: 1, maxPeople: 10, hours: '3 hours', amount: 1999, amountFormatted: '₹1,999' },
+  { people: '11 to 20', minPeople: 11, maxPeople: 20, hours: '4 hours', amount: 2999, amountFormatted: '₹2,999' },
+  { people: '21 to 30', minPeople: 21, maxPeople: 30, hours: '4 hours', amount: 3999, amountFormatted: '₹3,999' },
+  { people: '31 to 40', minPeople: 31, maxPeople: 40, hours: '5 hours', amount: 4999, amountFormatted: '₹4,999' },
+  { people: '41 to 50', minPeople: 41, maxPeople: 50, hours: '5 hours', amount: 5999, amountFormatted: '₹5,999' },
+];
+
+export const PARTY_ADDONS = [
+  { id: 'server', title: 'Server', rate: '₹1,000', unit: 'Per Event', icon: '🤵', desc: 'Dedicated professional table & buffet serving' },
+  { id: 'cleaner', title: 'Cleaner', rate: '₹1,000', unit: 'Per Event', icon: '🧹', desc: 'Post-event kitchen and dining area deep cleaning' },
+];
+
+export const OTHER_SERVICES: OtherServiceItem[] = [
+  { id: 'kitchen_prep', title: 'Kitchen Preparation', rate: '₹199', unit: '/Hrs', icon: '🥕', desc: 'Chopping, cutting, peeling & pre-preparation' },
+  { id: 'utensils_cleaning', title: 'Utensils Cleaning', rate: '₹199', unit: '/Hrs', icon: '🍽️', desc: 'Washing, sanitising & arranging all utensils' },
+  { id: 'kitchen_cleaning', title: 'Kitchen Cleaning', rate: '₹199', unit: '/Hrs', icon: '🧽', desc: 'Platform, stovetop & counter hygienic turnover' },
+  { id: 'serving', title: 'Serving', rate: '₹199', unit: '/Hrs', icon: '🛎️', desc: 'Hot roti serving & dining table hosting assistance' },
 ];
 
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   {
-    title: 'Single Meal Pass',
-    price: '₹2,799',
+    id: 'smart',
+    title: 'Smart Plan',
+    badge: 'BEST FOR REGULAR FAMILIES',
+    price: '₹5,999',
     period: '/month',
-    visits: '30 Visits (1 visit/day)',
-    desc: 'Perfect for working professionals needing daily fresh lunch or dinner.',
-    savings: 'Save ₹3,171/mo',
-    features: ['Fixed dedicated cook', 'Same daily time slot guarantee', 'Free replacement if cook is absent', 'Pause/Resume anytime']
+    desc: '1 Hour Daily (Up to 3 People)',
+    savings: 'Save up to 30%',
+    popular: false,
+    color: '#05B865',
+    features: [
+      '1 Hour Daily (Up to 3 People)',
+      'Same Trained Cook',
+      'Up to 4 Service Hold Days',
+      'Priority Booking',
+      'Festive Off'
+    ]
   },
   {
-    title: 'Full Day Double Pass',
-    price: '₹4,499',
+    id: 'elite',
+    title: 'Elite Plan',
+    badge: 'BEST FOR LARGE FAMILIES',
+    price: '₹8,999',
     period: '/month',
-    visits: '60 Visits (2 visits/day)',
-    desc: 'Complete kitchen peace of mind for families — fresh Lunch AND Dinner daily.',
-    savings: 'Save ₹7,471/mo',
+    desc: '2 Hours Daily (Up to 5 People)',
+    savings: 'Save up to 30%',
     popular: true,
-    features: ['Lunch cook + Dinner cook', 'Weekly menu planning support', 'Custom dietary requirements', 'VIP Priority Customer Support', 'Zero cancellation charges']
+    color: '#0284C7',
+    features: [
+      '2 Hours Daily (Up to 5 People)',
+      'Same Trained Cook',
+      'Up to 5 Service Hold Days',
+      'Priority Booking',
+      'Festive Off'
+    ]
   },
   {
-    title: 'Weekend Gourmet Pass',
-    price: '₹1,899',
+    id: 'duo',
+    title: 'Duo Plan',
+    badge: 'BEST FOR SMALL FAMILIES',
+    price: '₹11,999',
     period: '/month',
-    visits: '12 Weekend Visits',
-    desc: 'Relax on Saturdays & Sundays! Special meals cooked right at home.',
-    savings: 'Save ₹1,689/mo',
-    features: ['Friday night + Sat + Sun', 'Party & special dish expertise', 'Great for weekend hosting', 'Flexibility to roll-over unused days']
+    desc: '1 Hour Morning + 1 Hour Evening (Up to 3 People)',
+    savings: 'Save up to 30%',
+    popular: false,
+    color: '#E64A19',
+    features: [
+      '1 Hour Morning + 1 Hour Evening (Up to 3 People)',
+      'Same Trained Cook',
+      'Up to 5 Service Hold Days',
+      'Priority Booking',
+      'Festive Off'
+    ]
+  },
+  {
+    id: 'custom',
+    title: 'Custom Plan',
+    badge: 'BEST FOR CUSTOM NEEDS',
+    price: '₹14,999',
+    period: '/month',
+    desc: '1 Hour Daily (Up to 3 People) + 2 Hours Daily (Up to 5 People)',
+    savings: 'Save up to 30%',
+    popular: false,
+    color: '#D97706',
+    features: [
+      '1 Hour Daily (Up to 3 People) + 2 Hours Daily (Up to 5 People)',
+      'Same Trained Cook',
+      'Up to 5 Service Hold Days',
+      'Priority Booking',
+      'Festive Off'
+    ]
+  },
+  {
+    id: 'signature',
+    title: 'Signature Plan',
+    badge: 'BEST FOR MEDIUM FAMILIES',
+    price: '₹17,999',
+    period: '/month',
+    desc: '2 Hours Morning + 2 Hours Evening (Up to 5 People)',
+    savings: 'Save up to 30%',
+    popular: false,
+    color: '#7C3AED',
+    features: [
+      '2 Hours Morning + 2 Hours Evening (Up to 5 People)',
+      'Same Trained Cook',
+      'Up to 6 Service Hold Days',
+      'Highest Booking Priority',
+      'Festive Off'
+    ]
   }
 ];
+
+export const TERMS_AND_CONDITIONS = {
+  hourly: [
+    'Cancellation charges ₹100 will be applicable if you cancel on arrival of the cook.',
+    'Booking is subject to availability and confirmation.',
+    'We do not provide kitchen cleaning or utensils cleaning (unless booked separately at ₹199/hr).',
+    'No serving (unless booked separately at ₹199/hr).'
+  ],
+  party: [
+    '50% advance required for booking confirmation.',
+    'Cancellation charges: ₹499.',
+    'Booking subject to availability and confirmation.',
+    'Server and cleaner available as add-ons at ₹1,000 each per event.'
+  ],
+  subscription: [
+    'Save up to 30% compared to daily individual bookings.',
+    'Same verified, trained cook assigned to your home.',
+    'Flexible service hold days included for family trips.',
+    'Festive off as per company calendar.'
+  ]
+};
 
 export const TESTIMONIALS: TestimonialItem[] = [
   {

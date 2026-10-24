@@ -33,14 +33,35 @@ export interface DishCategory {
   items: string[];
 }
 
-export interface SubscriptionPlan {
+export interface PartyPlan {
+  people: string;
+  minPeople: number;
+  maxPeople: number;
+  hours: string;
+  amount: number;
+  amountFormatted: string;
+}
+
+export interface OtherServiceItem {
+  id: string;
   title: string;
+  rate: string;
+  unit: string;
+  icon: string;
+  desc: string;
+}
+
+export interface SubscriptionPlan {
+  id?: string;
+  title: string;
+  badge?: string;
   price: string;
   period: string;
-  visits: string;
+  visits?: string;
   desc: string;
-  savings: string;
+  savings?: string;
   popular?: boolean;
+  color?: string;
   features: string[];
 }
 

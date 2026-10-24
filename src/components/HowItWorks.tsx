@@ -24,24 +24,24 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
   const steps = [
     {
       num: '01',
-      title: 'Book in 30 Seconds',
-      tag: 'INSTANT IN-APP & CALL',
+      title: 'Book & Relax',
+      tag: 'CALL OR WHATSAPP',
       image: '/images/hero_cook_lucknow_3.png',
-      desc: 'Pick your dishes, spice preference, and time slot. Our smart dispatch matches you with the nearest cook.'
+      desc: 'Book your kitchen partner on call or WhatsApp (+91 73180 86600). Nearest cook is dispatched.'
     },
     {
       num: '02',
-      title: 'Cook Arrives in ~30 Mins',
-      tag: 'POLICE & HYGIENE VERIFIED',
+      title: 'Verified Cook Arrives On Time',
+      tag: 'TRAINED & VERIFIED',
       image: '/images/express_cook.png',
-      desc: 'Your cook arrives wearing the signature dark apron with full ID verification and hygiene kit.'
+      desc: 'Trained & verified cook arrives at your doorstep on time with full uniform and hygiene kit.'
     },
     {
       num: '03',
-      title: 'Enjoy Fresh, Clean Food',
-      tag: 'TASTE GUARANTEED',
+      title: 'We Handle The Kitchen',
+      tag: 'REST & ENTERTAIN',
       image: '/images/full_meal.png',
-      desc: 'Hot rotis and fragrant curries cooked to your exact taste, leaving your counter clean and spotless.'
+      desc: 'Focus on your guests or rest while we cook fresh, delicious food to your exact taste.'
     }
   ];
 
@@ -56,10 +56,10 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
             <span>THE OOLOO EXPERIENCE</span>
           </div>
           <h1 className="page-title" style={{ textAlign: 'center' }}>
-            3 easy steps to <span className="italic-serif" style={{ color: 'var(--primary)' }}>fresh home food.</span>
+            3 Easy Steps to <span className="italic-serif" style={{ color: 'var(--primary)' }}>Fresh Home Food.</span>
           </h1>
           <p className="page-subtitle" style={{ margin: '0 auto', textAlign: 'center' }}>
-            No agency lock-ins. No waiting days for interviews. Just verified cooks on demand in 30 minutes across Lucknow.
+            Available in 30 minutes* across Lucknow. Trained cooks, trusted support, hassle-free experience.
           </p>
         </div>
 
@@ -156,11 +156,11 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
               alignItems: 'center',
               gap: '12px',
               color: '#FFFFFF',
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               fontWeight: 700
             }}>
-              <CheckCircle size={20} color="#05B865" />
-              <span>Chopping & Full Cooking</span>
+              <span style={{ color: '#FF7B54', fontWeight: 900, fontSize: '1.1rem' }}>✕</span>
+              <span>NO KITCHEN CLEANING*</span>
             </div>
 
             <div style={{
@@ -172,11 +172,11 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
               alignItems: 'center',
               gap: '12px',
               color: '#FFFFFF',
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               fontWeight: 700
             }}>
-              <CheckCircle size={20} color="#05B865" />
-              <span>Clean Counter Turnover</span>
+              <span style={{ color: '#FF7B54', fontWeight: 900, fontSize: '1.1rem' }}>✕</span>
+              <span>NO UTENSIL CLEANING*</span>
             </div>
 
             <div style={{
@@ -187,13 +187,16 @@ export default function HowItWorks({ onBook, style }: HowItWorksProps = {}) {
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              color: 'rgba(255,255,255,0.7)',
+              color: '#FFFFFF',
               fontSize: '0.92rem',
-              fontWeight: 600
+              fontWeight: 700
             }}>
-              <XCircle size={20} color="#FF7B54" />
-              <span>No dishwashing / serving</span>
+              <span style={{ color: '#FF7B54', fontWeight: 900, fontSize: '1.1rem' }}>✕</span>
+              <span>NO SERVING*</span>
             </div>
+          </div>
+          <div style={{ textAlign: 'center', fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)', marginTop: '14px' }}>
+            *Standard cook visits focus 100% on food preparation. Kitchen cleaning, utensil washing & serving are available as separate add-ons at ₹199/hr (or ₹1,000 for party events).
           </div>
         </div>
 

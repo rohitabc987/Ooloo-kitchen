@@ -9,45 +9,48 @@ import { ServiceItem } from '../types';
 export const VISUAL_SERVICES = [
   {
     id: 'prep',
-    title: 'Kitchen Prep',
-    price: 149,
+    title: 'Vegetable Preparation',
+    price: 199,
     originalPrice: 299,
+    unit: '/Hr',
     rating: 4.9,
     reviewCount: '25.4k',
     image: '/images/kitchen_prep.png',
     badge: 'PRE-COOKING HELPER',
     badgeColor: '#05B865',
     bullets: [
-      'Fresh chopping, slicing & peeling',
+      'Fresh chopping, cutting & peeling',
       'Ginger-garlic pastes & marinades ready',
-      '1 Hour dedicated kitchen assistance'
+      '1 Hour dedicated kitchen prep assistance'
     ],
     duration: '1 Hour',
     idealFor: 'Busy home chefs & meal prep'
   },
   {
     id: 'cooking',
-    title: 'Full Meal Cooking',
+    title: 'Cooking Assistant',
     price: 299,
-    originalPrice: 599,
+    originalPrice: 499,
+    unit: 'from',
     rating: 4.9,
     reviewCount: '30.7k',
     image: '/images/full_meal.png',
     badge: 'MOST POPULAR',
     badgeColor: '#E64A19',
     bullets: [
-      'Fresh hot rotis/phulkas, 2 curries, dal & rice',
-      'Prepared to your exact spice & salt preference',
-      'North Indian, Awadhi & multi-cuisine expertise'
+      '1 Hour (₹299 for up to 3) or 2 Hours (₹399 for up to 5)',
+      'Fresh hot rotis/phulkas, curries, dal & rice',
+      'North Indian, Awadhi & multi-cuisine home taste'
     ],
     duration: '1 to 2 Hours',
     idealFor: 'Daily lunches & healthy family dinners'
   },
   {
     id: 'ondemand',
-    title: 'Express Cook (30 Min)',
-    price: 199,
-    originalPrice: 399,
+    title: 'On-Demand Cook (30 Min)',
+    price: 299,
+    originalPrice: 449,
+    unit: '',
     rating: 4.8,
     reviewCount: '18.5k',
     image: '/images/express_cook.png',
@@ -63,54 +66,95 @@ export const VISUAL_SERVICES = [
   },
   {
     id: 'party',
-    title: 'Party & Gathering Cook',
-    price: 999,
-    originalPrice: 1999,
+    title: 'Family Gathering & Party',
+    price: 1999,
+    originalPrice: 2999,
+    unit: 'from',
     rating: 4.9,
     reviewCount: '12.1k',
     image: '/images/party_cook.png',
-    badge: 'UP TO 20 GUESTS',
+    badge: '10 TO 50 GUESTS',
     badgeColor: '#7C3AED',
     bullets: [
-      '2 dedicated trained cooks handle end-to-end cooking',
-      'Multi-course party menu, starters & feast dishes',
-      'You entertain guests while we handle the kitchen'
+      'Plans for 1-10 (₹1,999) up to 50 guests (₹5,999)',
+      'Multi-course feast dishes & dedicated party cooks',
+      'Server & cleaner add-ons at ₹1,000 per event'
     ],
-    duration: '3 Hours Min',
+    duration: '3 to 5 Hours',
     idealFor: 'House parties, Birthdays & Celebrations'
   },
   {
-    id: 'hourly',
-    title: 'Flexible Hourly Service',
-    price: 60,
-    originalPrice: 125,
+    id: 'kitchen_cleaning',
+    title: 'Kitchen Organising',
+    price: 199,
+    originalPrice: 299,
+    unit: '/Hr',
     rating: 4.9,
-    reviewCount: '239k',
-    image: '/images/hero_cook_lucknow.png',
-    badge: 'PAY AS YOU GO',
+    reviewCount: '14.2k',
+    image: '/images/kitchen_prep.png',
+    badge: 'CLEAN TURNOVER',
     badgeColor: '#0284C7',
     bullets: [
-      'Hire a verified cook for any duration from 1 hour',
-      'Ideal for partial meal prep, snacking or custom dishes',
-      'Complete flexibility with transparent hourly billing'
+      'Platform, stovetop & counter scrub clean',
+      'Pantry, spice racks & cabinet organising',
+      'Leaves your kitchen neat, fresh & spotless'
     ],
     duration: 'Hourly flexible',
-    idealFor: 'Custom needs & quick kitchen support'
+    idealFor: 'Pantry reset & deep kitchen hygiene'
+  },
+  {
+    id: 'utensils',
+    title: 'Utensils Cleaning',
+    price: 199,
+    originalPrice: 299,
+    unit: '/Hr',
+    rating: 4.9,
+    reviewCount: '16.8k',
+    image: '/images/full_meal.png',
+    badge: 'ADD-ON SERVICE',
+    badgeColor: '#05B865',
+    bullets: [
+      'Thorough dishwashing & scrub clean of all utensils',
+      'Cookware, kadhais & dining plates sanitised',
+      'Sink and washing area wiped spotless'
+    ],
+    duration: 'Hourly flexible',
+    idealFor: 'Post-cooking cleanup & large family meals'
+  },
+  {
+    id: 'serving',
+    title: 'Food Serving',
+    price: 199,
+    originalPrice: 299,
+    unit: '/Hr',
+    rating: 4.9,
+    reviewCount: '9.3k',
+    image: '/images/hero_cook_lucknow.png',
+    badge: 'DINING HOSTING',
+    badgeColor: '#D97706',
+    bullets: [
+      'Hot roti & fresh curry dining table service',
+      'Courteous hosting assistant for guests & family',
+      'Relax with your loved ones while we serve'
+    ],
+    duration: 'Hourly flexible',
+    idealFor: 'Guest hosting & special family gatherings'
   },
   {
     id: 'subscription',
-    title: 'Daily Cook Subscription',
-    price: 2799,
-    originalPrice: 5970,
+    title: 'Smart Subscriptions',
+    price: 5999,
+    originalPrice: 8500,
+    unit: '/mo',
     rating: 4.9,
     reviewCount: '23.4k',
     image: '/images/hero_cook_ooloo.png',
-    badge: 'BEST VALUE · SAVE 55%',
+    badge: 'SAVE UP TO 30%',
     badgeColor: '#05B865',
     bullets: [
-      'Same trusted, verified cook visits your home daily',
-      'Guaranteed replacement if your cook is ever on leave',
-      'Save big over individual bookings every single month'
+      '5 plans: Smart, Elite, Duo, Custom & Signature',
+      'Same trained cook daily, hold days & festive off',
+      'Priority booking & zero hidden charges'
     ],
     duration: 'Daily visits',
     idealFor: 'Working professionals & busy families'

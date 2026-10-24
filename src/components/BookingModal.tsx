@@ -32,12 +32,14 @@ const TIME_SLOTS = [
 ];
 
 const SERVICE_PRICES: Record<string, number> = {
-  prep: 149,
+  prep: 199,
   cooking: 299,
-  ondemand: 199,
-  party: 999,
-  hourly: 60,
-  subscription: 2799,
+  ondemand: 299,
+  party: 1999,
+  kitchen_cleaning: 199,
+  utensils: 199,
+  serving: 199,
+  subscription: 5999,
 };
 
 export default function BookingModal() {
@@ -68,7 +70,17 @@ export default function BookingModal() {
     isSubmitted = false,
   } = bookingData;
 
-  const currentPrice = SERVICE_PRICES[service?.id || 'cooking'] || 299;
+  const currentPrice = (() => {
+    if (service?.id === 'party') {
+      if (peopleCount <= 10) return 1999;
+      if (peopleCount <= 20) return 2999;
+      if (peopleCount <= 30) return 3999;
+      if (peopleCount <= 40) return 4999;
+      return 5999;
+    }
+    if (service?.id === 'cooking' && peopleCount > 3) return 399;
+    return SERVICE_PRICES[service?.id || 'cooking'] || 299;
+  })();
 
   const toggleDish = (dish: string) => {
     if (selectedDishes.includes(dish)) {
