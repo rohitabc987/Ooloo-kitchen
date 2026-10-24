@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Check, MessageSquare, Phone, ChevronDown, ChevronUp, Plus, Minus, Clock, Calendar, Users, Utensils, Sparkles, MapPin } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { X, Check, MessageSquare, Phone, ChevronDown, ChevronUp, Plus, Minus, Clock, Calendar, Users, Utensils, Sparkles, MapPin, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useApp } from '../context/AppContext';
 import { SERVICES } from '../data/lucknowData';
@@ -52,6 +52,7 @@ export default function BookingModal() {
   } = useApp();
 
   const [isChangingService, setIsChangingService] = useState(false);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   if (!isBookingModalOpen) return null;
 
@@ -144,68 +145,24 @@ export default function BookingModal() {
         <div className="booking-sheet-handle" />
 
         {/* Header */}
-        <div
-          style={{
-            padding: '16px 18px',
-            borderBottom: '1px solid #F1F5F9',
-            position: 'sticky',
-            top: 0,
-            background: '#FFFFFF',
-            zIndex: 10,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            {/* Area & Reassurance Badge (No area selector dropdown) */}
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                fontSize: '0.72rem',
-                fontWeight: 800,
-                color: '#E64A19',
-                background: '#FFF2ED',
-                padding: '3px 10px',
-                borderRadius: '99px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <MapPin size={12} />
+        <div className="p-4 sm:p-5 border-b border-stone-100 sticky top-0 bg-white z-10">
+          <div className="flex items-center justify-between mb-2">
+            {/* Area Badge */}
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 bg-orange-50 border border-orange-200/80 px-2.5 py-1 rounded-full whitespace-nowrap">
+              <MapPin size={13} className="shrink-0" />
               <span>Delivering to {selectedArea.name} • ETA ~{selectedArea.avgEta}</span>
             </div>
 
             <button
               onClick={handleCloseBooking}
               aria-label="Close"
-              style={{
-                background: '#F8FAFC',
-                border: 'none',
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: '#64748B',
-                transition: 'background 0.2s',
-                flexShrink: 0,
-              }}
+              className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
             >
-              <X size={17} />
+              <X size={18} />
             </button>
           </div>
 
-          <h3
-            style={{
-              fontSize: '1.22rem',
-              fontWeight: 800,
-              color: '#121417',
-              margin: 0,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.25,
-            }}
-          >
+          <h3 className="text-lg sm:text-xl font-bold text-stone-900 tracking-tight leading-snug m-0">
             {isSubmitted
               ? 'Cook Dispatched!'
               : step === 1
@@ -218,31 +175,14 @@ export default function BookingModal() {
 
         {/* Selected Service Bar (Direct Pre-selected Service with quick change toggle) */}
         {!isSubmitted && (
-          <div
-            style={{
-              background: '#F8FAFC',
-              padding: '10px 18px',
-              borderBottom: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '8px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <span style={{ fontSize: '1.15rem', flexShrink: 0 }}>🍳</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, overflow: 'hidden' }}>
-                <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#1E293B', whiteSpace: 'nowrap' }}>
+          <div className="bg-stone-50/90 px-4 py-2.5 sm:px-5 sm:py-3 border-b border-stone-100 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-xl shrink-0">🍳</span>
+              <div className="flex items-baseline gap-2 min-w-0 overflow-hidden">
+                <span className="text-xs sm:text-sm font-bold text-stone-900 truncate">
                   {service?.title || 'Full Meal Cooking'}
                 </span>
-                <span
-                  style={{
-                    fontSize: '0.84rem',
-                    fontWeight: 800,
-                    color: '#E64A19',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <span className="text-xs sm:text-sm font-extrabold text-orange-600 whitespace-nowrap">
                   ₹{currentPrice}
                 </span>
               </div>
@@ -251,21 +191,7 @@ export default function BookingModal() {
             <button
               type="button"
               onClick={() => setIsChangingService(!isChangingService)}
-              style={{
-                background: '#FFFFFF',
-                border: '1px solid #CBD5E1',
-                borderRadius: '99px',
-                padding: '4px 10px',
-                fontSize: '0.74rem',
-                fontWeight: 700,
-                color: '#475569',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '3px',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-              }}
+              className="bg-white border border-stone-300 hover:border-orange-500 hover:text-orange-600 rounded-full px-2.5 py-1 text-xs font-bold text-stone-700 cursor-pointer flex items-center gap-1 shrink-0 whitespace-nowrap transition-colors"
             >
               <span>{isChangingService ? 'Hide' : 'Change'}</span>
               {isChangingService ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
@@ -275,16 +201,7 @@ export default function BookingModal() {
 
         {/* Quick Service Switcher Dropdown (only if user taps Change) */}
         {isChangingService && !isSubmitted && (
-          <div
-            style={{
-              background: '#FFFFFF',
-              borderBottom: '1px solid #E2E8F0',
-              padding: '12px 18px',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-              gap: '8px',
-            }}
-          >
+          <div className="bg-white border-b border-stone-200 p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
             {SERVICES.map((svc) => (
               <div
                 key={svc.id}
@@ -292,19 +209,16 @@ export default function BookingModal() {
                   updateBookingData({ service: svc });
                   setIsChangingService(false);
                 }}
-                style={{
-                  padding: '9px 11px',
-                  borderRadius: '10px',
-                  border: service.id === svc.id ? '2px solid #E64A19' : '1px solid #E2E8F0',
-                  background: service.id === svc.id ? '#FFF5F0' : '#FFFFFF',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
-                }}
+                className={`p-2.5 rounded-xl border cursor-pointer transition-all ${
+                  service.id === svc.id
+                    ? 'border-orange-600 bg-orange-50/70 shadow-xs'
+                    : 'border-stone-200 bg-white hover:border-stone-300'
+                }`}
               >
-                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1E293B' }}>
+                <div className="text-xs font-bold text-stone-900 leading-snug">
                   {svc.title}
                 </div>
-                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#E64A19', marginTop: '2px' }}>
+                <div className="text-xs font-bold text-orange-600 mt-0.5">
                   ₹{SERVICE_PRICES[svc.id] || 299}
                 </div>
               </div>
@@ -314,131 +228,73 @@ export default function BookingModal() {
 
         {/* Step Progress Bar */}
         {!isSubmitted && (
-          <div style={{ display: 'flex', gap: '6px', padding: '14px 18px 0 18px' }}>
+          <div className="flex gap-1.5 px-4 sm:px-5 pt-3">
             {[1, 2, 3].map((s) => (
               <div
                 key={s}
-                style={{
-                  flex: 1,
-                  height: '4px',
-                  borderRadius: '99px',
-                  background: step >= s ? '#E64A19' : '#E2E8F0',
-                  transition: 'background 0.3s ease',
-                }}
+                className={`flex-1 h-1 rounded-full transition-colors duration-300 ${
+                  step >= s ? 'bg-orange-600' : 'bg-stone-200'
+                }`}
               />
             ))}
           </div>
         )}
 
         {/* Modal Body */}
-        <div style={{ padding: '16px 18px 24px', flex: 1 }}>
+        <div className="p-4 sm:p-5 flex-1">
           {isSubmitted ? (
             /* ======= SUCCESS CONFIRMATION ======= */
-            <div style={{ textAlign: 'center', padding: '10px 0' }}>
-              <div
-                style={{
-                  width: '68px',
-                  height: '68px',
-                  borderRadius: '50%',
-                  background: '#ECFDF5',
-                  color: '#10B981',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 16px auto',
-                  border: '3px solid #A7F3D0',
-                }}
-              >
+            <div className="text-center py-3 sm:py-5">
+              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3.5 border-3 border-emerald-200 shadow-sm">
                 <Check size={36} strokeWidth={2.5} />
               </div>
 
-              <h2
-                style={{
-                  fontSize: '1.6rem',
-                  fontWeight: 800,
-                  color: '#121417',
-                  marginBottom: '6px',
-                }}
-              >
+              <h2 className="text-xl sm:text-2xl font-bold text-stone-900 mb-1.5">
                 Cook Assigned to {selectedArea.name}!
               </h2>
-              <p
-                style={{
-                  color: '#64748B',
-                  fontSize: '0.92rem',
-                  maxWidth: '420px',
-                  margin: '0 auto 20px auto',
-                  lineHeight: 1.5,
-                }}
-              >
+              <p className="text-stone-600 text-xs sm:text-sm max-w-md mx-auto mb-5 leading-relaxed font-medium">
                 Our verified cook is ready to dispatch. Send your booking on WhatsApp for instant confirmation.
               </p>
 
-              {/* Order Summary Card */}
-              <div
-                style={{
-                  background: '#F8FAFC',
-                  borderRadius: '16px',
-                  padding: '18px',
-                  textAlign: 'left',
-                  marginBottom: '24px',
-                  border: '1px solid #E2E8F0',
-                  fontSize: '0.88rem',
-                }}
-              >
-                <div
-                  style={{
-                    fontWeight: 800,
-                    marginBottom: '10px',
-                    color: '#0F172A',
-                    fontSize: '0.82rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}
-                >
+              {/* Order Summary Card with Solid Border */}
+              <div className="bg-stone-50 rounded-xl p-4 sm:p-5 text-left mb-5 border border-stone-200">
+                <div className="font-bold mb-2.5 text-stone-900 text-xs uppercase tracking-wider">
                   📋 Booking Summary
                 </div>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '10px',
-                    color: '#475569',
-                    fontSize: '0.86rem',
-                  }}
-                >
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-stone-700 text-xs sm:text-sm">
                   <div>
-                    <span style={{ color: '#94A3B8' }}>Service: </span>
-                    <strong style={{ color: '#1E293B' }}>{service.title}</strong>
+                    <span className="text-stone-500 font-medium">Service: </span>
+                    <strong className="text-stone-900">{service.title}</strong>
                   </div>
                   <div>
-                    <span style={{ color: '#94A3B8' }}>Total: </span>
-                    <strong style={{ color: '#E64A19' }}>₹{currentPrice}</strong>
+                    <span className="text-stone-500 font-medium">Total: </span>
+                    <strong className="text-orange-600 font-bold">₹{currentPrice}</strong>
                   </div>
                   <div>
-                    <span style={{ color: '#94A3B8' }}>Area: </span>
-                    <strong style={{ color: '#1E293B' }}>{selectedArea.name}</strong>
+                    <span className="text-stone-500 font-medium">Area: </span>
+                    <strong className="text-stone-900">{selectedArea.name}</strong>
                   </div>
                   <div>
-                    <span style={{ color: '#94A3B8' }}>ETA: </span>
-                    <strong style={{ color: '#10B981' }}>~{selectedArea.avgEta}</strong>
+                    <span className="text-stone-500 font-medium">ETA: </span>
+                    <strong className="text-emerald-600 font-bold">~{selectedArea.avgEta}</strong>
                   </div>
                   <div>
-                    <span style={{ color: '#94A3B8' }}>Guests: </span>
-                    <strong style={{ color: '#1E293B' }}>{peopleCount} People</strong>
+                    <span className="text-stone-500 font-medium">Guests: </span>
+                    <strong className="text-stone-900">{peopleCount} People</strong>
                   </div>
                   <div>
-                    <span style={{ color: '#94A3B8' }}>Slot: </span>
-                    <strong style={{ color: '#1E293B' }}>{timeSlot.replace(/[⚡☀️🍱🌙📅]/g, '').trim()}</strong>
+                    <span className="text-stone-500 font-medium">Slot: </span>
+                    <strong className="text-stone-900">{timeSlot.replace(/[⚡☀️🍱🌙📅]/g, '').trim()}</strong>
                   </div>
                 </div>
 
                 {selectedDishes.length > 0 && (
-                  <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
-                    <div style={{ color: '#94A3B8', fontSize: '0.78rem', marginBottom: '4px' }}>
+                  <div className="mt-3 pt-2.5 border-t border-stone-200">
+                    <div className="text-stone-500 text-[11px] font-semibold mb-0.5">
                       Selected Dishes:
                     </div>
-                    <div style={{ color: '#1E293B', fontWeight: 600, fontSize: '0.82rem', lineHeight: 1.4 }}>
+                    <div className="text-stone-900 font-semibold text-xs sm:text-sm leading-snug">
                       {selectedDishes.join(', ')}
                     </div>
                   </div>
@@ -446,64 +302,29 @@ export default function BookingModal() {
               </div>
 
               {/* Actions */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div className="flex flex-col gap-2.5">
                 <a
                   href={`https://wa.me/917318086600?text=${getWhatsAppMessage()}`}
                   target="_blank"
                   rel="noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '14px',
-                    borderRadius: '99px',
-                    background: '#25D366',
-                    color: '#FFFFFF',
-                    fontWeight: 800,
-                    fontSize: '0.98rem',
-                    textDecoration: 'none',
-                    boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)',
-                  }}
+                  className="flex items-center justify-center gap-2 w-full py-3.5 px-5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm sm:text-base shadow-md shadow-emerald-600/25 transition-all cursor-pointer"
                 >
-                  <MessageSquare size={19} />
+                  <MessageSquare size={20} />
                   <span>Send Confirmation via WhatsApp</span>
                 </a>
 
                 <a
                   href="tel:+917318086600"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '12px',
-                    borderRadius: '99px',
-                    background: '#121417',
-                    color: '#FFFFFF',
-                    fontWeight: 700,
-                    fontSize: '0.92rem',
-                    textDecoration: 'none',
-                  }}
+                  className="flex items-center justify-center gap-2 w-full py-3 px-5 rounded-full bg-stone-950 hover:bg-stone-900 text-white font-bold text-xs sm:text-sm transition-all"
                 >
-                  <Phone size={17} />
+                  <Phone size={16} />
                   <span>Call Dispatch (+91 73180 86600)</span>
                 </a>
 
                 <button
                   type="button"
                   onClick={handleCloseBooking}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#64748B',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
-                    padding: '8px',
-                    cursor: 'pointer',
-                  }}
+                  className="text-stone-500 hover:text-stone-800 text-xs font-bold p-1.5 cursor-pointer"
                 >
                   Done
                 </button>
@@ -514,87 +335,49 @@ export default function BookingModal() {
               {/* ======= STEP 1: DISHES & GUESTS ======= */}
               {step === 1 && (
                 <div>
-                  {/* People Count Selector */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      background: '#F8FAFC',
-                      padding: '12px 14px',
-                      borderRadius: '14px',
-                      border: '1px solid #E2E8F0',
-                      marginBottom: '18px',
-                      gap: '8px',
-                    }}
-                  >
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontWeight: 800, fontSize: '0.88rem', color: '#1E293B', whiteSpace: 'nowrap' }}>
+                  {/* People Count Selector Card */}
+                  <div className="flex items-center justify-between bg-stone-50/80 p-3.5 sm:p-4 rounded-xl border border-stone-200 mb-4 gap-3">
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm sm:text-base text-stone-900 leading-tight">
                         Number of Guests
                       </div>
-                      <div style={{ fontSize: '0.74rem', color: '#64748B', marginTop: '1px' }}>
+                      <div className="text-[11px] sm:text-xs text-stone-500 font-medium mt-0.5">
                         Cook portions adjusted accordingly
                       </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+                    <div className="flex items-center gap-2.5 shrink-0">
                       <button
                         type="button"
                         onClick={() => updateBookingData({ peopleCount: Math.max(1, peopleCount - 1) })}
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '50%',
-                          border: '1px solid #CBD5E1',
-                          background: '#FFFFFF',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: '#475569',
-                          fontWeight: 800,
-                          flexShrink: 0,
-                        }}
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-stone-300 bg-white hover:border-orange-500 text-stone-700 hover:text-orange-600 cursor-pointer flex items-center justify-center font-bold text-sm transition-colors shadow-xs"
                       >
-                        <Minus size={14} />
+                        <Minus size={15} />
                       </button>
-                      <span style={{ fontWeight: 800, fontSize: '1.05rem', minWidth: '22px', textAlign: 'center', color: '#1E293B' }}>
+                      <span className="font-black text-lg sm:text-xl min-w-7 text-center text-stone-900 font-heading">
                         {peopleCount}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateBookingData({ peopleCount: peopleCount + 1 })}
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '50%',
-                          border: '1px solid #CBD5E1',
-                          background: '#FFFFFF',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: '#475569',
-                          fontWeight: 800,
-                          flexShrink: 0,
-                        }}
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-stone-300 bg-white hover:border-orange-500 text-stone-700 hover:text-orange-600 cursor-pointer flex items-center justify-center font-bold text-sm transition-colors shadow-xs"
                       >
-                        <Plus size={14} />
+                        <Plus size={15} />
                       </button>
                     </div>
                   </div>
 
                   {/* Dishes Selection */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                      <label style={{ fontSize: '0.88rem', fontWeight: 800, color: '#1E293B' }}>
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs sm:text-sm font-bold text-stone-800">
                         Select Dishes / Meal Items
                       </label>
-                      <span style={{ fontSize: '0.74rem', color: '#64748B' }}>
+                      <span className="text-[11px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
                         {selectedDishes.length} selected
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', maxHeight: '180px', overflowY: 'auto', padding: '2px' }}>
+                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2.5 border border-stone-200 rounded-xl bg-stone-50/40">
                       {POPULAR_DISHES.map((dish) => {
                         const isSelected = selectedDishes.includes(dish);
                         return (
@@ -602,20 +385,11 @@ export default function BookingModal() {
                             key={dish}
                             type="button"
                             onClick={() => toggleDish(dish)}
-                            style={{
-                              padding: '7px 12px',
-                              borderRadius: '99px',
-                              border: isSelected ? '1.5px solid #E64A19' : '1px solid #E2E8F0',
-                              background: isSelected ? '#FFF5F0' : '#FFFFFF',
-                              color: isSelected ? '#E64A19' : '#334155',
-                              fontSize: '0.78rem',
-                              fontWeight: isSelected ? 700 : 500,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '5px',
-                              transition: 'all 0.15s ease',
-                            }}
+                            className={`px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer flex items-center gap-1 transition-all ${
+                              isSelected
+                                ? 'border border-orange-600 bg-orange-50 text-orange-600 font-bold shadow-xs'
+                                : 'border border-stone-200 bg-white text-stone-700 hover:border-stone-300'
+                            }`}
                           >
                             <span>{isSelected ? '✓' : '+'}</span>
                             <span>{dish}</span>
@@ -625,8 +399,8 @@ export default function BookingModal() {
                     </div>
                   </div>
 
-                  {/* Add Custom Dish Input */}
-                  <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+                  {/* Add Custom Dish Input with Solid Border */}
+                  <div className="flex gap-2 mb-5">
                     <input
                       type="text"
                       placeholder="e.g. Baingan Bharta, Dal Fry..."
@@ -638,54 +412,24 @@ export default function BookingModal() {
                           handleAddCustomDish();
                         }
                       }}
-                      style={{
-                        flex: 1,
-                        minWidth: 0,
-                        boxSizing: 'border-box',
-                        padding: '10px 12px',
-                        borderRadius: '10px',
-                        border: '1.5px solid #E2E8F0',
-                        fontSize: '0.84rem',
-                        outline: 'none',
-                        color: '#1E293B',
-                      }}
+                      className="booking-input flex-1"
                     />
                     <button
                       type="button"
                       onClick={handleAddCustomDish}
-                      style={{
-                        padding: '10px 14px',
-                        borderRadius: '10px',
-                        background: '#F1F5F9',
-                        border: '1px solid #CBD5E1',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: '#334155',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        flexShrink: 0,
-                      }}
+                      className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-bold cursor-pointer whitespace-nowrap shrink-0 transition-colors"
                     >
                       + Add
                     </button>
                   </div>
 
                   {/* Bottom Navigation */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingTop: '14px',
-                      borderTop: '1px solid #F1F5F9',
-                      gap: '12px',
-                    }}
-                  >
+                  <div className="flex items-center justify-between pt-3.5 border-t border-stone-100 gap-3">
                     <div>
-                      <div style={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 700, whiteSpace: 'nowrap', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      <div className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">
                         Total Charge
                       </div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#E64A19', lineHeight: 1.15, marginTop: '2px' }}>
+                      <div className="text-xl sm:text-2xl font-black text-orange-600 font-heading leading-tight mt-0.5">
                         ₹{currentPrice}
                       </div>
                     </div>
@@ -693,20 +437,10 @@ export default function BookingModal() {
                     <button
                       type="button"
                       onClick={() => updateBookingData({ step: 2 })}
-                      style={{
-                        background: '#E64A19',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        padding: '12px 20px',
-                        borderRadius: '99px',
-                        fontWeight: 800,
-                        fontSize: '0.9rem',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 4px 12px rgba(230, 74, 25, 0.3)',
-                      }}
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-full shadow-md shadow-orange-600/25 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
                     >
-                      Next: Choose Slot →
+                      <span>Next: Choose Slot</span>
+                      <ArrowRight size={16} />
                     </button>
                   </div>
                 </div>
@@ -715,92 +449,95 @@ export default function BookingModal() {
               {/* ======= STEP 2: TIME & DATE ======= */}
               {step === 2 && (
                 <div>
-                  <label style={{ fontSize: '0.88rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '12px' }}>
-                    Select Preferred Time Slot
+                  <label className="text-xs sm:text-sm font-bold text-stone-800 block mb-2.5">
+                    Select Preferred Time Slot & Date
                   </label>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-5">
                     {TIME_SLOTS.map((slot) => {
                       const isSelected = timeSlot === slot.label;
                       return (
                         <div
                           key={slot.id}
                           onClick={() => updateBookingData({ timeSlot: slot.label })}
-                          style={{
-                            padding: '12px 14px',
-                            borderRadius: '12px',
-                            border: isSelected ? '2px solid #E64A19' : '1px solid #E2E8F0',
-                            background: isSelected ? '#FFF5F0' : '#FFFFFF',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            transition: 'all 0.15s ease',
-                          }}
+                          className={`p-2.5 sm:p-3 rounded-xl border-2 cursor-pointer flex flex-col justify-between transition-all select-none min-h-[96px] ${
+                            isSelected
+                              ? 'border-orange-600 bg-orange-50/50 shadow-xs ring-1 ring-orange-600/20'
+                              : 'border-stone-200 bg-white hover:border-stone-300'
+                          }`}
                         >
                           <div>
-                            <div style={{ fontWeight: 800, fontSize: '0.88rem', color: '#1E293B' }}>
-                              {slot.label}
+                            <div className="flex items-start justify-between gap-1">
+                              <div className="font-bold text-xs sm:text-sm text-stone-900 leading-snug">
+                                {slot.label}
+                              </div>
+                              {isSelected ? (
+                                <div className="w-5 h-5 rounded-full bg-orange-600 text-white flex items-center justify-center text-[10px] font-black shrink-0">
+                                  ✓
+                                </div>
+                              ) : (
+                                <div className="w-5 h-5 rounded-full border-2 border-stone-200 shrink-0" />
+                              )}
                             </div>
-                            <div style={{ fontSize: '0.74rem', color: '#64748B', marginTop: '2px' }}>
+                            <div className="text-[11px] text-stone-500 font-medium mt-1 leading-tight">
                               {slot.desc}
                             </div>
                           </div>
-                          {isSelected && (
-                            <div style={{ color: '#E64A19', fontWeight: 800, fontSize: '1.1rem' }}>✓</div>
-                          )}
                         </div>
                       );
                     })}
-                  </div>
 
-                  {/* Booking Date */}
-                  <div style={{ marginBottom: '24px' }}>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '6px' }}>
-                      Cooking Date
-                    </label>
-                    <input
-                      type="date"
-                      value={bookingDate}
-                      min={new Date().toISOString().split('T')[0]}
-                      onChange={(e) => updateBookingData({ bookingDate: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '11px 14px',
-                        borderRadius: '10px',
-                        border: '1.5px solid #E2E8F0',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        color: '#1E293B',
-                        outline: 'none',
+                    {/* Card 6: Cooking Date */}
+                    <div
+                      onClick={() => {
+                        try {
+                          dateInputRef.current?.showPicker();
+                        } catch {
+                          dateInputRef.current?.focus();
+                        }
                       }}
-                    />
+                      className="p-2.5 sm:p-3 rounded-xl border-2 border-stone-200 bg-white hover:border-stone-300 focus-within:border-orange-600 focus-within:bg-orange-50/20 flex flex-col justify-between transition-all cursor-pointer min-h-[96px]"
+                    >
+                      <div>
+                        <div className="flex items-start justify-between gap-1">
+                          <div className="font-bold text-xs sm:text-sm text-stone-900 leading-snug flex items-center gap-1">
+                            <span>📅</span>
+                            <span>Cooking Date</span>
+                          </div>
+                          <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-[10px] font-black shrink-0">
+                            ✓
+                          </div>
+                        </div>
+                        <div className="text-[11px] text-stone-500 font-medium mt-1 leading-tight">
+                          {bookingDate
+                            ? new Date(bookingDate + 'T00:00:00').toLocaleDateString('en-IN', {
+                                weekday: 'short',
+                                day: 'numeric',
+                                month: 'short',
+                              })
+                            : 'Select service date'}
+                        </div>
+                      </div>
+
+                      <div className="mt-2" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          ref={dateInputRef}
+                          type="date"
+                          value={bookingDate}
+                          min={new Date().toISOString().split('T')[0]}
+                          onChange={(e) => updateBookingData({ bookingDate: e.target.value })}
+                          className="booking-input w-full min-w-0 text-xs font-semibold py-1 px-2 rounded-lg cursor-pointer bg-stone-50 hover:bg-white transition-colors"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Bottom Navigation */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingTop: '14px',
-                      borderTop: '1px solid #F1F5F9',
-                      gap: '12px',
-                    }}
-                  >
+                  <div className="flex items-center justify-between pt-3.5 border-t border-stone-100 gap-3">
                     <button
                       type="button"
                       onClick={() => updateBookingData({ step: 1 })}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#64748B',
-                        fontWeight: 700,
-                        fontSize: '0.88rem',
-                        cursor: 'pointer',
-                        padding: '8px 4px',
-                        whiteSpace: 'nowrap',
-                      }}
+                      className="text-stone-500 hover:text-stone-900 font-bold text-xs sm:text-sm py-2 px-3 cursor-pointer"
                     >
                       ← Back
                     </button>
@@ -808,20 +545,10 @@ export default function BookingModal() {
                     <button
                       type="button"
                       onClick={() => updateBookingData({ step: 3 })}
-                      style={{
-                        background: '#E64A19',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        padding: '12px 20px',
-                        borderRadius: '99px',
-                        fontWeight: 800,
-                        fontSize: '0.9rem',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 4px 12px rgba(230, 74, 25, 0.3)',
-                      }}
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-full shadow-md shadow-orange-600/25 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
                     >
-                      Next: Address →
+                      <span>Next: Address</span>
+                      <ArrowRight size={16} />
                     </button>
                   </div>
                 </div>
@@ -832,7 +559,7 @@ export default function BookingModal() {
                 <div>
                   <div className="booking-form-two-col">
                     <div>
-                      <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '6px' }}>
+                      <label className="text-xs sm:text-sm font-bold text-stone-800 block mb-1">
                         Your Full Name *
                       </label>
                       <input
@@ -841,19 +568,11 @@ export default function BookingModal() {
                         placeholder="e.g. Priyanshu Sharma"
                         value={name}
                         onChange={(e) => updateBookingData({ name: e.target.value })}
-                        style={{
-                          width: '100%',
-                          boxSizing: 'border-box',
-                          padding: '10px 14px',
-                          borderRadius: '10px',
-                          border: '1.5px solid #E2E8F0',
-                          fontSize: '0.88rem',
-                          outline: 'none',
-                        }}
+                        className="booking-input"
                       />
                     </div>
                     <div>
-                      <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '6px' }}>
+                      <label className="text-xs sm:text-sm font-bold text-stone-800 block mb-1">
                         WhatsApp / Mobile *
                       </label>
                       <input
@@ -862,21 +581,13 @@ export default function BookingModal() {
                         placeholder="+91 98765 43210"
                         value={phone}
                         onChange={(e) => updateBookingData({ phone: e.target.value })}
-                        style={{
-                          width: '100%',
-                          boxSizing: 'border-box',
-                          padding: '10px 14px',
-                          borderRadius: '10px',
-                          border: '1.5px solid #E2E8F0',
-                          fontSize: '0.88rem',
-                          outline: 'none',
-                        }}
+                        className="booking-input"
                       />
                     </div>
                   </div>
 
-                  <div style={{ marginBottom: '14px' }}>
-                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '6px' }}>
+                  <div className="mb-3.5">
+                    <label className="text-xs sm:text-sm font-bold text-stone-800 block mb-1">
                       House / Flat No., Society & Street ({selectedArea.name}) *
                     </label>
                     <input
@@ -885,20 +596,12 @@ export default function BookingModal() {
                       placeholder="e.g. Flat 402, Tower B, Eldeco Greens"
                       value={address}
                       onChange={(e) => updateBookingData({ address: e.target.value })}
-                      style={{
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        padding: '10px 14px',
-                        borderRadius: '10px',
-                        border: '1.5px solid #E2E8F0',
-                        fontSize: '0.88rem',
-                        outline: 'none',
-                      }}
+                      className="booking-input"
                     />
                   </div>
 
-                  <div style={{ marginBottom: '18px' }}>
-                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1E293B', display: 'block', marginBottom: '6px' }}>
+                  <div className="mb-3.5">
+                    <label className="text-xs sm:text-sm font-bold text-stone-800 block mb-1">
                       Cooking Notes & Spice Preference (Optional)
                     </label>
                     <textarea
@@ -906,82 +609,29 @@ export default function BookingModal() {
                       placeholder="e.g. Less oil & mild spice for kids"
                       value={notes}
                       onChange={(e) => updateBookingData({ notes: e.target.value })}
-                      style={{
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        padding: '10px 14px',
-                        borderRadius: '10px',
-                        border: '1.5px solid #E2E8F0',
-                        fontSize: '0.85rem',
-                        outline: 'none',
-                        resize: 'none',
-                      }}
+                      className="booking-input resize-none"
                     />
                   </div>
 
                   {/* Trust Pill */}
-                  <div
-                    style={{
-                      background: '#F0FDF4',
-                      border: '1px solid #BBF7D0',
-                      borderRadius: '10px',
-                      padding: '10px 14px',
-                      fontSize: '0.78rem',
-                      color: '#15803D',
-                      fontWeight: 600,
-                      marginBottom: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      lineHeight: 1.45,
-                    }}
-                  >
-                    <span style={{ flexShrink: 0 }}>🛡️</span>
+                  <div className="bg-emerald-50/90 border border-emerald-200 rounded-xl p-2.5 sm:p-3 text-xs text-emerald-800 font-medium mb-4 flex items-center gap-2 leading-snug">
+                    <span className="shrink-0 text-sm">🛡️</span>
                     <span>Verified Cook • Zero advance payment • Pay after meal</span>
                   </div>
 
                   {/* Submit Actions */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingTop: '14px',
-                      borderTop: '1px solid #F1F5F9',
-                      gap: '12px',
-                    }}
-                  >
+                  <div className="flex items-center justify-between pt-3.5 border-t border-stone-100 gap-3">
                     <button
                       type="button"
                       onClick={() => updateBookingData({ step: 2 })}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#64748B',
-                        fontWeight: 700,
-                        fontSize: '0.88rem',
-                        cursor: 'pointer',
-                        padding: '8px 4px',
-                        whiteSpace: 'nowrap',
-                      }}
+                      className="text-stone-500 hover:text-stone-900 font-bold text-xs sm:text-sm py-2 px-3 cursor-pointer"
                     >
                       ← Back
                     </button>
 
                     <button
                       type="submit"
-                      style={{
-                        background: '#E64A19',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        padding: '12px 22px',
-                        borderRadius: '99px',
-                        fontWeight: 800,
-                        fontSize: '0.92rem',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 4px 14px rgba(230, 74, 25, 0.35)',
-                      }}
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-full shadow-md shadow-orange-600/25 transition-all cursor-pointer whitespace-nowrap"
                     >
                       Confirm Booking (₹{currentPrice})
                     </button>

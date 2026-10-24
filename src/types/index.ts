@@ -42,6 +42,17 @@ export interface PartyPlan {
   amountFormatted: string;
 }
 
+export interface FamilyPartyCard {
+  id: string;
+  people: string;
+  hours: string;
+  amount: string;
+  pricePrefix?: string;
+  popular?: boolean;
+  ideal: string;
+  highlights: string[];
+}
+
 export interface OtherServiceItem {
   id: string;
   title: string;

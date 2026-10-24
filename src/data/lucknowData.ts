@@ -1,4 +1,4 @@
-import { LucknowArea, ServiceItem, PricingTier, DishCategory, SubscriptionPlan, TestimonialItem, FaqItem, HeroSlide, PartyPlan, OtherServiceItem } from '../types';
+import { LucknowArea, ServiceItem, PricingTier, DishCategory, SubscriptionPlan, TestimonialItem, FaqItem, HeroSlide, PartyPlan, FamilyPartyCard, OtherServiceItem } from '../types';
 
 export const LUCKNOW_AREAS: LucknowArea[] = [
   { name: 'Gomti Nagar', code: '226010', status: 'Active', avgEta: '20 mins', cooksAvailable: 18 },
@@ -146,6 +146,38 @@ export const PARTY_PLANS: PartyPlan[] = [
   { people: '31 to 40', minPeople: 31, maxPeople: 40, hours: '5 hours', amount: 4999, amountFormatted: '₹4,999' },
   { people: '41 to 50', minPeople: 41, maxPeople: 50, hours: '5 hours', amount: 5999, amountFormatted: '₹5,999' },
 ];
+
+export const FAMILY_PARTY_CARDS: FamilyPartyCard[] = [
+  {
+    id: 'party-1-10',
+    people: '1 to 10 People',
+    hours: '3 Hours',
+    amount: '₹1,999',
+    popular: false,
+    ideal: 'Intimate family dinners & birthdays',
+    highlights: ['Up to 10 guests covered', 'Full multi-course meal prep', 'Customized spice & menu']
+  },
+  {
+    id: 'party-11-20',
+    people: '11 to 20 People',
+    hours: '4 Hours',
+    amount: '₹2,999',
+    popular: true,
+    ideal: 'House parties & weekend feasts',
+    highlights: ['Up to 20 guests covered', 'Starters, curries, rotis & sweet', 'Servers available (+₹1,000)']
+  },
+  {
+    id: 'party-30-plus',
+    people: '30+ People',
+    hours: '4 to 5 Hours',
+    amount: '₹3,999',
+    pricePrefix: 'Starting from',
+    popular: false,
+    ideal: 'Grand celebrations, banquets & large parties',
+    highlights: ['30+ guests covered', 'Heavy multi-dish feast & banquet prep', 'Customized menu & event management', 'Cleaners & servers available (+₹1,000)']
+  }
+];
+
 
 export const PARTY_ADDONS = [
   { id: 'server', title: 'Server', rate: '₹1,000', unit: 'Per Event', icon: '🤵', desc: 'Dedicated professional table & buffet serving' },

@@ -219,7 +219,7 @@ export default function HomeSummaries() {
                   boxShadow: '0 4px 16px rgba(230,74,25,0.4)'
                 }}
               >
-                <span>Open Price Calculator</span>
+                <span>View Full Pricing & Rates</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

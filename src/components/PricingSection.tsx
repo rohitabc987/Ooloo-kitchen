@@ -1,741 +1,516 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Check, Clock, ArrowRight, Users, UtensilsCrossed, Sparkles, MessageSquare, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import Link from 'next/link';
+import { Check, Clock, ArrowRight, Users, Sparkles, MessageSquare, ShieldCheck, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { SUBSCRIPTION_PLANS, PARTY_PLANS, PARTY_ADDONS, OTHER_SERVICES, TERMS_AND_CONDITIONS } from '../data/lucknowData';
+import { SUBSCRIPTION_PLANS, PARTY_PLANS, FAMILY_PARTY_CARDS, PARTY_ADDONS, OTHER_SERVICES, TERMS_AND_CONDITIONS, SERVICES } from '../data/lucknowData';
 
 export default function PricingSection() {
   const { selectedArea, handleOpenBooking } = useApp();
-  const [peopleCount, setPeopleCount] = useState(4);
-  const [dishesCount, setDishesCount] = useState(3);
-  const [isPartyMode, setIsPartyMode] = useState(false);
-  const [partyPeopleCount, setPartyPeopleCount] = useState(15);
-
-  // Party calculation matching Brochure 1
-  const getPartyTier = (guests: number) => {
-    if (guests <= 10) return { people: '1 to 10 People', hours: 3, price: 1999 };
-    if (guests <= 20) return { people: '11 to 20 People', hours: 4, price: 2999 };
-    if (guests <= 30) return { people: '21 to 30 People', hours: 4, price: 3999 };
-    if (guests <= 40) return { people: '31 to 40 People', hours: 5, price: 4999 };
-    return { people: '41 to 50 People', hours: 5, price: 5999 };
-  };
-
-  const partyTier = getPartyTier(partyPeopleCount);
-  const calcHours = isPartyMode ? partyTier.hours : (peopleCount <= 3 && dishesCount <= 2 ? 1 : 2);
-  const calcPrice = isPartyMode ? partyTier.price : (calcHours === 1 ? 299 : 399);
-
-  // Preset Handlers
-  const handleSelectPreset = (hours: number) => {
-    setIsPartyMode(false);
-    if (hours === 1) {
-      setPeopleCount(3);
-      setDishesCount(2);
-    } else if (hours === 2) {
-      setPeopleCount(5);
-      setDishesCount(3);
-    }
-  };
 
   return (
-    <section id="pricing" style={{ padding: '36px 0 60px 0', backgroundColor: 'transparent', width: '100%' }}>
-      <div className="container">
-
-        {/* ===================== OUTSIDE: SECTION HEADER ===================== */}
-        <div style={{ marginBottom: '28px' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.78rem',
-            fontWeight: 800,
-            letterSpacing: '0.06em',
-            color: 'var(--primary)',
-            background: 'var(--primary-light)',
-            padding: '4px 12px',
-            borderRadius: '99px',
-            textTransform: 'uppercase',
-            marginBottom: '10px'
-          }}>
-            FLEXIBLE HOURLY BOOKING & ESTIMATOR
-          </div>
-          <h1 style={{
-            fontSize: 'clamp(2rem, 3.8vw, 3.2rem)',
-            color: '#121417',
-            fontWeight: 850,
-            lineHeight: 1.15,
-            marginBottom: '12px',
-            letterSpacing: '-0.02em'
-          }}>
-            Pay only for <span className="italic-serif" style={{ color: 'var(--primary)' }}>what you cook.</span>
-          </h1>
-          <p style={{
-            color: 'var(--text-muted)',
-            fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)',
-            lineHeight: 1.6,
-            maxWidth: '680px'
-          }}>
-            Transparent pricing with no hidden charges. Select a quick plan or customize your meal for an instant quote in {selectedArea.name}.
-          </p>
+    <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-10">
+      
+      {/* ===================== SECTION HEADER ===================== */}
+      <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-3">
+          <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+          <span>TRANSPARENT PRICING · ZERO SURGE</span>
         </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-stone-900 leading-tight tracking-tight mb-4">
+          Simple, Honest <span className="text-orange-600">Kitchen Rates.</span>
+        </h1>
+        <p className="text-stone-600 text-sm sm:text-base md:text-lg leading-relaxed">
+          Pay only for what you cook with verified cooks at your doorstep in ~{selectedArea.avgEta} across Lucknow. No hidden agency commissions.
+        </p>
+      </div>
 
-        {/* ===================== OUTSIDE: QUICK PRESET CARDS ===================== */}
-        <div className="pricing-presets-grid">
-          {/* 1 Hour Preset */}
-          <div
-            onClick={() => handleSelectPreset(1)}
-            className="pricing-preset-card"
-            style={{
-              background: '#FFFFFF',
-              border: !isPartyMode && calcHours === 1 ? '2px solid var(--primary)' : '1.5px solid var(--border)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px 14px',
-              cursor: 'pointer',
-              textAlign: 'center',
-              boxShadow: !isPartyMode && calcHours === 1 ? '0 8px 24px rgba(230,74,25,0.14)' : '0 2px 8px rgba(0,0,0,0.04)',
-              transform: !isPartyMode && calcHours === 1 ? 'translateY(-2px)' : 'none',
-              transition: 'all 0.2s ease',
-              position: 'relative'
-            }}>
-            <div className="pricing-preset-title" style={{ fontSize: '0.75rem', fontWeight: 800, color: !isPartyMode && calcHours === 1 ? 'var(--primary)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              1 HOUR
+      {/* ===================== 1. FLEXIBLE HOURLY BOOKING (BROCHURE 4) ===================== */}
+      <section id="hourly-rates" className="mb-14 sm:mb-20">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-6">
+          <div>
+            <div className="text-xs sm:text-sm font-bold text-orange-600 uppercase tracking-wider mb-1">
+              FLEXIBLE HOURLY BOOKING
             </div>
-            <div className="pricing-preset-price" style={{ fontSize: '1.9rem', fontWeight: 800, color: '#121417', margin: '4px 0', fontFamily: 'var(--font-heading)' }}>
-              ₹299
-            </div>
-            <div className="pricing-preset-sub" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              Up to 3 people
-            </div>
-          </div>
-
-          {/* 2 Hours Preset (Popular) */}
-          <div
-            onClick={() => handleSelectPreset(2)}
-            className="pricing-preset-card"
-            style={{
-              background: '#FFFFFF',
-              border: !isPartyMode && calcHours === 2 ? '2px solid var(--primary)' : '1.5px solid var(--border)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px 14px',
-              cursor: 'pointer',
-              textAlign: 'center',
-              boxShadow: !isPartyMode && calcHours === 2 ? '0 8px 24px rgba(230,74,25,0.16)' : '0 2px 8px rgba(0,0,0,0.04)',
-              transform: !isPartyMode && calcHours === 2 ? 'translateY(-2px)' : 'none',
-              position: 'relative',
-              transition: 'all 0.2s ease'
-            }}>
-            <div style={{
-              position: 'absolute',
-              top: '-11px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'var(--primary)',
-              color: '#FFF',
-              fontSize: '0.62rem',
-              fontWeight: 800,
-              padding: '2px 9px',
-              borderRadius: '99px',
-              whiteSpace: 'nowrap',
-              letterSpacing: '0.04em'
-            }}>POPULAR</div>
-            <div className="pricing-preset-title" style={{ fontSize: '0.75rem', fontWeight: 800, color: !isPartyMode && calcHours === 2 ? 'var(--primary)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              2 HOURS
-            </div>
-            <div className="pricing-preset-price" style={{ fontSize: '1.9rem', fontWeight: 800, color: '#121417', margin: '4px 0', fontFamily: 'var(--font-heading)' }}>
-              ₹399
-            </div>
-            <div className="pricing-preset-sub" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              Up to 6 people
-            </div>
-          </div>
-
-          {/* Extra 30 Min Info */}
-          <div
-            className="pricing-preset-card"
-            style={{
-              background: '#FFFFFF',
-              border: '1.5px dashed var(--border)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px 14px',
-              textAlign: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-            }}>
-            <div className="pricing-preset-title" style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              EXTRA 30 MIN
-            </div>
-            <div className="pricing-preset-price" style={{ fontSize: '1.9rem', fontWeight: 800, color: 'var(--primary)', margin: '4px 0', fontFamily: 'var(--font-heading)' }}>
-              +₹99
-            </div>
-            <div className="pricing-preset-sub" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              Add anytime
-            </div>
-          </div>
-        </div>
-
-        {/* ===================== INSIDE BOX: PRICE CALCULATOR ===================== */}
-        <div className="pricing-calculator-box">
-          {/* Ambient Background Glow */}
-          <div style={{
-            position: 'absolute',
-            top: '-100px',
-            right: '-100px',
-            width: '450px',
-            height: '450px',
-            background: 'radial-gradient(circle, rgba(230,74,25,0.18) 0%, rgba(0,0,0,0) 70%)',
-            pointerEvents: 'none'
-          }}></div>
-
-          {/* Calculator Header Inside Box */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '8px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            paddingBottom: '10px',
-            marginBottom: '14px',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'clamp(0.96rem, 2vw, 1.08rem)', fontWeight: 800, color: '#FFFFFF' }}>
-                <Sparkles size={16} color="#FF7B54" />
-                <span>Live Meal Quote Estimator</span>
-              </div>
-              <div style={{ fontSize: '0.74rem', color: '#A0A5AB', marginTop: '2px' }}>
-                Adjust guests and dishes below for instant recommended cook time and quote
-              </div>
-            </div>
-
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: 'rgba(255, 255, 255, 0.08)',
-              padding: '3px 10px',
-              borderRadius: '99px',
-              fontSize: '0.72rem',
-              color: '#E2E8F0',
-              fontWeight: 600,
-              whiteSpace: 'nowrap'
-            }}>
-              <span>📍 {selectedArea.name}</span>
-              <span style={{ color: 'var(--green)' }}>• ~{selectedArea.avgEta}</span>
-            </div>
-          </div>
-
-          {/* Body Grid: Sliders & Instant Output */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1.1fr 0.9fr',
-            gap: '20px',
-            alignItems: 'stretch',
-            position: 'relative',
-            zIndex: 2
-          }} className="estimator-grid">
-
-            {/* Left Controls Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              
-              <div>
-                {/* Party Mode Switch */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '10px 12px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  marginBottom: '14px',
-                  gap: '8px'
-                }}>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: '0.86rem', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Sparkles size={14} color="#FF7B54" />
-                      <span>Hosting a party or family gathering?</span>
-                    </div>
-                    <div style={{ fontSize: '0.72rem', color: '#A0A5AB', marginTop: '2px' }}>
-                      10 to 50 guests with dedicated party cooks (Brochure Plan)
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsPartyMode(!isPartyMode)}
-                    style={{
-                      padding: '5px 12px',
-                      borderRadius: '99px',
-                      border: 'none',
-                      background: isPartyMode ? 'var(--primary)' : 'rgba(255, 255, 255, 0.12)',
-                      color: '#FFF',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      fontSize: '0.74rem',
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0,
-                      transition: 'all 0.2s ease'
-                    }}>
-                    {isPartyMode ? '✓ Party Enabled' : 'Standard Meal'}
-                  </button>
-                </div>
-
-                {isPartyMode ? (
-                  /* Party Guests Slider */
-                  <div style={{ marginBottom: '14px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.84rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Users size={14} color="var(--primary)" />
-                        Number of Party Guests:
-                      </span>
-                      <span style={{ fontWeight: 800, color: '#FF7B54', fontSize: '0.96rem' }}>{partyPeopleCount} Guests ({partyTier.people})</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="5"
-                      max="50"
-                      step="5"
-                      value={partyPeopleCount}
-                      onChange={(e) => setPartyPeopleCount(parseInt(e.target.value))}
-                      style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer', height: '5px' }}
-                    />
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#A0A5AB', marginTop: '3px' }}>
-                      <span>1-10 (₹1,999)</span>
-                      <span>11-20 (₹2,999)</span>
-                      <span>21-30 (₹3,999)</span>
-                      <span>31-40 (₹4,999)</span>
-                      <span>41-50 (₹5,999)</span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {/* People Slider */}
-                    <div style={{ marginBottom: '14px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                        <span style={{ fontWeight: 700, fontSize: '0.84rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Users size={14} color="var(--primary)" />
-                          Number of People:
-                        </span>
-                        <span style={{ fontWeight: 800, color: '#FF7B54', fontSize: '0.96rem' }}>{peopleCount} People</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={peopleCount}
-                        onChange={(e) => setPeopleCount(parseInt(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer', height: '5px' }}
-                      />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#A0A5AB', marginTop: '3px' }}>
-                        <span>1 Person</span>
-                        <span>5 People</span>
-                        <span>10 People</span>
-                      </div>
-                    </div>
-
-                    {/* Dishes Slider */}
-                    <div style={{ marginBottom: '14px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                        <span style={{ fontWeight: 700, fontSize: '0.84rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <UtensilsCrossed size={14} color="var(--primary)" />
-                          Main Dishes + Breads:
-                        </span>
-                        <span style={{ fontWeight: 800, color: '#FF7B54', fontSize: '0.96rem' }}>{dishesCount} Dishes</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="1"
-                        max="6"
-                        value={dishesCount}
-                        onChange={(e) => setDishesCount(parseInt(e.target.value))}
-                        style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer', height: '5px' }}
-                      />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#A0A5AB', marginTop: '3px' }}>
-                        <span>1 Dish</span>
-                        <span>3 Dishes</span>
-                        <span>6+ Dishes</span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Location indicator footer */}
-              <div
-                className="pricing-calc-area-footer"
-                style={{
-                  fontSize: '0.76rem',
-                  color: '#A0A5AB',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  padding: '8px 12px',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  marginBottom: '2px'
-                }}>
-                📍 Active Area: <strong style={{ color: '#FFFFFF' }}>{selectedArea.name}</strong> • ETA: <strong style={{ color: 'var(--green)' }}>~{selectedArea.avgEta}</strong>
-              </div>
-
-            </div>
-
-            {/* Right Side: Live Price Output Summary Card */}
-            <div className="pricing-estimate-card">
-              <div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  borderBottom: '1px solid var(--border-light)',
-                  paddingBottom: '8px',
-                  marginBottom: '8px'
-                }}>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-                    YOUR MEAL ESTIMATE
-                  </span>
-                  <span style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    background: 'var(--green-light)',
-                    color: 'var(--green)',
-                    padding: '2px 8px',
-                    borderRadius: '99px'
-                  }}>
-                    {isPartyMode ? 'Party Plan' : 'Instant Booking'}
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '4px 0 6px 0' }}>
-                  <span style={{ fontSize: 'clamp(2rem, 3.8vw, 3rem)', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-heading)', lineHeight: 1 }}>
-                    ₹{calcPrice.toLocaleString('en-IN')}
-                  </span>
-                  <span style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                    for {calcHours} Hour{calcHours > 1 ? 's' : ''} ({isPartyMode ? partyTier.people : `up to ${peopleCount} people`})
-                  </span>
-                </div>
-
-                <ul style={{ listStyle: 'none', padding: 0, margin: '10px 0 12px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.82rem', color: '#1E293B', lineHeight: 1.35 }}>
-                    <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    <span><strong>{isPartyMode ? `Dedicated Cooks for ${partyTier.people} (${partyTier.hours} hrs)` : `${calcHours} Hour Cook Service for up to ${peopleCount} People`}</strong></span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.82rem', color: '#1E293B', lineHeight: 1.35 }}>
-                    <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    <span>Cook arrives at <strong>{selectedArea.name}</strong> in ~{selectedArea.avgEta}</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.82rem', color: '#1E293B', lineHeight: 1.35 }}>
-                    <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    <span>Customized spice, oil & salt to your exact taste</span>
-                  </li>
-                  {isPartyMode && (
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.78rem', color: '#78716C', lineHeight: 1.35 }}>
-                      <span>• Server & Cleaner add-ons available at ₹1,000 each</span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-
-              <button
-                onClick={() => handleOpenBooking()}
-                className="btn btn-whatsapp"
-                style={{ width: '100%', padding: '11px 16px', fontSize: '0.9rem', borderRadius: '99px', marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <span>Book This Slot ({selectedArea.name})</span>
-                <ArrowRight size={16} />
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* ===================== FAMILY GATHERING & PARTY PLANS (BROCHURE 1) ===================== */}
-        <div style={{ marginTop: '50px' }}>
-          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 28px auto' }}>
-            <div className="page-badge" style={{ justifyContent: 'center' }}>
-              <span className="page-badge-dot" />
-              <span>SPECIAL OCCASIONS</span>
-            </div>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
-              Family Gathering & <span className="italic-serif" style={{ color: 'var(--primary)' }}>Party Plans.</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 tracking-tight">
+              Pay By The Hour
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
-              Good Food. Happy Moments. Make your special occasions stress-free with our trusted kitchen support services.
-            </p>
           </div>
-
-          {/* Party Tiers Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '14px',
-            marginBottom: '24px'
-          }}>
-            {PARTY_PLANS.map((plan, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: '18px',
-                  padding: '20px 16px',
-                  border: '1.5px solid var(--border)',
-                  textAlign: 'center',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase' }}>
-                  <Users size={14} />
-                  <span>{plan.people} People</span>
-                </div>
-                <div style={{ fontSize: '2.1rem', fontWeight: 900, color: '#121417', margin: '6px 0 4px 0', fontFamily: 'var(--font-heading)' }}>
-                  {plan.amountFormatted}
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                  <Clock size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
-                  {plan.hours} dedicated
-                </div>
-              </div>
-            ))}
+          <div className="text-xs sm:text-sm text-stone-500 bg-stone-100 px-3.5 py-1.5 rounded-full font-medium">
+            ⚡ Dispatched within 30 mins in {selectedArea.name}
           </div>
+        </div>
 
-          {/* Party Add-on Services & Terms */}
-          <div style={{
-            background: '#FDFBF7',
-            borderRadius: '20px',
-            padding: '22px 24px',
-            border: '1.5px solid #F0ECE4',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '20px',
-            alignItems: 'center'
-          }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          {/* 1 Hour Card */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
-                Other Party Services
+              <div className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">
+                1 HOUR SESSION
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.88rem', color: '#1C1917' }}>
-                {PARTY_ADDONS.map(addon => (
-                  <div key={addon.id} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>{addon.icon} {addon.title} ({addon.unit}):</span>
-                    <strong style={{ color: 'var(--primary)' }}>{addon.rate}</strong>
-                  </div>
-                ))}
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl sm:text-4xl font-black text-stone-900 font-heading">₹299</span>
+                <span className="text-xs sm:text-sm text-stone-500 font-semibold">/ session</span>
               </div>
-            </div>
+              <div className="text-xs sm:text-sm font-semibold text-orange-600 mb-6">
+                Ideal for up to 3 people
+              </div>
 
-            <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
-                Terms & Conditions
-              </div>
-              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {TERMS_AND_CONDITIONS.party.map((term, tIdx) => (
-                  <li key={tIdx}>{term}</li>
-                ))}
+              <ul className="space-y-3 mb-8 text-xs sm:text-sm text-stone-700">
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>1 Hour dedicated cooking support</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>2 Main Dishes (e.g. Dal & Sabzi)</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Fresh Phulkas / Rotis & Rice</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Customized spice, oil & salt level</span>
+                </li>
               </ul>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
+            <button
+              onClick={() => handleOpenBooking(SERVICES[1], 'instant')}
+              className="w-full py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer"
+            >
+              Book 1-Hour Cook →
+            </button>
+          </div>
+
+          {/* 2 Hours Card (Popular) */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-orange-600 shadow-lg relative flex flex-col justify-between">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[11px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full whitespace-nowrap shadow-sm">
+              MOST POPULAR
+            </div>
+
+            <div>
+              <div className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">
+                2 HOURS SESSION
+              </div>
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl sm:text-4xl font-black text-stone-900 font-heading">₹399</span>
+                <span className="text-xs sm:text-sm text-stone-500 font-semibold">/ session</span>
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-orange-600 mb-6">
+                Ideal for up to 5 people
+              </div>
+
+              <ul className="space-y-3 mb-8 text-xs sm:text-sm text-stone-700">
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>2 Hours dedicated cooking support</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>3-4 Main Dishes + Starter/Snack</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Phulkas, Parathas & Biryani/Rice</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Vegetable chopping & prep included</span>
+                </li>
+              </ul>
+            </div>
+
+            <button
+              onClick={() => handleOpenBooking(SERVICES[1], 'instant')}
+              className="w-full py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-orange-600/25 transition-all cursor-pointer"
+            >
+              Book 2-Hour Cook →
+            </button>
+          </div>
+
+          {/* Extra 30 Min Extension Card */}
+          <div className="bg-stone-50/80 rounded-2xl p-6 sm:p-8 border border-dashed border-stone-300 flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">
+                FLEXIBLE ADD-ON
+              </div>
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl sm:text-4xl font-black text-orange-600 font-heading">+₹99</span>
+                <span className="text-xs sm:text-sm text-stone-500 font-semibold">/ 30 mins</span>
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-stone-600 mb-6">
+                Add mid-session anytime
+              </div>
+
+              <ul className="space-y-3 mb-8 text-xs sm:text-sm text-stone-700">
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Need an extra dish or sweet prepared?</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>No hassle extending the cook duration</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                  <span>Transparent flat ₹99 per half-hour</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white border border-stone-200 text-center text-xs text-stone-500 font-medium">
+              Applicable to all hourly cooking bookings
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== 2. OTHER SERVICES (₹199/HR) ===================== */}
+      <section id="other-services" className="mb-14 sm:mb-20">
+        <div className="mb-6 sm:mb-8">
+          <div className="text-xs sm:text-sm font-bold text-orange-600 uppercase tracking-wider mb-1">
+            ON-DEMAND HOURLY HELP · FLAT ₹199/HR
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-stone-900 tracking-tight">
+            Specialized Support · Flat ₹199/Hr
+          </h2>
+          <p className="text-stone-600 text-sm sm:text-base md:text-lg mt-1 max-w-3xl">
+            Need prep before you cook yourself, or helper assistance for dishes and serving? Hire trained staff at transparent hourly rates.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {OTHER_SERVICES.map((svc) => (
+            <div
+              key={svc.id}
+              onClick={() => handleOpenBooking(SERVICES[0], 'instant')}
+              className="bg-white rounded-2xl p-5 sm:p-6 lg:p-7 border border-stone-200 hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl mb-3">{svc.icon}</div>
+                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold text-stone-900 mb-2">{svc.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-stone-600 leading-relaxed mb-5">{svc.desc}</p>
+              </div>
+              <div className="pt-3.5 border-t border-stone-100 flex items-baseline justify-between">
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-orange-600 font-heading">{svc.rate}</span>
+                <span className="text-xs sm:text-sm md:text-base font-semibold text-stone-500">{svc.unit}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===================== 3. FAMILY GATHERING & PARTY PLANS (BROCHURE 1) ===================== */}
+      <section id="party-plans" className="mb-14 sm:mb-20">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-600 text-xs sm:text-sm lg:text-base font-bold tracking-wide uppercase mb-2">
+              <Sparkles className="w-4 h-4 lg:w-5 lg:h-5" />
+              <span>GOOD FOOD · HAPPY MOMENTS</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              Family Gathering & Party Plans
+            </h2>
+            <p className="text-stone-500 text-sm sm:text-base lg:text-lg 2xl:text-xl mt-1.5 max-w-3xl leading-relaxed">
+              Dedicated event cooks for 10 to 50+ guests across Lucknow · Multi-course feasts cooked fresh at your home
+            </p>
+          </div>
+          <div className="text-xs sm:text-sm lg:text-base text-stone-600 bg-stone-100 px-4 py-2 rounded-full font-semibold w-fit shrink-0">
+            🎉 Complete feast preparation
+          </div>
+        </div>
+
+        {/* Exactly 3 responsive party cards with larger typography on larger screens */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-8 sm:mb-12">
+          {FAMILY_PARTY_CARDS.map((plan) => (
+            <div
+              key={plan.id}
+              onClick={() => handleOpenBooking(SERVICES.find(s => s.id === 'party') || SERVICES[3], 'schedule')}
+              className={`bg-white rounded-3xl p-6 sm:p-7 lg:p-8 xl:p-9 border flex flex-col justify-between transition-all duration-200 hover:-translate-y-1.5 hover:shadow-2xl relative cursor-pointer ${
+                plan.popular ? 'border-2 border-orange-600 shadow-lg ring-2 ring-orange-600/20' : 'border-stone-200 shadow-sm'
+              }`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider px-4 py-1 rounded-full whitespace-nowrap shadow-md">
+                  MOST POPULAR
+                </div>
+              )}
+
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="inline-flex items-center gap-2 text-base sm:text-lg lg:text-xl font-extrabold text-stone-900">
+                    <Users className="text-orange-600 w-5 h-5 lg:w-6 lg:h-6 shrink-0" />
+                    <span>{plan.people}</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm lg:text-base text-stone-600 font-semibold bg-stone-100 px-3 py-1 rounded-lg">
+                    <Clock className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                    <span>{plan.hours}</span>
+                  </span>
+                </div>
+
+                <div className="my-3 lg:my-4">
+                  {plan.pricePrefix ? (
+                    <div className="flex flex-col">
+                      <span className="text-xs sm:text-sm lg:text-base font-bold text-stone-500 uppercase tracking-wide">
+                        {plan.pricePrefix}
+                      </span>
+                      <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-orange-600 font-heading">
+                        {plan.amount}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-orange-600 font-heading">
+                      {plan.amount}
+                    </div>
+                  )}
+                  <p className="text-xs sm:text-sm lg:text-base text-stone-600 mt-1.5 font-medium leading-relaxed">
+                    {plan.ideal}
+                  </p>
+                </div>
+
+                <div className="border-t border-stone-100 pt-4 my-4">
+                  <ul className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm lg:text-base text-stone-700 font-medium">
+                    {plan.highlights.map((h, hIdx) => (
+                      <li key={hIdx} className="flex items-start gap-2.5">
+                        <Check className="text-emerald-600 shrink-0 mt-0.5 w-4 h-4 sm:w-5 sm:h-5" />
+                        <span className="leading-snug">{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
               <button
-                onClick={() => handleOpenBooking()}
-                style={{
-                  width: '100%',
-                  padding: '13px 20px',
-                  borderRadius: '12px',
-                  background: 'var(--primary)',
-                  color: '#FFF',
-                  border: 'none',
-                  fontSize: '0.95rem',
-                  fontWeight: 800,
-                  cursor: 'pointer'
-                }}
+                type="button"
+                className={`w-full py-3 sm:py-3.5 lg:py-4 px-4 rounded-xl font-extrabold text-sm sm:text-base lg:text-lg transition-all mt-3 ${
+                  plan.popular
+                    ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-600/25'
+                    : 'bg-stone-900 hover:bg-stone-800 text-white'
+                }`}
               >
                 Book Party Cook →
               </button>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* ===================== OTHER SERVICES (₹199/HR) ===================== */}
-        <div style={{ marginTop: '50px' }}>
-          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 28px auto' }}>
-            <div className="page-badge" style={{ justifyContent: 'center' }}>
-              <span className="page-badge-dot" />
-              <span>HOURLY ADD-ONS</span>
-            </div>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
-              On-Demand Support at <span className="italic-serif" style={{ color: 'var(--primary)' }}>₹199/Hour.</span>
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
-              Add specialized kitchen help for prep, dishwashing, counter cleaning, or table serving.
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-            gap: '16px'
-          }}>
-            {OTHER_SERVICES.map(item => (
-              <div
-                key={item.id}
-                onClick={() => handleOpenBooking()}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: '18px',
-                  padding: '20px',
-                  border: '1.5px solid var(--border)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
-                }}
-              >
-                <div style={{ fontSize: '1.8rem', marginBottom: '6px' }}>{item.icon}</div>
-                <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#121417' }}>{item.title}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '4px 0 12px 0' }}>{item.desc}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                  <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--primary)', fontFamily: 'var(--font-heading)' }}>
-                    {item.rate}
-                  </span>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{item.unit}</span>
-                </div>
+        {/* Party Add-ons & Terms Banner */}
+        <div className="bg-stone-900 text-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-800 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-center">
+            <div>
+              <div className="text-xs sm:text-sm lg:text-base font-bold text-orange-400 uppercase tracking-wider mb-3">
+                PARTY ADD-ON HELPERS
               </div>
-            ))}
+              <div className="space-y-2.5 text-xs sm:text-sm lg:text-base text-stone-200">
+                {PARTY_ADDONS.map((addon) => (
+                  <div key={addon.id} className="flex justify-between items-center bg-white/5 p-2.5 sm:p-3 rounded-xl">
+                    <span className="font-medium">{addon.icon} {addon.title} ({addon.unit}):</span>
+                    <strong className="text-orange-400 font-bold text-sm sm:text-base lg:text-lg">{addon.rate}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-xs sm:text-sm lg:text-base font-bold text-stone-400 uppercase tracking-wider mb-3">
+                PARTY GUIDELINES
+              </div>
+              <ul className="space-y-1.5 text-xs sm:text-sm lg:text-base text-stone-300 list-disc list-inside">
+                {TERMS_AND_CONDITIONS.party.map((term, tIdx) => (
+                  <li key={tIdx} className="leading-snug">{term}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex flex-col justify-center gap-3">
+              <button
+                onClick={() => handleOpenBooking(SERVICES.find(s => s.id === 'party') || SERVICES[3], 'schedule')}
+                className="w-full py-3.5 sm:py-4 px-5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-sm sm:text-base lg:text-lg shadow-lg shadow-orange-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Book Event Cook Online</span>
+                <ArrowRight size={18} />
+              </button>
+              <div className="text-center text-xs sm:text-sm lg:text-base text-stone-400">
+                Call / WhatsApp: <a href="tel:+917318086600" className="text-white font-bold hover:underline">+91 73180 86600</a>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* ===================== SMART SUBSCRIPTIONS (BROCHURE 2) ===================== */}
-        <div style={{ marginTop: '50px' }}>
-          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 32px auto' }}>
-            <div className="page-badge" style={{ justifyContent: 'center' }}>
-              <span className="page-badge-dot" />
-              <span>SAVE UP TO 30%</span>
-            </div>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 850, color: '#121417', lineHeight: 1.15 }}>
-              Smart Kitchen <span className="italic-serif" style={{ color: 'var(--primary)' }}>Subscriptions.</span>
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '6px' }}>
-              Same trained cook, priority booking, festive off, and up to 6 service hold days. Transparent monthly plans for Lucknow homes.
-            </p>
+      {/* ===================== 4. SMART SUBSCRIPTIONS (BROCHURE 2) ===================== */}
+      <section id="subscriptions" className="mb-14 sm:mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-3">
+            <Sparkles size={14} />
+            <span>SAVE UP TO 30% ON MONTHLY PLANS</span>
           </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-stone-900 tracking-tight mb-2">
+            Smart Kitchen Subscriptions
+          </h2>
+          <p className="text-stone-600 text-sm sm:text-base md:text-lg leading-relaxed">
+            Dedicated same trained cook, hold days, priority booking, and festive off. Transparent monthly plans for working professionals and families in Lucknow.
+          </p>
+        </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-            gap: '16px',
-            alignItems: 'stretch'
-          }}>
-            {SUBSCRIPTION_PLANS.map((sub) => (
-              <div
-                key={sub.id}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: '22px',
-                  padding: '26px 20px',
-                  border: sub.popular ? '2px solid var(--primary)' : '1.5px solid var(--border)',
-                  boxShadow: sub.popular ? '0 12px 30px rgba(230,74,25,0.12)' : '0 2px 10px rgba(0,0,0,0.04)',
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}
+        {/* 3 cards in row 1 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          {SUBSCRIPTION_PLANS.slice(0, 3).map((sub) => (
+            <div
+              key={sub.id}
+              className={`bg-white rounded-3xl p-6 sm:p-7 border flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-xl relative ${
+                sub.popular ? 'border-2 border-orange-600 shadow-lg ring-2 ring-orange-600/20' : 'border-stone-200 shadow-sm'
+              }`}
+            >
+              {sub.popular && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-1 rounded-full whitespace-nowrap shadow-md">
+                  POPULAR CHOICE
+                </div>
+              )}
+
+              <div>
+                <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1.5">
+                  {sub.badge}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-stone-900 mb-2">{sub.title}</h3>
+                <p className="text-xs sm:text-sm text-stone-500 mb-4">{sub.desc}</p>
+                <div className="flex items-baseline gap-1.5 mb-5 pb-4 border-b border-stone-100">
+                  <span className="text-3xl sm:text-4xl font-black text-stone-900 font-heading">{sub.price}</span>
+                  <span className="text-sm text-stone-500 font-semibold">{sub.period}</span>
+                </div>
+
+                <ul className="space-y-2.5 mb-6 text-xs sm:text-sm text-stone-700">
+                  {sub.features.map((feat, fIdx) => (
+                    <li key={fIdx} className="flex items-start gap-2.5">
+                      <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                      <span className="leading-snug">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <a
+                href={`https://wa.me/917318086600?text=Hi%20Ooloo!%20I%20would%20like%20to%20subscribe%20to%20the%20${encodeURIComponent(sub.title)}%20(${sub.price}%2Fmonth)%20in%20${encodeURIComponent(selectedArea.name)}.`}
+                target="_blank"
+                rel="noreferrer"
+                className={`w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  sub.popular
+                    ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-600/25'
+                    : 'bg-stone-900 hover:bg-stone-800 text-white'
+                }`}
               >
-                {sub.popular && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '-11px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--primary)',
-                    color: '#FFFFFF',
-                    fontSize: '0.66rem',
-                    fontWeight: 900,
-                    padding: '3px 12px',
-                    borderRadius: '99px',
-                    letterSpacing: '0.04em',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    POPULAR CHOICE
-                  </div>
-                )}
+                <MessageSquare size={16} />
+                <span>Inquire on WhatsApp</span>
+              </a>
+            </div>
+          ))}
+        </div>
 
+        {/* 2 cards in row 2 centered horizontally */}
+        <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
+          {SUBSCRIPTION_PLANS.slice(3, 5).map((sub) => (
+            <div
+              key={sub.id}
+              className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] lg:max-w-[calc(33.333%-16px)] flex"
+            >
+              <div
+                className="w-full bg-white rounded-3xl p-6 sm:p-7 border flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-xl relative border-stone-200 shadow-sm"
+              >
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 800, color: sub.color || 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                  <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1.5">
                     {sub.badge}
                   </div>
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 850, color: '#121417', margin: '0 0 10px 0' }}>
-                    {sub.title}
-                  </h3>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '14px' }}>
-                    <span style={{ fontSize: '2rem', fontWeight: 900, color: '#121417', fontFamily: 'var(--font-heading)' }}>
-                      {sub.price}
-                    </span>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600 }}>{sub.period}</span>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-stone-900 mb-2">{sub.title}</h3>
+                  <p className="text-xs sm:text-sm text-stone-500 mb-4">{sub.desc}</p>
+                  <div className="flex items-baseline gap-1.5 mb-5 pb-4 border-b border-stone-100">
+                    <span className="text-3xl sm:text-4xl font-black text-stone-900 font-heading">{sub.price}</span>
+                    <span className="text-sm text-stone-500 font-semibold">{sub.period}</span>
                   </div>
 
-                  <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '14px', marginBottom: '18px' }}>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      {sub.features.map((feat, fIdx) => (
-                        <li key={fIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.84rem', color: '#1E293B' }}>
-                          <Check size={15} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <ul className="space-y-2.5 mb-6 text-xs sm:text-sm text-stone-700">
+                    {sub.features.map((feat, fIdx) => (
+                      <li key={fIdx} className="flex items-start gap-2.5">
+                        <Check size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                        <span className="leading-snug">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <a
-                  href={`https://wa.me/917318086600?text=Hi%20Ooloo!%20I%20would%20like%20to%20subscribe%20to%20the%20${encodeURIComponent(sub.title)}%20(${sub.price}%2Fmonth).`}
+                  href={`https://wa.me/917318086600?text=Hi%20Ooloo!%20I%20would%20like%20to%20subscribe%20to%20the%20${encodeURIComponent(sub.title)}%20(${sub.price}%2Fmonth)%20in%20${encodeURIComponent(selectedArea.name)}.`}
                   target="_blank"
                   rel="noreferrer"
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '12px',
-                    background: sub.popular ? 'var(--primary)' : '#F5F5F4',
-                    color: sub.popular ? '#FFFFFF' : '#121417',
-                    border: sub.popular ? 'none' : '1px solid var(--border)',
-                    fontSize: '0.86rem',
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    textDecoration: 'none'
-                  }}
+                  className="w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-stone-900 hover:bg-stone-800 text-white"
                 >
-                  <MessageSquare size={15} />
+                  <MessageSquare size={16} />
                   <span>Inquire on WhatsApp</span>
                 </a>
               </div>
-            ))}
-          </div>
-
-          {/* Subscription Benefits Strip */}
-          <div style={{
-            marginTop: '22px',
-            background: '#FFFFFF',
-            borderRadius: '18px',
-            padding: '16px 20px',
-            border: '1px solid var(--border-light)',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            gap: '14px',
-            fontSize: '0.82rem',
-            color: '#1E293B',
-            fontWeight: 700
-          }}>
-            <span>💰 Save up to 30%</span>
-            <span>👨‍🍳 Same Trained Cook</span>
-            <span>⭐ Priority Booking</span>
-            <span>📅 Festive Off</span>
-            <span>🔒 Background Checked</span>
-            <span>✨ No Hidden Charges</span>
-          </div>
+            </div>
+          ))}
         </div>
 
-      </div>
-    </section>
+        {/* Benefits Strip */}
+        <div className="mt-8 bg-white rounded-2xl p-4 sm:p-6 border border-stone-200 flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm font-bold text-stone-700 shadow-xs">
+          <span>💰 Save up to 30%</span>
+          <span>👨‍🍳 Same Trained Cook</span>
+          <span>⭐ Priority Booking</span>
+          <span>📅 Festive Off</span>
+          <span>🔒 Background Checked</span>
+          <span>✨ No Hidden Charges</span>
+        </div>
+      </section>
+
+      {/* ===================== 5. TERMS & CONDITIONS SUMMARY ===================== */}
+      <section className="bg-stone-100/90 rounded-3xl p-6 sm:p-10 lg:p-12 border border-stone-200 text-stone-700 shadow-sm">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-3 w-fit">
+          <ShieldCheck size={18} />
+          <span>TRUST & HYGIENE POLICY</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight mb-3">
+          ooloo Service Terms & Hygiene Standards
+        </h3>
+        <p className="text-sm sm:text-base lg:text-lg text-stone-600 mb-8 max-w-3xl leading-relaxed">
+          Transparent, family-friendly kitchen policies ensuring safety, consistency, and professional hygiene on every visit across Lucknow.
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs">
+            <h4 className="text-base sm:text-lg lg:text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+              <span>Hourly & Instant Booking Guidelines</span>
+            </h4>
+            <ul className="space-y-3.5">
+              {TERMS_AND_CONDITIONS.hourly.map((t, idx) => (
+                <li key={`h-${idx}`} className="flex items-start gap-3 text-sm sm:text-base lg:text-lg text-stone-700 leading-relaxed">
+                  <Check size={18} className="text-emerald-600 shrink-0 mt-1" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs">
+            <h4 className="text-base sm:text-lg lg:text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+              <span>Subscription & Hygiene Standards</span>
+            </h4>
+            <ul className="space-y-3.5">
+              {TERMS_AND_CONDITIONS.subscription.map((t, idx) => (
+                <li key={`s-${idx}`} className="flex items-start gap-3 text-sm sm:text-base lg:text-lg text-stone-700 leading-relaxed">
+                  <Check size={18} className="text-emerald-600 shrink-0 mt-1" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
   );
 }

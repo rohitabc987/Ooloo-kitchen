@@ -179,45 +179,34 @@ export default function Services() {
   };
 
   return (
-    <section id="services" style={{ padding: '36px 0 70px 0', backgroundColor: 'transparent' }}>
-      <div className="container">
+    <section id="services" className="py-8 sm:py-14" style={{ backgroundColor: 'transparent' }}>
+      <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
 
         {/* Section Header (Centered) */}
-        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 40px auto' }}>
-          <div className="page-badge" style={{ justifyContent: 'center' }}>
-            <span className="page-badge-dot" />
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-2">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
             <span>WHAT WE DO</span>
           </div>
-          <h1 className="page-title" style={{ textAlign: 'center' }}>
-            Everything except <span className="italic-serif" style={{ color: 'var(--primary)' }}>the eating.</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-stone-900 tracking-tight leading-tight mb-3">
+            Everything except <span className="text-orange-600">the eating.</span>
           </h1>
-          <p className="page-subtitle" style={{ margin: '0 auto 22px auto', textAlign: 'center' }}>
-            Verified cooks at your door in <strong style={{ color: '#E64A19' }}>30 mins</strong> across Lucknow. Fresh, hygienic meals cooked right in your kitchen.
+          <p className="text-stone-600 text-xs sm:text-sm md:text-base max-w-3xl mx-auto mb-6">
+            Verified cooks at your door in <strong className="text-orange-600">30 mins</strong> across Lucknow. Fresh, hygienic meals cooked right in your kitchen.
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="flex justify-center">
             <Link
               href="/pricing"
-              className="btn btn-dark"
-              style={{
-                padding: '12px 28px',
-                borderRadius: '99px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                textDecoration: 'none',
-                fontWeight: 800,
-                fontSize: '0.98rem',
-                whiteSpace: 'nowrap'
-              }}
+              className="px-6 py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 transition-all shadow-md"
             >
-              <span>Pricing & Calculator</span>
-              <ArrowUpRight size={18} />
+              <span>Pricing & Plans</span>
+              <ArrowUpRight size={16} />
             </Link>
           </div>
         </div>
 
         {/* Visual Cards Grid — Rich Photos, Clear Text, Big Buttons */}
-        <div className="grid-3" style={{ marginBottom: '48px', marginTop: '12px' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-12 mt-4">
           {VISUAL_SERVICES.map((svc) => (
             <div
               key={svc.id}

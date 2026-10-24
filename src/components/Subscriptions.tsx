@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Check, Calendar, MessageSquare } from 'lucide-react';
+import { Check, Calendar, MessageSquare, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { SUBSCRIPTION_PLANS } from '../data/lucknowData';
 import { SubscriptionPlan } from '../types';
@@ -10,106 +10,66 @@ export default function Subscriptions() {
   const { selectedArea } = useApp();
 
   return (
-    <section id="subscriptions" style={{ padding: '50px 0 70px 0', backgroundColor: 'var(--bg-main)' }}>
-      <div className="container">
+    <section id="subscriptions" className="py-10 sm:py-16 bg-stone-50/50">
+      <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         
         {/* Header */}
-        <div style={{ textAlign: 'center', maxWidth: '850px', margin: '0 auto 36px auto' }}>
-          <div style={{
-            fontSize: '0.8rem',
-            fontWeight: 800,
-            letterSpacing: '0.08em',
-            color: 'var(--primary)',
-            textTransform: 'uppercase',
-            marginBottom: '10px'
-          }}>
-            SAVE UP TO 30% ON SUBSCRIPTION PLANS
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-2">
+            <Sparkles size={14} />
+            <span>SAVE UP TO 30% ON SUBSCRIPTION PLANS</span>
           </div>
-          <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 800, color: '#121417', marginBottom: '14px' }}>
-            Smart Kitchen <span className="italic-serif">Subscriptions.</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-extrabold text-stone-900 tracking-tight leading-tight mb-3">
+            Smart Kitchen <span className="text-orange-600">Subscriptions.</span>
           </h2>
-          <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)' }}>
-            Never worry about daily kitchen help again. Enjoy guaranteed same trained cooks, flexible service hold days, priority booking, and zero hidden charges.
+          <p className="text-stone-600 text-xs sm:text-sm md:text-base max-w-2xl mx-auto">
+            Never worry about daily kitchen help again. Enjoy guaranteed same trained cooks, flexible service hold days, priority booking, and zero hidden charges in Lucknow.
           </p>
         </div>
 
         {/* Subscription Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '20px',
-          alignItems: 'stretch'
-        }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 items-stretch">
           {SUBSCRIPTION_PLANS.map((plan: SubscriptionPlan, idx: number) => (
             <div 
               key={idx}
-              style={{
-                background: '#FFFFFF',
-                borderRadius: 'var(--radius-lg)',
-                padding: '36px 24px',
-                border: plan.popular ? '2px solid var(--primary)' : '1px solid var(--border-light)',
-                boxShadow: plan.popular ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              className={`bg-white rounded-2xl p-6 sm:p-7 border flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-lg relative ${
+                plan.popular ? 'border-2 border-orange-600 shadow-md ring-1 ring-orange-600/20' : 'border-stone-200'
+              }`}
             >
-
               {plan.popular && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-14px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: 'var(--primary)',
-                  color: '#FFFFFF',
-                  fontSize: '0.72rem',
-                  fontWeight: 900,
-                  padding: '4px 16px',
-                  borderRadius: '99px',
-                  letterSpacing: '0.05em',
-                  whiteSpace: 'nowrap'
-                }}>
-                  BEST FOR LARGE FAMILIES
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-3.5 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                  POPULAR CHOICE
                 </div>
               )}
 
               <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: plan.color || 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '8px' }}>
+                <div className="text-[11px] sm:text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">
                   {plan.badge}
                 </div>
 
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#121417', marginBottom: '8px' }}>
+                <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-stone-900 mb-1.5">
                   {plan.title}
                 </h3>
 
-                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.5 }}>
+                <p className="text-xs sm:text-sm text-stone-500 mb-4 leading-relaxed">
                   {plan.desc}
                 </p>
 
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '2.5rem', fontWeight: 900, color: '#121417', fontFamily: 'var(--font-heading)' }}>
+                <div className="flex items-baseline gap-1.5 mb-5">
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-black text-stone-900 font-heading">
                     {plan.price}
                   </span>
-                  <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: 600 }}>{plan.period}</span>
+                  <span className="text-xs sm:text-sm text-stone-500 font-semibold">{plan.period}</span>
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '16px', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '10px' }}>
+                <div className="border-t border-stone-100 pt-3.5 mb-6">
+                  <div className="text-[10px] sm:text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">
                     Plan Highlights:
                   </div>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                  <ul className="space-y-2 text-xs sm:text-sm text-stone-700">
                     {plan.features.map((feat: string, fIdx: number) => (
-                      <li key={fIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '9px', fontSize: '0.86rem', color: 'var(--text-primary)' }}>
-                        <Check size={16} color="var(--green)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <li key={fIdx} className="flex items-start gap-2">
+                        <Check size={14} className="text-emerald-600 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -121,12 +81,15 @@ export default function Subscriptions() {
                 href={`https://wa.me/917318086600?text=Hi%20ooloo!%20I%20am%20interested%20in%20the%20${encodeURIComponent(plan.title)}%20(${plan.price}%2Fmonth)%20in%20${encodeURIComponent(selectedArea.name)}.`}
                 target="_blank"
                 rel="noreferrer"
-                className={`btn ${plan.popular ? 'btn-whatsapp' : 'btn-outline'}`}
-                style={{ width: '100%', padding: '13px' }}>
-                <MessageSquare size={16} />
+                className={`w-full py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+                  plan.popular
+                    ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-600/20'
+                    : 'bg-stone-100 hover:bg-stone-200 text-stone-800'
+                }`}
+              >
+                <MessageSquare size={15} />
                 <span>Inquire on WhatsApp</span>
               </a>
-
             </div>
           ))}
         </div>
